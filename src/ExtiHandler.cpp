@@ -9,9 +9,10 @@
 
 void ExtiHandler::setupTrigger(GPIO_TypeDef* gpio) {
 
-	IoDriver::initOutput(GPIOA, std::vector<uint8_t>(0), GpioMode::pushPullInput);
+	IoDriver::initPin(GPIOA, std::vector<uint8_t>{0}, GpioMode::pushPullInput);
 
 	gpio->ODR &= ~1ul;
+//	gpio->ODR |= 1;
 
 	NVIC_ClearPendingIRQ(EXTI0_IRQn);
 	NVIC_EnableIRQ(EXTI0_IRQn);

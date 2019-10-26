@@ -28,8 +28,8 @@ enum CHIP_SELECT_STATE {
 
 void IliDisplayDriver::initPins() {
 
-	IoDriver::initOutput(GPIOB, PARALLEL_PINS, GpioMode::pushPullOutput);
-	IoDriver::initOutput(GPIOB, CONTROL_PINS, GpioMode::pushPullOutput);
+	IoDriver::initPin(GPIOB, PARALLEL_PINS, GpioMode::pushPullOutput);
+	IoDriver::initPin(GPIOB, CONTROL_PINS, GpioMode::pushPullOutput);
 
 	timer.start();
 }

@@ -1,11 +1,13 @@
 Archive member included to satisfy reference by file (symbol)
 
 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(new_op.o)
-                              ./src/IliDisplayDriver.o (operator new(unsigned int))
+                              ./src/ExtiHandler.o (operator new(unsigned int))
 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(del_op.o)
                               ./src/ExtiHandler.o (operator delete(void*))
 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(new_handler.o)
                               d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(new_op.o) (std::get_new_handler())
+d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-atexit.o)
+                              ./src/LedDisplayDriver.o (atexit)
 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-errno.o)
                               ./system/src/newlib/_sbrk.o (__errno)
 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-impure.o)
@@ -22,6 +24,10 @@ d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/ar
                               ./system/src/diag/Trace.o (strlen)
 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-vsnprintf.o)
                               ./system/src/diag/Trace.o (vsnprintf)
+d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-__atexit.o)
+                              d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-atexit.o) (__register_exitproc)
+d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-__call_atexit.o)
+                              d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-__atexit.o) (__call_exitprocs)
 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-mlock.o)
                               d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-freer.o) (__malloc_lock)
 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-svfprintf.o)
@@ -1483,6 +1489,7 @@ Discarded input sections
  .text          0x00000000        0x0 ./src/ExtiHandler.o
  .data          0x00000000        0x0 ./src/ExtiHandler.o
  .bss           0x00000000        0x0 ./src/ExtiHandler.o
+ .rodata.._128  0x00000000        0x1 ./src/ExtiHandler.o
  .debug_macro   0x00000000      0xb0e ./src/ExtiHandler.o
  .debug_macro   0x00000000      0x168 ./src/ExtiHandler.o
  .debug_macro   0x00000000       0x10 ./src/ExtiHandler.o
@@ -2013,6 +2020,7 @@ Discarded input sections
  .text          0x00000000        0x0 ./src/main.o
  .data          0x00000000        0x0 ./src/main.o
  .bss           0x00000000        0x0 ./src/main.o
+ .rodata.._141  0x00000000        0x1 ./src/main.o
  .debug_macro   0x00000000      0xb0e ./src/main.o
  .debug_macro   0x00000000       0x22 ./src/main.o
  .debug_macro   0x00000000       0x58 ./src/main.o
@@ -2108,6 +2116,9 @@ Discarded input sections
                 0x00000000       0x20 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(new_handler.o)
  .rodata._ZSt7nothrow
                 0x00000000        0x1 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(new_handler.o)
+ .text          0x00000000        0x0 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-atexit.o)
+ .data          0x00000000        0x0 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-atexit.o)
+ .bss           0x00000000        0x0 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-atexit.o)
  .text          0x00000000        0x0 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-errno.o)
  .data          0x00000000        0x0 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-errno.o)
  .bss           0x00000000        0x0 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-errno.o)
@@ -2133,6 +2144,16 @@ Discarded input sections
  .text          0x00000000        0x0 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-vsnprintf.o)
  .data          0x00000000        0x0 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-vsnprintf.o)
  .bss           0x00000000        0x0 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-vsnprintf.o)
+ .text          0x00000000        0x0 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-__atexit.o)
+ .data          0x00000000        0x0 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-__atexit.o)
+ .bss           0x00000000        0x0 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-__atexit.o)
+ .data.__atexit_dummy
+                0x00000000        0x4 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-__atexit.o)
+ .text          0x00000000        0x0 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-__call_atexit.o)
+ .data          0x00000000        0x0 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-__call_atexit.o)
+ .bss           0x00000000        0x0 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-__call_atexit.o)
+ .text.__call_exitprocs
+                0x00000000       0xd8 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-__call_atexit.o)
  .text          0x00000000        0x0 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-mlock.o)
  .data          0x00000000        0x0 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-mlock.o)
  .bss           0x00000000        0x0 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-mlock.o)
@@ -2219,7 +2240,7 @@ END GROUP
                 0x20004c00                __Main_Stack_Limit = (__stack - __Main_Stack_Size)
                 [!provide]                PROVIDE (_Main_Stack_Limit = __Main_Stack_Limit)
                 0x00000100                _Minimum_Stack_Size = 0x100
-                0x20000150                PROVIDE (_Heap_Begin = _end_noinit)
+                0x200001f4                PROVIDE (_Heap_Begin = _end_noinit)
                 0x20004c00                PROVIDE (_Heap_Limit = (__stack - __Main_Stack_Size))
 
 .isr_vector     0x08000000      0x350
@@ -2337,16 +2358,16 @@ END GROUP
 
 .inits          0x08000350       0x38
                 0x08000350                __data_regions_array_start = .
-                0x08000350        0x4 LONG 0x8001598 LOADADDR (.data)
+                0x08000350        0x4 LONG 0x80017f0 LOADADDR (.data)
                 0x08000354        0x4 LONG 0x20000000 ADDR (.data)
                 0x08000358        0x4 LONG 0x20000088 (ADDR (.data) + SIZEOF (.data))
-                0x0800035c        0x4 LONG 0x8001598 LOADADDR (.data_CCMRAM)
+                0x0800035c        0x4 LONG 0x80017f0 LOADADDR (.data_CCMRAM)
                 0x08000360        0x4 LONG 0x0 ADDR (.data_CCMRAM)
                 0x08000364        0x4 LONG 0x0 (ADDR (.data_CCMRAM) + SIZEOF (.data_CCMRAM))
                 0x08000368                __data_regions_array_end = .
                 0x08000368                __bss_regions_array_start = .
                 0x08000368        0x4 LONG 0x20000088 ADDR (.bss)
-                0x0800036c        0x4 LONG 0x20000150 (ADDR (.bss) + SIZEOF (.bss))
+                0x0800036c        0x4 LONG 0x200001f4 (ADDR (.bss) + SIZEOF (.bss))
                 0x08000370        0x4 LONG 0x0 ADDR (.bss_CCMRAM)
                 0x08000374        0x4 LONG 0x0 (ADDR (.bss_CCMRAM) + SIZEOF (.bss_CCMRAM))
                 0x08000378                __bss_regions_array_end = .
@@ -2376,7 +2397,7 @@ END GROUP
 .flashtext
  *(.flashtext .flashtext.*)
 
-.text           0x08000388     0x120f
+.text           0x08000388     0x1467
  *(.text .text.*)
  .text._exit    0x08000388        0x2 ./system/src/newlib/_exit.o
                 0x08000388                _exit
@@ -2422,174 +2443,190 @@ END GROUP
                 0x080006fc       0x94 ./system/src/cmsis/system_stm32f10x.o
                 0x080006fc                SystemCoreClockUpdate
  .text._ZN11ExtiHandler12setupTriggerEP12GPIO_TypeDef
-                0x08000790       0x5c ./src/ExtiHandler.o
+                0x08000790       0x6c ./src/ExtiHandler.o
                 0x08000790                ExtiHandler::setupTrigger(GPIO_TypeDef*)
  .text._ZN8GpioMode11isAlternateEv
-                0x080007ec       0x16 ./src/GpioMode.o
-                0x080007ec                GpioMode::isAlternate()
- *fill*         0x08000802        0x2 
+                0x080007fc       0x16 ./src/GpioMode.o
+                0x080007fc                GpioMode::isAlternate()
+ *fill*         0x08000812        0x2 
  .text._Z41__static_initialization_and_destruction_0ii
-                0x08000804       0x94 ./src/IliDisplayDriver.o
+                0x08000814       0x94 ./src/IliDisplayDriver.o
  .text._GLOBAL__sub_I__ZN16IliDisplayDriver13PARALLEL_PINSE
-                0x08000898        0xe ./src/IliDisplayDriver.o
+                0x080008a8        0xe ./src/IliDisplayDriver.o
  .text._GLOBAL__sub_D__ZN16IliDisplayDriver13PARALLEL_PINSE
-                0x080008a6        0xe ./src/IliDisplayDriver.o
- .text._ZN8IoDriver10initOutputEP12GPIO_TypeDefRKSt6vectorIhSaIhEEO8GpioMode
-                0x080008b4       0xc4 ./src/IoDriver.o
-                0x080008b4                IoDriver::initOutput(GPIO_TypeDef*, std::vector<unsigned char, std::allocator<unsigned char> > const&, GpioMode&&)
+                0x080008b6        0xe ./src/IliDisplayDriver.o
+ .text._ZN8IoDriver7initPinEP12GPIO_TypeDefRKSt6vectorIhSaIhEEO8GpioMode
+                0x080008c4       0xbc ./src/IoDriver.o
+                0x080008c4                IoDriver::initPin(GPIO_TypeDef*, std::vector<unsigned char, std::allocator<unsigned char> > const&, GpioMode&&)
+ .text.__tcf_0  0x08000980       0x14 ./src/LedDisplayDriver.o
  .text._ZN16LedDisplayDriver4initEv
-                0x08000978       0x4c ./src/LedDisplayDriver.o
-                0x08000978                LedDisplayDriver::init()
+                0x08000994       0x7c ./src/LedDisplayDriver.o
+                0x08000994                LedDisplayDriver::init()
  .text._ZN16LedDisplayDriver5startEv
-                0x080009c4       0x10 ./src/LedDisplayDriver.o
-                0x080009c4                LedDisplayDriver::start()
+                0x08000a10       0x10 ./src/LedDisplayDriver.o
+                0x08000a10                LedDisplayDriver::start()
+ .text._Z8sendDatav
+                0x08000a20       0x8c ./src/LedDisplayDriver.o
+                0x08000a20                sendData()
  .text.I2C1_EV_IRQHandler
-                0x080009d4        0x2 ./src/LedDisplayDriver.o
-                0x080009d4                I2C1_EV_IRQHandler
+                0x08000aac       0x3c ./src/LedDisplayDriver.o
+                0x08000aac                I2C1_EV_IRQHandler
  .text.I2C1_ER_IRQHandler
-                0x080009d6        0x2 ./src/LedDisplayDriver.o
-                0x080009d6                I2C1_ER_IRQHandler
+                0x08000ae8        0x2 ./src/LedDisplayDriver.o
+                0x08000ae8                I2C1_ER_IRQHandler
+ *fill*         0x08000aea        0x2 
  .text._ZN5Timer5sleepEm
-                0x080009d8       0x14 ./src/Timer.o
-                0x080009d8                Timer::sleep(unsigned long)
+                0x08000aec       0x14 ./src/Timer.o
+                0x08000aec                Timer::sleep(unsigned long)
  .text.SysTick_Handler
-                0x080009ec       0x14 ./src/Timer.o
-                0x080009ec                SysTick_Handler
+                0x08000b00       0x14 ./src/Timer.o
+                0x08000b00                SysTick_Handler
  .text._Z41__static_initialization_and_destruction_0ii
-                0x08000a00       0x54 ./src/main.o
+                0x08000b14       0x54 ./src/main.o
  .text.EXTI0_IRQHandler
-                0x08000a54       0x1c ./src/main.o
-                0x08000a54                EXTI0_IRQHandler
- .text.main     0x08000a70       0x70 ./src/main.o
-                0x08000a70                main
+                0x08000b68       0x28 ./src/main.o
+                0x08000b68                EXTI0_IRQHandler
+ .text.main     0x08000b90       0xb0 ./src/main.o
+                0x08000b90                main
  .text._GLOBAL__sub_I_displayDriver
-                0x08000ae0        0xe ./src/main.o
+                0x08000c40        0xe ./src/main.o
  .text._GLOBAL__sub_D_displayDriver
-                0x08000aee        0xe ./src/main.o
- .text._Znwj    0x08000afc       0x22 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(new_op.o)
-                0x08000afc                operator new(unsigned int)
- .text._ZdlPv   0x08000b1e        0x4 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(del_op.o)
-                0x08000b1e                operator delete(void*)
- *fill*         0x08000b22        0x2 
+                0x08000c4e        0xe ./src/main.o
+ .text._Znwj    0x08000c5c       0x22 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(new_op.o)
+                0x08000c5c                operator new(unsigned int)
+ .text._ZdlPv   0x08000c7e        0x4 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(del_op.o)
+                0x08000c7e                operator delete(void*)
+ *fill*         0x08000c82        0x2 
  .text._ZSt15get_new_handlerv
-                0x08000b24       0x10 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(new_handler.o)
-                0x08000b24                std::get_new_handler()
- .text.__errno  0x08000b34        0xc d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-errno.o)
-                0x08000b34                __errno
- .text.malloc   0x08000b40       0x10 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-malloc.o)
-                0x08000b40                malloc
- .text.free     0x08000b50       0x10 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-malloc.o)
-                0x08000b50                free
- .text._free_r  0x08000b60       0x98 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-freer.o)
-                0x08000b60                _free_r
+                0x08000c84       0x10 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(new_handler.o)
+                0x08000c84                std::get_new_handler()
+ .text.atexit   0x08000c94        0xc d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-atexit.o)
+                0x08000c94                atexit
+ .text.__errno  0x08000ca0        0xc d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-errno.o)
+                0x08000ca0                __errno
+ .text.malloc   0x08000cac       0x10 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-malloc.o)
+                0x08000cac                malloc
+ .text.free     0x08000cbc       0x10 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-malloc.o)
+                0x08000cbc                free
+ .text._free_r  0x08000ccc       0x98 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-freer.o)
+                0x08000ccc                _free_r
  .text._malloc_r
-                0x08000bf8       0xb4 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-mallocr.o)
-                0x08000bf8                _malloc_r
- .text._sbrk_r  0x08000cac       0x20 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-sbrkr.o)
-                0x08000cac                _sbrk_r
- .text          0x08000ccc       0x10 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-strlen.o)
-                0x08000ccc                strlen
+                0x08000d64       0xb4 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-mallocr.o)
+                0x08000d64                _malloc_r
+ .text._sbrk_r  0x08000e18       0x20 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-sbrkr.o)
+                0x08000e18                _sbrk_r
+ .text          0x08000e38       0x10 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-strlen.o)
+                0x08000e38                strlen
  .text._vsnprintf_r
-                0x08000cdc       0x58 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-vsnprintf.o)
-                0x08000cdc                _vsniprintf_r
-                0x08000cdc                _vsnprintf_r
+                0x08000e48       0x58 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-vsnprintf.o)
+                0x08000e48                _vsniprintf_r
+                0x08000e48                _vsnprintf_r
  .text.vsnprintf
-                0x08000d34       0x1c d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-vsnprintf.o)
-                0x08000d34                vsniprintf
-                0x08000d34                vsnprintf
+                0x08000ea0       0x1c d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-vsnprintf.o)
+                0x08000ea0                vsniprintf
+                0x08000ea0                vsnprintf
+ .text.__register_exitproc
+                0x08000ebc       0xcc d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-__atexit.o)
+                0x08000ebc                __register_exitproc
  .text.__malloc_lock
-                0x08000d50        0x2 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-mlock.o)
-                0x08000d50                __malloc_lock
+                0x08000f88        0x2 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-mlock.o)
+                0x08000f88                __malloc_lock
  .text.__malloc_unlock
-                0x08000d52        0x2 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-mlock.o)
-                0x08000d52                __malloc_unlock
+                0x08000f8a        0x2 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-mlock.o)
+                0x08000f8a                __malloc_unlock
  .text.__ssputs_r
-                0x08000d54       0xb4 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-svfprintf.o)
-                0x08000d54                __ssputs_r
+                0x08000f8c       0xb4 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-svfprintf.o)
+                0x08000f8c                __ssputs_r
  .text._svfprintf_r
-                0x08000e08      0x1f0 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-svfprintf.o)
-                0x08000e08                _svfiprintf_r
-                0x08000e08                _svfprintf_r
+                0x08001040      0x1f0 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-svfprintf.o)
+                0x08001040                _svfiprintf_r
+                0x08001040                _svfprintf_r
  .text._printf_common
-                0x08000ff8       0xec d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
-                0x08000ff8                _printf_common
+                0x08001230       0xec d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
+                0x08001230                _printf_common
  .text._printf_i
-                0x080010e4      0x224 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
-                0x080010e4                _printf_i
- .text.memchr   0x08001308       0x1c d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-memchr-stub.o)
-                0x08001308                memchr
- .text.memcpy   0x08001324       0x16 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-memcpy-stub.o)
-                0x08001324                memcpy
- .text.memmove  0x0800133a       0x32 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-memmove.o)
-                0x0800133a                memmove
+                0x0800131c      0x224 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
+                0x0800131c                _printf_i
+ .text.memchr   0x08001540       0x1c d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-memchr-stub.o)
+                0x08001540                memchr
+ .text.memcpy   0x0800155c       0x16 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-memcpy-stub.o)
+                0x0800155c                memcpy
+ .text.memmove  0x08001572       0x32 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-memmove.o)
+                0x08001572                memmove
  .text._realloc_r
-                0x0800136c       0x4c d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-reallocr.o)
-                0x0800136c                _realloc_r
+                0x080015a4       0x4c d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-reallocr.o)
+                0x080015a4                _realloc_r
  .text._malloc_usable_size_r
-                0x080013b8       0x10 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-msizer.o)
-                0x080013b8                _malloc_usable_size_r
+                0x080015f0       0x10 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-msizer.o)
+                0x080015f0                _malloc_usable_size_r
  *(.rodata .rodata.* .constdata .constdata.*)
  .rodata.abort.str1.4
-                0x080013c8       0x14 ./system/src/newlib/_exit.o
+                0x08001600       0x14 ./system/src/newlib/_exit.o
  .rodata.trace_puts.str1.4
-                0x080013dc       0x14 ./system/src/diag/Trace.o
+                0x08001614       0x14 ./system/src/diag/Trace.o
                                   0x2 (size before relaxing)
  .rodata.dumpExceptionStack.str1.4
-                0x080013dc      0x11a ./system/src/cortexm/exception_handlers.o
- *fill*         0x080014f6        0x2 
+                0x08001614      0x11a ./system/src/cortexm/exception_handlers.o
+ *fill*         0x0800172e        0x2 
  .rodata.str1.4
-                0x080014f8       0x2a ./system/src/cortexm/exception_handlers.o
- *fill*         0x08001522        0x2 
- .rodata.._129  0x08001524        0x8 ./src/IliDisplayDriver.o
- .rodata.._130  0x0800152c        0x5 ./src/IliDisplayDriver.o
- *fill*         0x08001531        0x3 
- .rodata.._140  0x08001534        0x2 ./src/main.o
- *fill*         0x08001536        0x2 
+                0x08001730       0x2a ./system/src/cortexm/exception_handlers.o
+ *fill*         0x0800175a        0x2 
+ .rodata.._129  0x0800175c        0x8 ./src/IliDisplayDriver.o
+ .rodata.._130  0x08001764        0x5 ./src/IliDisplayDriver.o
+ *fill*         0x08001769        0x3 
+ .rodata.._129  0x0800176c        0x2 ./src/LedDisplayDriver.o
+ *fill*         0x0800176e        0x2 
+ .rodata.._130  0x08001770        0x9 ./src/LedDisplayDriver.o
+ *fill*         0x08001779        0x3 
+ .rodata.._140  0x0800177c        0x2 ./src/main.o
+ *fill*         0x0800177e        0x2 
+ .rodata.EXTI0_IRQHandler.str1.4
+                0x08001780       0x10 ./src/main.o
  .rodata.main.str1.4
-                0x08001538       0x2c ./src/main.o
+                0x08001790       0x2c ./src/main.o
                                  0x29 (size before relaxing)
  .rodata._svfprintf_r.str1.1
-                0x08001564       0x11 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-svfprintf.o)
+                0x080017bc       0x11 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-svfprintf.o)
  .rodata._printf_i.str1.1
-                0x08001575       0x22 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
+                0x080017cd       0x22 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
  *(vtable)
  *(.eh_frame*)
  *(.glue_7)
- .glue_7        0x08001597        0x0 linker stubs
+ .glue_7        0x080017ef        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x08001597        0x0 linker stubs
+ .glue_7t       0x080017ef        0x0 linker stubs
 
-.vfp11_veneer   0x08001598        0x0
- .vfp11_veneer  0x08001598        0x0 linker stubs
+.vfp11_veneer   0x080017f0        0x0
+ .vfp11_veneer  0x080017f0        0x0 linker stubs
 
-.v4_bx          0x08001598        0x0
- .v4_bx         0x08001598        0x0 linker stubs
+.v4_bx          0x080017f0        0x0
+ .v4_bx         0x080017f0        0x0 linker stubs
 
-.iplt           0x08001598        0x0
- .iplt          0x08001598        0x0 ./system/src/newlib/_exit.o
+.iplt           0x080017f0        0x0
+ .iplt          0x080017f0        0x0 ./system/src/newlib/_exit.o
 
-.rel.dyn        0x08001598        0x0
- .rel.iplt      0x08001598        0x0 ./system/src/newlib/_exit.o
+.rel.dyn        0x080017f0        0x0
+ .rel.iplt      0x080017f0        0x0 ./system/src/newlib/_exit.o
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x08001598                . = ALIGN (0x4)
-                0x08001598                __exidx_start = .
+                0x080017f0                . = ALIGN (0x4)
+                0x080017f0                __exidx_start = .
 
 .ARM.exidx
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x08001598                __exidx_end = .
-                0x08001598                . = ALIGN (0x4)
-                0x08001598                _etext = .
-                0x08001598                __etext = .
+                0x080017f0                __exidx_end = .
+                0x080017f0                . = ALIGN (0x4)
+                0x080017f0                _etext = .
+                0x080017f0                __etext = .
 
-.data_CCMRAM    0x00000000        0x0 load address 0x08001598
+.data_CCMRAM    0x00000000        0x0 load address 0x080017f0
  FILL mask 0xff
  *(.data.CCMRAM .data.CCMRAM.*)
                 0x00000000                . = ALIGN (0x4)
-                0x08001598                _sidata = LOADADDR (.data)
+                0x080017f0                _sidata = LOADADDR (.data)
 
-.data           0x20000000       0x88 load address 0x08001598
+.data           0x20000000       0x88 load address 0x080017f0
  FILL mask 0xff
                 0x20000000                _sdata = .
                 0x20000000                __data_start__ = .
@@ -2615,13 +2652,13 @@ END GROUP
                 0x20000088                _edata = .
                 0x20000088                __data_end__ = .
 
-.igot.plt       0x20000088        0x0 load address 0x08001620
+.igot.plt       0x20000088        0x0 load address 0x08001878
  .igot.plt      0x20000088        0x0 ./system/src/newlib/_exit.o
 
 .bss_CCMRAM     0x00000000        0x0
  *(.bss.CCMRAM .bss.CCMRAM.*)
 
-.bss            0x20000088       0xc8
+.bss            0x20000088      0x16c
                 0x20000088                __bss_start__ = .
                 0x20000088                _sbss = .
  *(.bss_begin .bss_begin.*)
@@ -2639,45 +2676,57 @@ END GROUP
  .bss._ZN16IliDisplayDriver13PARALLEL_PINSE
                 0x20000120        0xc ./src/IliDisplayDriver.o
                 0x20000120                IliDisplayDriver::PARALLEL_PINS
+ .bss._ZGVZ8sendDatavE4data
+                0x2000012c        0x4 ./src/LedDisplayDriver.o
+ .bss._ZZ8sendDatavE12dataPosition
+                0x20000130        0x1 ./src/LedDisplayDriver.o
+ *fill*         0x20000131        0x3 
+ .bss._ZZ8sendDatavE4data
+                0x20000134        0xc ./src/LedDisplayDriver.o
  .bss._ZN5Timer13ms_delayCountE
-                0x2000012c        0x4 ./src/Timer.o
-                0x2000012c                Timer::ms_delayCount
+                0x20000140        0x4 ./src/Timer.o
+                0x20000140                Timer::ms_delayCount
  .bss.displayDriver
-                0x20000130        0xc ./src/main.o
-                0x20000130                displayDriver
+                0x20000144        0xc ./src/main.o
+                0x20000144                displayDriver
  .bss._ZN12_GLOBAL__N_113__new_handlerE
-                0x2000013c        0x4 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(new_handler.o)
+                0x20000150        0x4 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(new_handler.o)
  .bss.__malloc_free_list
-                0x20000140        0x4 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-mallocr.o)
-                0x20000140                __malloc_free_list
+                0x20000154        0x4 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-mallocr.o)
+                0x20000154                __malloc_free_list
  .bss.__malloc_sbrk_start
-                0x20000144        0x4 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-mallocr.o)
-                0x20000144                __malloc_sbrk_start
+                0x20000158        0x4 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-mallocr.o)
+                0x20000158                __malloc_sbrk_start
+ .bss._global_atexit0
+                0x2000015c       0x8c d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-__atexit.o)
+ .bss._global_atexit
+                0x200001e8        0x4 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-__call_atexit.o)
+                0x200001e8                _global_atexit
  *(COMMON)
- COMMON         0x20000148        0x4 ./system/src/newlib/_syscalls.o
-                0x20000148                errno
+ COMMON         0x200001ec        0x4 ./system/src/newlib/_syscalls.o
+                0x200001ec                errno
  *(.bss_end .bss_end.*)
- .bss_end       0x2000014c        0x4 ./system/src/newlib/_startup.o
-                0x20000150                . = ALIGN (0x4)
-                0x20000150                __bss_end__ = .
-                0x20000150                _ebss = .
+ .bss_end       0x200001f0        0x4 ./system/src/newlib/_startup.o
+                0x200001f4                . = ALIGN (0x4)
+                0x200001f4                __bss_end__ = .
+                0x200001f4                _ebss = .
 
 .noinit_CCMRAM
  *(.noinit.CCMRAM .noinit.CCMRAM.*)
 
-.noinit         0x20000150        0x0
-                0x20000150                _noinit = .
+.noinit         0x200001f4        0x0
+                0x200001f4                _noinit = .
  *(.noinit .noinit.*)
-                0x20000150                . = ALIGN (0x4)
-                0x20000150                _end_noinit = .
+                0x200001f4                . = ALIGN (0x4)
+                0x200001f4                _end_noinit = .
                 [!provide]                PROVIDE (end = _end_noinit)
                 [!provide]                PROVIDE (_end = _end_noinit)
                 [!provide]                PROVIDE (__end = _end_noinit)
                 [!provide]                PROVIDE (__end__ = _end_noinit)
 
-._check_stack   0x20000150      0x100
-                0x20000250                . = (. + _Minimum_Stack_Size)
- *fill*         0x20000150      0x100 
+._check_stack   0x200001f4      0x100
+                0x200002f4                . = (. + _Minimum_Stack_Size)
+ *fill*         0x200001f4      0x100 
 
 .b1text
  *(.b1text)
@@ -2786,37 +2835,43 @@ END GROUP
  .ARM.attributes
                 0x000003bd       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(new_handler.o)
  .ARM.attributes
-                0x000003ea       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-errno.o)
+                0x000003ea       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-atexit.o)
  .ARM.attributes
-                0x00000417       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-impure.o)
+                0x00000417       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-errno.o)
  .ARM.attributes
-                0x00000444       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-malloc.o)
+                0x00000444       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-impure.o)
  .ARM.attributes
-                0x00000471       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-freer.o)
+                0x00000471       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-malloc.o)
  .ARM.attributes
-                0x0000049e       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-mallocr.o)
+                0x0000049e       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-freer.o)
  .ARM.attributes
-                0x000004cb       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-sbrkr.o)
+                0x000004cb       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-mallocr.o)
  .ARM.attributes
-                0x000004f8       0x17 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-strlen.o)
+                0x000004f8       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-sbrkr.o)
  .ARM.attributes
-                0x0000050f       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-vsnprintf.o)
+                0x00000525       0x17 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-strlen.o)
  .ARM.attributes
-                0x0000053c       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-mlock.o)
+                0x0000053c       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-vsnprintf.o)
  .ARM.attributes
-                0x00000569       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-svfprintf.o)
+                0x00000569       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-__atexit.o)
  .ARM.attributes
-                0x00000596       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
+                0x00000596       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-__call_atexit.o)
  .ARM.attributes
-                0x000005c3       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-memchr-stub.o)
+                0x000005c3       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-mlock.o)
  .ARM.attributes
-                0x000005f0       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-memcpy-stub.o)
+                0x000005f0       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-svfprintf.o)
  .ARM.attributes
-                0x0000061d       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-memmove.o)
+                0x0000061d       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
  .ARM.attributes
-                0x0000064a       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-reallocr.o)
+                0x0000064a       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-memchr-stub.o)
  .ARM.attributes
-                0x00000677       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-msizer.o)
+                0x00000677       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-memcpy-stub.o)
+ .ARM.attributes
+                0x000006a4       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-memmove.o)
+ .ARM.attributes
+                0x000006d1       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-reallocr.o)
+ .ARM.attributes
+                0x000006fe       0x2d d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-msizer.o)
 
 .debug
  *(.debug)
@@ -2830,7 +2885,7 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000      0x398
+.debug_aranges  0x00000000      0x3a8
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x28 ./system/src/newlib/_exit.o
@@ -2861,16 +2916,16 @@ END GROUP
  .debug_aranges
                 0x000002d0       0x20 ./src/IoDriver.o
  .debug_aranges
-                0x000002f0       0x40 ./src/LedDisplayDriver.o
+                0x000002f0       0x50 ./src/LedDisplayDriver.o
  .debug_aranges
-                0x00000330       0x28 ./src/Timer.o
+                0x00000340       0x28 ./src/Timer.o
  .debug_aranges
-                0x00000358       0x40 ./src/main.o
+                0x00000368       0x40 ./src/main.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000    0x13f0b
+.debug_info     0x00000000    0x1632f
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x956 ./system/src/newlib/_exit.o
  .debug_info    0x00000956      0x942 ./system/src/newlib/_sbrk.o
@@ -2882,15 +2937,15 @@ END GROUP
  .debug_info    0x00003221     0x1140 ./system/src/cortexm/exception_handlers.o
  .debug_info    0x00004361      0x494 ./system/src/cmsis/system_stm32f10x.o
  .debug_info    0x000047f5       0xca ./system/src/cmsis/vectors_stm32f10x.o
- .debug_info    0x000048bf     0x293e ./src/ExtiHandler.o
- .debug_info    0x000071fd      0x1af ./src/GpioMode.o
- .debug_info    0x000073ac     0x4eb8 ./src/IliDisplayDriver.o
- .debug_info    0x0000c264     0x1b52 ./src/IoDriver.o
- .debug_info    0x0000ddb6     0x1f0b ./src/LedDisplayDriver.o
- .debug_info    0x0000fcc1      0x1a1 ./src/Timer.o
- .debug_info    0x0000fe62     0x40a9 ./src/main.o
+ .debug_info    0x000048bf     0x2e26 ./src/ExtiHandler.o
+ .debug_info    0x000076e5      0x1af ./src/GpioMode.o
+ .debug_info    0x00007894     0x4eb8 ./src/IliDisplayDriver.o
+ .debug_info    0x0000c74c     0x1f46 ./src/IoDriver.o
+ .debug_info    0x0000e692     0x33d8 ./src/LedDisplayDriver.o
+ .debug_info    0x00011a6a      0x1a1 ./src/Timer.o
+ .debug_info    0x00011c0b     0x4724 ./src/main.o
 
-.debug_abbrev   0x00000000     0x363f
+.debug_abbrev   0x00000000     0x397c
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x1f3 ./system/src/newlib/_exit.o
  .debug_abbrev  0x000001f3      0x1fc ./system/src/newlib/_sbrk.o
@@ -2902,15 +2957,15 @@ END GROUP
  .debug_abbrev  0x00000d18      0x32b ./system/src/cortexm/exception_handlers.o
  .debug_abbrev  0x00001043      0x177 ./system/src/cmsis/system_stm32f10x.o
  .debug_abbrev  0x000011ba       0x9d ./system/src/cmsis/vectors_stm32f10x.o
- .debug_abbrev  0x00001257      0x649 ./src/ExtiHandler.o
- .debug_abbrev  0x000018a0      0x10e ./src/GpioMode.o
- .debug_abbrev  0x000019ae      0x7d9 ./src/IliDisplayDriver.o
- .debug_abbrev  0x00002187      0x4e5 ./src/IoDriver.o
- .debug_abbrev  0x0000266c      0x559 ./src/LedDisplayDriver.o
- .debug_abbrev  0x00002bc5      0x188 ./src/Timer.o
- .debug_abbrev  0x00002d4d      0x8f2 ./src/main.o
+ .debug_abbrev  0x00001257      0x69f ./src/ExtiHandler.o
+ .debug_abbrev  0x000018f6      0x10e ./src/GpioMode.o
+ .debug_abbrev  0x00001a04      0x7d9 ./src/IliDisplayDriver.o
+ .debug_abbrev  0x000021dd      0x574 ./src/IoDriver.o
+ .debug_abbrev  0x00002751      0x76f ./src/LedDisplayDriver.o
+ .debug_abbrev  0x00002ec0      0x188 ./src/Timer.o
+ .debug_abbrev  0x00003048      0x934 ./src/main.o
 
-.debug_line     0x00000000     0x5fcd
+.debug_line     0x00000000     0x6101
  *(.debug_line)
  .debug_line    0x00000000      0x373 ./system/src/newlib/_exit.o
  .debug_line    0x00000373      0x327 ./system/src/newlib/_sbrk.o
@@ -2922,15 +2977,15 @@ END GROUP
  .debug_line    0x00001c89      0x71e ./system/src/cortexm/exception_handlers.o
  .debug_line    0x000023a7      0x3f0 ./system/src/cmsis/system_stm32f10x.o
  .debug_line    0x00002797      0x109 ./system/src/cmsis/vectors_stm32f10x.o
- .debug_line    0x000028a0      0x8c4 ./src/ExtiHandler.o
- .debug_line    0x00003164       0x77 ./src/GpioMode.o
- .debug_line    0x000031db      0xc55 ./src/IliDisplayDriver.o
- .debug_line    0x00003e30      0x8b3 ./src/IoDriver.o
- .debug_line    0x000046e3      0x8e3 ./src/LedDisplayDriver.o
- .debug_line    0x00004fc6      0x39f ./src/Timer.o
- .debug_line    0x00005365      0xc68 ./src/main.o
+ .debug_line    0x000028a0      0x8dc ./src/ExtiHandler.o
+ .debug_line    0x0000317c       0x77 ./src/GpioMode.o
+ .debug_line    0x000031f3      0xc55 ./src/IliDisplayDriver.o
+ .debug_line    0x00003e48      0x8c6 ./src/IoDriver.o
+ .debug_line    0x0000470e      0x9ad ./src/LedDisplayDriver.o
+ .debug_line    0x000050bb      0x39f ./src/Timer.o
+ .debug_line    0x0000545a      0xca7 ./src/main.o
 
-.debug_frame    0x00000000      0xa84
+.debug_frame    0x00000000      0xb54
  *(.debug_frame)
  .debug_frame   0x00000000       0x38 ./system/src/newlib/_exit.o
  .debug_frame   0x00000038       0x28 ./system/src/newlib/_sbrk.o
@@ -2946,28 +3001,31 @@ END GROUP
  .debug_frame   0x00000478       0x20 ./src/GpioMode.o
  .debug_frame   0x00000498       0xf8 ./src/IliDisplayDriver.o
  .debug_frame   0x00000590       0x30 ./src/IoDriver.o
- .debug_frame   0x000005c0       0x6c ./src/LedDisplayDriver.o
- .debug_frame   0x0000062c       0x30 ./src/Timer.o
- .debug_frame   0x0000065c       0x90 ./src/main.o
- .debug_frame   0x000006ec       0x28 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(new_op.o)
- .debug_frame   0x00000714       0x20 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(del_op.o)
- .debug_frame   0x00000734       0x30 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(new_handler.o)
- .debug_frame   0x00000764       0x20 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-errno.o)
- .debug_frame   0x00000784       0x30 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-malloc.o)
- .debug_frame   0x000007b4       0x38 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-freer.o)
- .debug_frame   0x000007ec       0x2c d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-mallocr.o)
- .debug_frame   0x00000818       0x2c d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-sbrkr.o)
- .debug_frame   0x00000844       0x4c d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-vsnprintf.o)
- .debug_frame   0x00000890       0x30 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-mlock.o)
- .debug_frame   0x000008c0       0x90 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-svfprintf.o)
- .debug_frame   0x00000950       0x60 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
- .debug_frame   0x000009b0       0x28 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-memchr-stub.o)
- .debug_frame   0x000009d8       0x28 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-memcpy-stub.o)
- .debug_frame   0x00000a00       0x28 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-memmove.o)
- .debug_frame   0x00000a28       0x3c d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-reallocr.o)
- .debug_frame   0x00000a64       0x20 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-msizer.o)
+ .debug_frame   0x000005c0       0xac ./src/LedDisplayDriver.o
+ .debug_frame   0x0000066c       0x30 ./src/Timer.o
+ .debug_frame   0x0000069c       0x90 ./src/main.o
+ .debug_frame   0x0000072c       0x28 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(new_op.o)
+ .debug_frame   0x00000754       0x20 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(del_op.o)
+ .debug_frame   0x00000774       0x30 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++_nano.a(new_handler.o)
+ .debug_frame   0x000007a4       0x20 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-atexit.o)
+ .debug_frame   0x000007c4       0x20 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-errno.o)
+ .debug_frame   0x000007e4       0x30 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-malloc.o)
+ .debug_frame   0x00000814       0x38 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-freer.o)
+ .debug_frame   0x0000084c       0x2c d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-mallocr.o)
+ .debug_frame   0x00000878       0x2c d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-sbrkr.o)
+ .debug_frame   0x000008a4       0x4c d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-vsnprintf.o)
+ .debug_frame   0x000008f0       0x34 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-__atexit.o)
+ .debug_frame   0x00000924       0x3c d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-__call_atexit.o)
+ .debug_frame   0x00000960       0x30 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-mlock.o)
+ .debug_frame   0x00000990       0x90 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-svfprintf.o)
+ .debug_frame   0x00000a20       0x60 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
+ .debug_frame   0x00000a80       0x28 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-memchr-stub.o)
+ .debug_frame   0x00000aa8       0x28 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-memcpy-stub.o)
+ .debug_frame   0x00000ad0       0x28 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-memmove.o)
+ .debug_frame   0x00000af8       0x3c d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-reallocr.o)
+ .debug_frame   0x00000b34       0x20 d:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg_nano.a(lib_a-nano-msizer.o)
 
-.debug_str      0x00000000    0x5d394
+.debug_str      0x00000000    0x5d627
  *(.debug_str)
  .debug_str     0x00000000     0x7ba5 ./system/src/newlib/_exit.o
                                0x7da1 (size before relaxing)
@@ -2989,22 +3047,22 @@ END GROUP
                               0x4e8cd (size before relaxing)
  .debug_str     0x00055911       0x57 ./system/src/cmsis/vectors_stm32f10x.o
                                0x3872 (size before relaxing)
- .debug_str     0x00055968     0x598b ./src/ExtiHandler.o
-                              0x54396 (size before relaxing)
- .debug_str     0x0005b2f3       0x14 ./src/GpioMode.o
+ .debug_str     0x00055968     0x5c11 ./src/ExtiHandler.o
+                              0x5468e (size before relaxing)
+ .debug_str     0x0005b579       0x14 ./src/GpioMode.o
                                0x3231 (size before relaxing)
- .debug_str     0x0005b307     0x1a69 ./src/IliDisplayDriver.o
-                              0x5608a (size before relaxing)
- .debug_str     0x0005cd70       0x67 ./src/IoDriver.o
-                              0x53894 (size before relaxing)
- .debug_str     0x0005cdd7      0x131 ./src/LedDisplayDriver.o
-                              0x53b49 (size before relaxing)
- .debug_str     0x0005cf08       0x2b ./src/Timer.o
+ .debug_str     0x0005b58d     0x1489 ./src/IliDisplayDriver.o
+                              0x56083 (size before relaxing)
+ .debug_str     0x0005ca16      0x517 ./src/IoDriver.o
+                              0x53d82 (size before relaxing)
+ .debug_str     0x0005cf2d      0x25e ./src/LedDisplayDriver.o
+                              0x54901 (size before relaxing)
+ .debug_str     0x0005d18b       0x2b ./src/Timer.o
                               0x4eb5b (size before relaxing)
- .debug_str     0x0005cf33      0x461 ./src/main.o
-                              0x59d03 (size before relaxing)
+ .debug_str     0x0005d1b6      0x471 ./src/main.o
+                              0x59fbc (size before relaxing)
 
-.debug_loc      0x00000000     0x1510
+.debug_loc      0x00000000     0x1b8f
  *(.debug_loc)
  .debug_loc     0x00000000       0x85 ./system/src/newlib/_sbrk.o
  .debug_loc     0x00000085      0x1a9 ./system/src/newlib/_startup.o
@@ -3013,12 +3071,12 @@ END GROUP
  .debug_loc     0x00000387      0x121 ./system/src/diag/trace_impl.o
  .debug_loc     0x000004a8      0x291 ./system/src/cortexm/exception_handlers.o
  .debug_loc     0x00000739       0xdf ./system/src/cmsis/system_stm32f10x.o
- .debug_loc     0x00000818      0x156 ./src/ExtiHandler.o
- .debug_loc     0x0000096e       0x53 ./src/GpioMode.o
- .debug_loc     0x000009c1      0x6ae ./src/IliDisplayDriver.o
- .debug_loc     0x0000106f      0x16c ./src/IoDriver.o
- .debug_loc     0x000011db       0x55 ./src/LedDisplayDriver.o
- .debug_loc     0x00001230      0x2e0 ./src/main.o
+ .debug_loc     0x00000818      0x23e ./src/ExtiHandler.o
+ .debug_loc     0x00000a56       0x53 ./src/GpioMode.o
+ .debug_loc     0x00000aa9      0x6ae ./src/IliDisplayDriver.o
+ .debug_loc     0x00001157      0x26e ./src/IoDriver.o
+ .debug_loc     0x000013c5      0x313 ./src/LedDisplayDriver.o
+ .debug_loc     0x000016d8      0x4b7 ./src/main.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -3036,7 +3094,7 @@ END GROUP
  *(.debug_varnames)
 OUTPUT(2HpMotorController.elf elf32-littlearm)
 
-.debug_ranges   0x00000000      0x318
+.debug_ranges   0x00000000      0x340
  .debug_ranges  0x00000000       0x18 ./system/src/newlib/_exit.o
  .debug_ranges  0x00000018       0x10 ./system/src/newlib/_sbrk.o
  .debug_ranges  0x00000028       0x78 ./system/src/newlib/_startup.o
@@ -3050,10 +3108,10 @@ OUTPUT(2HpMotorController.elf elf32-littlearm)
  .debug_ranges  0x00000208       0x10 ./src/ExtiHandler.o
  .debug_ranges  0x00000218       0x10 ./src/GpioMode.o
  .debug_ranges  0x00000228       0x68 ./src/IliDisplayDriver.o
- .debug_ranges  0x00000290       0x10 ./src/IoDriver.o
- .debug_ranges  0x000002a0       0x30 ./src/LedDisplayDriver.o
- .debug_ranges  0x000002d0       0x18 ./src/Timer.o
- .debug_ranges  0x000002e8       0x30 ./src/main.o
+ .debug_ranges  0x00000290       0x28 ./src/IoDriver.o
+ .debug_ranges  0x000002b8       0x40 ./src/LedDisplayDriver.o
+ .debug_ranges  0x000002f8       0x18 ./src/Timer.o
+ .debug_ranges  0x00000310       0x30 ./src/main.o
 
 .debug_macro    0x00000000     0x4839
  .debug_macro   0x00000000      0x1b4 ./system/src/newlib/_exit.o

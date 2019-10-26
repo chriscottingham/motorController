@@ -74,37 +74,46 @@
 LedDisplayDriver displayDriver;
 
 extern "C" void EXTI0_IRQHandler(void) {
-//	trace_puts("Hello ARM World!");
+	trace_puts("Exti0 triggered");
 	EXTI->PR = 1;
 	__ISB();
 	displayDriver.start();
-
 //	NVIC_ClearPendingIRQ(EXTI0_IRQn);
 }
 
 int main(int argc, char* argv[]) {
-	// Send a greeting to the trace device (skipped on Release).
+
 	trace_puts("Hello ARM World!");
 
-	// At this stage the system clock should have already been configured
-	// at high speed.
 	trace_printf("System clock: %u Hz\n", SystemCoreClock);
+
+//	__enable_irq();
 
 	Timer timer;
 	timer.start();
 
 //  RCC_APB2PeriphClockCmd(BLINK_RCC_MASKx(BLINK_PORT_NUMBER) | RCC_APB2Periph_GPIOA | RCC_APB2Periph_USART1 , ENABLE);
 
+	IoDriver::initPin(GPIOA, std::vector<uint8_t>{8}, GpioMode::altPushPullOutput);
+	RCC->CFGR |= 0x4000000;
+
 	uint32_t seconds = 0;
 
 	ExtiHandler buttonHandler;
 	buttonHandler.setupTrigger(GPIOA);
 
-
 	displayDriver.init();
+
+	bool printedI2cStart = false;
 
 	while (1) {
 
+//		if (!printedI2cStart) {
+//			if (I2C1->SR1 & 1) {
+//				trace_puts("got start condition");
+//				printedI2cStart = true;
+//			}
+//		}
 		timer.sleep(1);
 
 //      blinkLed.turnOn();
