@@ -28,7 +28,8 @@ src/LedDisplayDriver.o: ../src/LedDisplayDriver.cpp \
  ../system/include/stm32f1-stdperiph/stm32f10x_usart.h \
  ../system/include/stm32f1-stdperiph/stm32f10x_wwdg.h \
  ../system/include/stm32f1-stdperiph/misc.h ../include/IoDriver.h \
- ../include/GpioMode.h ../include/TypedEnum.h
+ ../include/GpioMode.h ../include/TypedEnum.h \
+ ../system/include/diag/Trace.h
 
 ../include/LedDisplayDriver.h:
 
@@ -97,3 +98,5 @@ src/LedDisplayDriver.o: ../src/LedDisplayDriver.cpp \
 ../include/GpioMode.h:
 
 ../include/TypedEnum.h:
+
+../system/include/diag/Trace.h:

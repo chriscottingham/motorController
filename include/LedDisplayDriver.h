@@ -11,6 +11,8 @@
 #include "stm32f10x.h"
 #include "IoDriver.h"
 
+#include "diag/Trace.h"
+
 class LedDisplayDriver {
 
 public:
@@ -18,6 +20,7 @@ public:
 
 	void init();
 	void start();
+	static void stop();
 
 	void writeByte(uint8_t value);
 };

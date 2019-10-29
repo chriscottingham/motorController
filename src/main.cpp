@@ -69,15 +69,19 @@
 #pragma GCC diagnostic ignored "-Wreturn-type"
 #pragma GCC diagnostic ignored "-Wunused-variable"
 
-//	RCC->APB2ENR |= RCC_APB2ENR_USART1EN | RCC_APB2ENR_IOPAEN | RCC_APB2ENR_AFIOEN;
-
 LedDisplayDriver displayDriver;
 
 extern "C" void EXTI0_IRQHandler(void) {
+
 	trace_puts("Exti0 triggered");
 	EXTI->PR = 1;
 	__ISB();
-	displayDriver.start();
+
+	if (!I2C1->CR1 & 1) {
+		displayDriver.start();
+	} else {
+		displayDriver.stop();
+	}
 //	NVIC_ClearPendingIRQ(EXTI0_IRQn);
 }
 
@@ -94,10 +98,11 @@ int main(int argc, char* argv[]) {
 
 //  RCC_APB2PeriphClockCmd(BLINK_RCC_MASKx(BLINK_PORT_NUMBER) | RCC_APB2Periph_GPIOA | RCC_APB2Periph_USART1 , ENABLE);
 
-	IoDriver::initPin(GPIOA, std::vector<uint8_t>{8}, GpioMode::altPushPullOutput);
-	RCC->CFGR |= 0x4000000;
+//	IoDriver::initPin(GPIOA, std::vector<uint8_t>{8}, GpioMode::altPushPullOutput);
+//	RCC->CFGR |= 0x4000000;
 
 	uint32_t seconds = 0;
+
 
 	ExtiHandler buttonHandler;
 	buttonHandler.setupTrigger(GPIOA);
