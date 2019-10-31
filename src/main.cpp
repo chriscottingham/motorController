@@ -106,12 +106,13 @@ int main(int argc, char* argv[]) {
 	ExtiHandler buttonHandler;
 	buttonHandler.setupTrigger(GPIOA);
 
-	displayDriver.initI2c();
-	displayDriver.initDma();
+//	displayDriver.initDma();
+//	displayDriver.initI2c();
 
 	bool printedI2cStart = false;
 
 	while (1) {
+		displayDriver.handleInterrupt();
 
 //		if (!printedI2cStart) {
 //			if (I2C1->SR1 & 1) {
@@ -119,7 +120,7 @@ int main(int argc, char* argv[]) {
 //				printedI2cStart = true;
 //			}
 //		}
-		timer.sleep(1);
+//		timer.sleep(1);
 
 //      blinkLed.turnOn();
 //      displayDriver.writeParallelPort(0xa5, 1);

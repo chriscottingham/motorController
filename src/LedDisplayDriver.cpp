@@ -29,7 +29,7 @@ void LedDisplayDriver::initI2c() {
 
 	IoDriver::initPin(GPIOB, kI2cPins, GpioMode::altOpenDrainOutput);
 
-	for (IRQn_Type interrupt : { I2C1_ER_IRQn, I2C1_EV_IRQn }) {
+	for (IRQn_Type interrupt : { I2C1_ER_IRQn, /*I2C1_EV_IRQn*/ }) {
 		NVIC_ClearPendingIRQ(interrupt);
 		NVIC_EnableIRQ(interrupt);
 	}
@@ -37,17 +37,22 @@ void LedDisplayDriver::initI2c() {
 
 void LedDisplayDriver::initDma() {
 
-	DMA1_Channel6->CCR |= 0x3000 | DMA_CCR1_DIR | DMA_CCR1_TEIE;
-	DMA1_Channel6->CPAR = I2C1_BASE + 0x10;
-	DMA1_Channel6->CMAR = (uint32_t) &initializationSequence;
-	DMA1_Channel6->CNDTR = 34;
+	uint8_t * dataPointer = initializationSequence;
 
-	DMA1_Channel6->CCR |= DMA_CCR1_EN;
+	RCC->AHBENR |= RCC_AHBPeriph_DMA1;
 
 	for (IRQn_Type interrupt : { DMA1_Channel6_IRQn }) {
 		NVIC_ClearPendingIRQ(interrupt);
 		NVIC_EnableIRQ(interrupt);
 	}
+
+	DMA_Channel_TypeDef* channel = DMA1_Channel6;
+	channel->CPAR = I2C1_BASE + 0x10;
+	channel->CMAR = (uint32_t) dataPointer;
+	channel->CNDTR = 34;
+	channel->CCR |= 0x3000 | DMA_CCR1_DIR | DMA_CCR1_TEIE;
+
+//	channel->CCR |= DMA_CCR1_EN;
 }
 
 void LedDisplayDriver::buttonPressed() {
@@ -56,6 +61,8 @@ void LedDisplayDriver::buttonPressed() {
 
 		switch (runState) {
 		case DEVICE_STATE_RESET:
+			initDma();
+			initI2c();
 			startI2c();
 			runState = DEVICE_STATE_INITIALIZED;
 			break;
@@ -82,8 +89,8 @@ void LedDisplayDriver::startI2c() {
 	I2C1->CCR = 40; //SCL master clock
 
 	I2C1->CR1 |= I2C_CR1_PE;
-	I2C1->CR2 |= I2C_CR2_DMAEN;
 	I2C1->CR1 |= I2C_CR1_START;
+//	I2C1->CR2 |= I2C_CR2_DMAEN;
 }
 
 void LedDisplayDriver::writeByte(uint8_t data) {
@@ -102,6 +109,8 @@ void LedDisplayDriver::handleInterrupt() {
 	} else if (statusRegister & I2C_SR1_ADDR) {
 		isMaster = I2C1->SR2 & 1;
 		if (isMaster) {
+			DMA1_Channel6->CCR |= DMA_CCR1_EN;
+			I2C1->CR2 |= I2C_CR2_DMAEN;
 		}
 	}
 }
