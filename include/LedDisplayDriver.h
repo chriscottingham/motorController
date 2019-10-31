@@ -16,13 +16,41 @@
 class LedDisplayDriver {
 
 public:
+	enum INSTRUCTION_TYPE {
+		COMMAND = 0x00,
+		DATA = 0x40
+	};
+
+	enum DEVICE_STATE {
+		DEVICE_STATE_RESET,
+		DEVICE_STATE_INITIALIZED
+	};
+
+private:
+	DEVICE_STATE runState = DEVICE_STATE_RESET;
+
+public:
+	static uint8_t initializationSequence[];
+
 	const std::vector<uint8_t> kI2cPins = { 6, 7 };
 
-	void init();
-	void start();
-	static void stop();
+	char displayBuffer[128];
+
+	void initI2c();
+	void initDma();
+
+	void handleInterrupt();
+
+	void startI2c();
+	void stop();
+
+	void buttonPressed();
 
 	void writeByte(uint8_t value);
+
+	void i2cDmaError();
+
+
 };
 
 
