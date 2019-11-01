@@ -120,7 +120,11 @@ int main(int argc, char* argv[]) {
 //				printedI2cStart = true;
 //			}
 //		}
-		timer.sleep(1);
+		timer.sleep(1000);
+
+		char cmar[10];
+		sprintf(cmar, "0x%08X", DMA1_Channel6->CMAR);
+		trace_puts(cmar);
 
 //      blinkLed.turnOn();
 //      displayDriver.writeParallelPort(0xa5, 1);

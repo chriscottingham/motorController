@@ -47,7 +47,7 @@ void LedDisplayDriver::initDma() {
 	DMA_Channel_TypeDef* channel = DMA1_Channel6;
 	channel->CPAR = I2C1_BASE + 0x10;
 	channel->CMAR = (uint32_t) &initializationSequence;
-	channel->CCR |= 0x3000 | DMA_CCR1_DIR | DMA_CCR1_TEIE | DMA_CCR1_TCIE;
+	channel->CCR |= 0x3000 | DMA_CCR1_MINC | DMA_CCR1_DIR | DMA_CCR1_TEIE | DMA_CCR1_TCIE;
 
 //	channel->CCR |= DMA_CCR1_EN;
 }
