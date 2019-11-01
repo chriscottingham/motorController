@@ -19,9 +19,14 @@ uint8_t LedDisplayDriver::initializationSequence[] = {
 				COMMAND, 0xd5, 0x80,
 				COMMAND, 0x8d, 0x14,
 				COMMAND, 0xaf,
-				COMMAND, 0x20 //horizontal addressing mode
+				COMMAND, 0x20, //horizontal addressing mode
+				COMMAND, 0x21, 0, 127, //column begin, end
+				COMMAND, 0x22, 0, 7, //page begin, end
 };
 
+uint8_t LedDisplayDriver::sampleData[] = {
+		DATA, 0xa5
+};
 void LedDisplayDriver::initI2c() {
 
 	RCC->APB1ENR |= RCC_APB1ENR_I2C1EN;
@@ -46,7 +51,7 @@ void LedDisplayDriver::initDma() {
 
 	DMA_Channel_TypeDef* channel = DMA1_Channel6;
 	channel->CPAR = I2C1_BASE + 0x10;
-	channel->CMAR = (uint32_t) &initializationSequence;
+//	channel->CMAR = (uint32_t) &initializationSequence;
 	channel->CCR |= 0x3000 | DMA_CCR1_MINC | DMA_CCR1_DIR | DMA_CCR1_TEIE | DMA_CCR1_TCIE;
 
 //	channel->CCR |= DMA_CCR1_EN;
@@ -57,10 +62,16 @@ void LedDisplayDriver::buttonPressed() {
   	if (runState == DEVICE_STATE_RESET) {
 		initDma();
 		initI2c();
+		DMA1_Channel6->CMAR = (uint32_t) &initializationSequence;
+		DMA1_Channel6->CNDTR = sizeof(initializationSequence);
 		runState = DEVICE_STATE_INITIALIZED;
+	} else {
+
+		DMA1_Channel6->CCR &= ~DMA_CCR1_EN;
+		DMA1_Channel6->CMAR = (uint32_t) &sampleData;
+		DMA1_Channel6->CNDTR = 3;
+		DMA1_Channel6->CCR |= DMA_CCR1_CIRC;
 	}
-	DMA1_Channel6->CCR &= ~DMA_CCR1_EN;
-	DMA1_Channel6->CNDTR = 34;
 	startI2c();
 }
 
@@ -68,7 +79,8 @@ void LedDisplayDriver::dma6Handler() {
 
 	if (DMA1->ISR & DMA_ISR_TCIF6) {
 		DMA1->IFCR |= DMA_ISR_GIF6;
-		stop();
+		trace_puts()
+//		stop();
 	}
 }
 

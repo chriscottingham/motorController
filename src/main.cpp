@@ -122,9 +122,9 @@ int main(int argc, char* argv[]) {
 //		}
 		timer.sleep(1000);
 
-		char cmar[10];
-		sprintf(cmar, "0x%08X", DMA1_Channel6->CMAR);
-		trace_puts(cmar);
+//		char cmar[10];
+//		sprintf(cmar, "0x%08X", DMA1_Channel6->CMAR);
+//		trace_puts(cmar);
 
 //      blinkLed.turnOn();
 //      displayDriver.writeParallelPort(0xa5, 1);

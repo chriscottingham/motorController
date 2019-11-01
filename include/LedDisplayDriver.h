@@ -31,6 +31,7 @@ private:
 
 public:
 	static uint8_t initializationSequence[];
+	static uint8_t sampleData[];
 
 	const std::vector<uint8_t> kI2cPins = { 6, 7 };
 
