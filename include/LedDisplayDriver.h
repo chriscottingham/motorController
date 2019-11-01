@@ -10,6 +10,7 @@
 
 #include "stm32f10x.h"
 #include "IoDriver.h"
+#include "Logger.h"
 
 #include "diag/Trace.h"
 

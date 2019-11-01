@@ -69,7 +69,7 @@ void LedDisplayDriver::buttonPressed() {
 
 		DMA1_Channel6->CCR &= ~DMA_CCR1_EN;
 		DMA1_Channel6->CMAR = (uint32_t) &sampleData;
-		DMA1_Channel6->CNDTR = 3;
+		DMA1_Channel6->CNDTR = 2;
 		DMA1_Channel6->CCR |= DMA_CCR1_CIRC;
 	}
 	startI2c();
@@ -77,11 +77,12 @@ void LedDisplayDriver::buttonPressed() {
 
 void LedDisplayDriver::dma6Handler() {
 
-	if (DMA1->ISR & DMA_ISR_TCIF6) {
-		DMA1->IFCR |= DMA_ISR_GIF6;
-		trace_puts()
-//		stop();
+	if (DMA1->IFCR & DMA_ISR_TEIF6) {
+		Logger::write("dma6Handler");
+		Logger::writeln(DMA1->ISR);
+		stop();
 	}
+	DMA1->IFCR |= DMA_ISR_GIF6;
 }
 
 void LedDisplayDriver::startI2c() {

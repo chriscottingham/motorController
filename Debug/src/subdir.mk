@@ -13,6 +13,7 @@ CPP_SRCS += \
 ../src/IliDisplayDriver.cpp \
 ../src/IoDriver.cpp \
 ../src/LedDisplayDriver.cpp \
+../src/Logger.cpp \
 ../src/Timer.cpp \
 ../src/main.cpp 
 
@@ -23,6 +24,7 @@ OBJS += \
 ./src/IliDisplayDriver.o \
 ./src/IoDriver.o \
 ./src/LedDisplayDriver.o \
+./src/Logger.o \
 ./src/Timer.o \
 ./src/_write.o \
 ./src/main.o 
@@ -37,6 +39,7 @@ CPP_DEPS += \
 ./src/IliDisplayDriver.d \
 ./src/IoDriver.d \
 ./src/LedDisplayDriver.d \
+./src/Logger.d \
 ./src/Timer.d \
 ./src/main.d 
 
