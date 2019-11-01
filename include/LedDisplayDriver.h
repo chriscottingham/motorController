@@ -39,7 +39,6 @@ public:
 	void initI2c();
 	void initDma();
 
-	void handleInterrupt();
 
 	void startI2c();
 	void stop();
@@ -48,7 +47,8 @@ public:
 
 	void writeByte(uint8_t value);
 
-	void i2cDmaError();
+	void dma6Handler();
+	void handleI2cInterrupt();
 
 
 };

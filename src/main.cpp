@@ -57,7 +57,7 @@ extern "C" void EXTI0_IRQHandler(void) {
 }
 
 extern "C" void I2C1_EV_IRQHandler(void) {
-	displayDriver.handleInterrupt();
+	displayDriver.handleI2cInterrupt();
 }
 
 extern "C" void I2C1_ER_IRQHandler(void) {
@@ -81,7 +81,7 @@ extern "C" void I2C1_ER_IRQHandler(void) {
 }
 
 extern "C" void DMA1_Channel6_IRQHandler(void) {
-	displayDriver.i2cDmaError();
+	displayDriver.dma6Handler();
 }
 
 int main(int argc, char* argv[]) {
@@ -112,7 +112,7 @@ int main(int argc, char* argv[]) {
 	bool printedI2cStart = false;
 
 	while (1) {
-		displayDriver.handleInterrupt();
+//		displayDriver.handleInterrupt();
 
 //		if (!printedI2cStart) {
 //			if (I2C1->SR1 & 1) {
@@ -120,7 +120,7 @@ int main(int argc, char* argv[]) {
 //				printedI2cStart = true;
 //			}
 //		}
-//		timer.sleep(1);
+		timer.sleep(1);
 
 //      blinkLed.turnOn();
 //      displayDriver.writeParallelPort(0xa5, 1);

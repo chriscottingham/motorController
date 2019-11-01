@@ -29,15 +29,13 @@ void LedDisplayDriver::initI2c() {
 
 	IoDriver::initPin(GPIOB, kI2cPins, GpioMode::altOpenDrainOutput);
 
-	for (IRQn_Type interrupt : { I2C1_ER_IRQn, /*I2C1_EV_IRQn*/ }) {
+	for (IRQn_Type interrupt : { I2C1_ER_IRQn, I2C1_EV_IRQn }) {
 		NVIC_ClearPendingIRQ(interrupt);
 		NVIC_EnableIRQ(interrupt);
 	}
 }
 
 void LedDisplayDriver::initDma() {
-
-	uint8_t * dataPointer = initializationSequence;
 
 	RCC->AHBENR |= RCC_AHBPeriph_DMA1;
 
@@ -48,34 +46,30 @@ void LedDisplayDriver::initDma() {
 
 	DMA_Channel_TypeDef* channel = DMA1_Channel6;
 	channel->CPAR = I2C1_BASE + 0x10;
-	channel->CMAR = (uint32_t) dataPointer;
-	channel->CNDTR = 34;
-	channel->CCR |= 0x3000 | DMA_CCR1_DIR | DMA_CCR1_TEIE;
+	channel->CMAR = (uint32_t) &initializationSequence;
+	channel->CCR |= 0x3000 | DMA_CCR1_DIR | DMA_CCR1_TEIE | DMA_CCR1_TCIE;
 
 //	channel->CCR |= DMA_CCR1_EN;
 }
 
 void LedDisplayDriver::buttonPressed() {
 
-	if (!I2C1->CR1 & 1) {
-
-		switch (runState) {
-		case DEVICE_STATE_RESET:
-			initDma();
-			initI2c();
-			startI2c();
-			runState = DEVICE_STATE_INITIALIZED;
-			break;
-		case DEVICE_STATE_INITIALIZED:
-			break;
-		}
-	} else {
-		stop();
+  	if (runState == DEVICE_STATE_RESET) {
+		initDma();
+		initI2c();
+		runState = DEVICE_STATE_INITIALIZED;
 	}
+	DMA1_Channel6->CCR &= ~DMA_CCR1_EN;
+	DMA1_Channel6->CNDTR = 34;
+	startI2c();
 }
 
-void LedDisplayDriver::i2cDmaError() {
+void LedDisplayDriver::dma6Handler() {
 
+	if (DMA1->ISR & DMA_ISR_TCIF6) {
+		DMA1->IFCR |= DMA_ISR_GIF6;
+		stop();
+	}
 }
 
 void LedDisplayDriver::startI2c() {
@@ -89,15 +83,15 @@ void LedDisplayDriver::startI2c() {
 	I2C1->CCR = 40; //SCL master clock
 
 	I2C1->CR1 |= I2C_CR1_PE;
+	I2C1->CR2 |= I2C_CR2_DMAEN;
 	I2C1->CR1 |= I2C_CR1_START;
-//	I2C1->CR2 |= I2C_CR2_DMAEN;
 }
 
 void LedDisplayDriver::writeByte(uint8_t data) {
 	USART1->DR = data;
 }
 
-void LedDisplayDriver::handleInterrupt() {
+void LedDisplayDriver::handleI2cInterrupt() {
 
 	static bool isMaster = false;
 
@@ -110,14 +104,15 @@ void LedDisplayDriver::handleInterrupt() {
 		isMaster = I2C1->SR2 & 1;
 		if (isMaster) {
 			DMA1_Channel6->CCR |= DMA_CCR1_EN;
-			I2C1->CR2 |= I2C_CR2_DMAEN;
+//			I2C1->CR2 |= I2C_CR2_DMAEN;
 		}
 	}
 }
 
 void LedDisplayDriver::stop() {
+	I2C1->CR2 &= ~I2C_CR2_DMAEN;
 	I2C1->CR1 |= I2C_CR1_STOP;
-	I2C1->CR1 &= ~1;
+	I2C1->CR1 &= ~I2C_CR1_PE;
 }
 
 
