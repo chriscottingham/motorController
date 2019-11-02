@@ -29,7 +29,9 @@ src/LedDisplayDriver.o: ../src/LedDisplayDriver.cpp \
  ../system/include/stm32f1-stdperiph/stm32f10x_wwdg.h \
  ../system/include/stm32f1-stdperiph/misc.h ../include/IoDriver.h \
  ../include/GpioMode.h ../include/TypedEnum.h ../include/Logger.h \
- ../system/include/diag/Trace.h
+ ../system/include/diag/Trace.h ../include/Timer.h \
+ ../system/include/cmsis/cmsis_device.h \
+ ../system/include/cmsis/stm32f10x.h
 
 ../include/LedDisplayDriver.h:
 
@@ -102,3 +104,9 @@ src/LedDisplayDriver.o: ../src/LedDisplayDriver.cpp \
 ../include/Logger.h:
 
 ../system/include/diag/Trace.h:
+
+../include/Timer.h:
+
+../system/include/cmsis/cmsis_device.h:
+
+../system/include/cmsis/stm32f10x.h:

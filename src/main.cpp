@@ -100,6 +100,9 @@ int main(int argc, char* argv[]) {
 
 	uint32_t seconds = 0;
 
+	IoDriver::initPin(GPIOB, std::vector<uint8_t> {6, 7}, GpioMode::pushPullOutput);
+	GPIOB->ODR &= ~(GPIO_ODR_ODR6 | GPIO_ODR_ODR6);
+
 	IoDriver::initPin(GPIOB, std::vector<uint8_t> {10,11}, GpioMode::pushPullOutput);
 	GPIOB->ODR |= 0xc00;
 

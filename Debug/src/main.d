@@ -31,7 +31,7 @@ src/main.o: ../src/main.cpp ../system/include/diag/Trace.h \
  ../system/include/stm32f1-stdperiph/misc.h ../include/BlinkLed.h \
  ../include/LedDisplayDriver.h ../include/IoDriver.h \
  ../include/GpioMode.h ../include/TypedEnum.h ../include/Logger.h \
- ../include/ExtiHandler.h
+ ../include/Timer.h ../include/ExtiHandler.h
 
 ../system/include/diag/Trace.h:
 
@@ -112,5 +112,7 @@ src/main.o: ../src/main.cpp ../system/include/diag/Trace.h \
 ../include/TypedEnum.h:
 
 ../include/Logger.h:
+
+../include/Timer.h:
 
 ../include/ExtiHandler.h:

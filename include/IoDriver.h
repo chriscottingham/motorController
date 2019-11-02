@@ -16,7 +16,7 @@
 
 class IoDriver {
 public:
-	static void initPin(GPIO_TypeDef* port, std::vector<uint8_t> const &pins, GpioMode&& mode);
+	static void initPin(GPIO_TypeDef * const port, std::vector<uint8_t> const &pins, GpioMode&& mode);
 
 };
 

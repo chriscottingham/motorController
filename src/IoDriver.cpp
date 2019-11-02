@@ -1,6 +1,6 @@
 #include "IoDriver.h"
 
-void IoDriver::initPin(GPIO_TypeDef* port, std::vector<uint8_t> const &pins,  GpioMode&& mode) {
+void IoDriver::initPin(GPIO_TypeDef* const port, std::vector<uint8_t> const &pins,  GpioMode&& mode) {
 
 	if (port == GPIOA) {
 		RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;
