@@ -1,1 +1,5 @@
-Debug
+Debug/*.elf
+Debug/*.hex
+Debug/*.map
+Debug/system
+Debug/src
