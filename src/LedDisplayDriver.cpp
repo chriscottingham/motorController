@@ -171,7 +171,7 @@ void LedDisplayDriver::init() {
 }
 void LedDisplayDriver::buttonPressed() {
 
-	static uint8_t i = 0;
+	static uint32_t i = 0;
 
   	if (runState == DEVICE_STATE_RESET) {
   		init();
@@ -204,7 +204,8 @@ void LedDisplayDriver::startI2c() {
 	uint8_t clockFrequency = 8;
 	I2C1->CR2 = I2C_CR2_ITEVTEN | I2C_CR2_ITERREN | clockFrequency;
 	I2C1->TRISE = 1;
-	I2C1->CCR = 40; //SCL master clock
+//	I2C1->CCR = 40; //SCL master clock
+	I2C1->CCR = 10; //SCL master clock
 
 	I2C1->CR1 |= I2C_CR1_PE;
 	I2C1->CR2 |= I2C_CR2_DMAEN;
@@ -252,8 +253,8 @@ void LedDisplayDriver::writeToBuffer(uint32_t hex32) {
 void LedDisplayDriver::drawLine() {
 	DMA1_Channel6->CCR &= ~DMA_CCR1_EN;
 	DMA1_Channel6->CMAR = (uint32_t) &lineBuffer;
-	DMA1_Channel6->CNDTR = 130;
-	DMA1_Channel6->CCR |= DMA_CCR1_CIRC;
+	DMA1_Channel6->CNDTR = 129;
+//	DMA1_Channel6->CCR |= DMA_CCR1_CIRC;
 	DMA1_Channel6->CCR |= DMA_CCR1_EN;
 }
 
@@ -264,7 +265,7 @@ void LedDisplayDriver::handleI2cInterrupt() {
 	uint16_t statusRegister = I2C1->SR1;
 
 	if (statusRegister & I2C_SR1_SB) {
-		trace_puts("I2C started");
+//		trace_puts("I2C started");
 		I2C1->DR = 0x78;
 	} else if (statusRegister & I2C_SR1_ADDR) {
 		isMaster = I2C1->SR2 & 1;
@@ -277,10 +278,13 @@ void LedDisplayDriver::handleI2cInterrupt() {
 
 void LedDisplayDriver::stop() {
 	I2C1->CR2 &= ~I2C_CR2_DMAEN;
+	while (!(I2C1->SR1 & I2C_SR1_BTF));
 	I2C1->CR1 |= I2C_CR1_STOP;
 	I2C1->CR1 &= ~I2C_CR1_PE;
 
+	GPIOB->ODR ^= GPIO_ODR_ODR11;
 	buttonPressed();
+	GPIOB->ODR ^= GPIO_ODR_ODR10;
 }
 
 
