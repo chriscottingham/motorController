@@ -10,10 +10,7 @@
 
 #include <vector>
 
-#include "stm32f10x.h"
-
-#include "GpioMode.h"
-#include "IoDriver.h"
+#include "micro.h"
 
 class ExtiHandler {
 

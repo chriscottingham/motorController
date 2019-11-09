@@ -37,6 +37,11 @@
 #include "LedDisplayDriver.h"
 #include "ExtiHandler.h"
 
+#define configASSERT_DEFINED 1
+#include "freeRTOSConfig.h"
+
+#include "tasks.c"
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
