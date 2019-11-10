@@ -6,6 +6,8 @@
  *  Created on: Oct 15, 2019
  *      Author: chris
  */
+#include <string>
+
 #include "LedDisplayDriver.h"
 
 #include "task.h"
@@ -169,7 +171,6 @@ void LedDisplayDriver::init() {
 	DMA1_Channel6->CMAR = (uint32_t) &initializationSequence;
 	DMA1_Channel6->CNDTR = sizeof(initializationSequence);
 	runState = DEVICE_STATE_INITIALIZED;
-
 }
 void LedDisplayDriver::printHello() {
 
@@ -276,6 +277,25 @@ void LedDisplayDriver::handleI2cInterrupt() {
 //			I2C1->CR2 |= I2C_CR2_DMAEN;
 		}
 	}
+}
+
+void LedDisplayDriver::handleI2cError() {
+	static char buffer[8];
+
+	std::basic_string<char> output("I2C error: SR1:");
+
+	sprintf(buffer, "%04X", I2C1->SR1);
+	output.append(buffer);
+
+	output.append(", SR2:");
+
+	sprintf(buffer, "%04X", I2C1->SR2);
+	output.append(buffer);
+
+	trace_puts(output.c_str());
+
+	stop();
+	NVIC_ClearPendingIRQ(I2C1_ER_IRQn);
 }
 
 void LedDisplayDriver::stop() {

@@ -54,43 +54,30 @@ extern "C" {
 
 LedDisplayDriver displayDriver;
 
-extern "C" void EXTI0_IRQHandler(void) {
+extern "C"
+{
+	void EXTI0_IRQHandler(void) {
 
-	//	NVIC_ClearPendingIRQ(EXTI0_IRQn);
+		//	NVIC_ClearPendingIRQ(EXTI0_IRQn);
 
-	trace_puts("Exti0 triggered");
-	EXTI->PR = 1;
-	__ISB();
+		trace_puts("Exti0 triggered");
+		EXTI->PR = 1;
+		__ISB();
 
-	displayDriver.printHello();
-}
+		displayDriver.printHello();
+	}
 
-extern "C" void I2C1_EV_IRQHandler(void) {
-	displayDriver.handleI2cInterrupt();
-}
+	void I2C1_EV_IRQHandler(void) {
+		displayDriver.handleI2cInterrupt();
+	}
 
-extern "C" void I2C1_ER_IRQHandler(void) {
+	void I2C1_ER_IRQHandler(void) {
+		displayDriver.handleI2cError();
+	}
 
-	static char buffer[8];
-
-	std::basic_string<char> output("I2C error: SR1:");
-
-	sprintf(buffer, "%04X", I2C1->SR1);
-	output.append(buffer);
-
-	output.append(", SR2:");
-
-	sprintf(buffer, "%04X", I2C1->SR2);
-	output.append(buffer);
-
-	trace_puts(output.c_str());
-
-	displayDriver.stop();
-	NVIC_ClearPendingIRQ(I2C1_ER_IRQn);
-}
-
-extern "C" void DMA1_Channel6_IRQHandler(void) {
-	displayDriver.dma6Handler();
+	void DMA1_Channel6_IRQHandler(void) {
+		displayDriver.dma6Handler();
+	}
 }
 
 int main(int argc, char* argv[]) {
