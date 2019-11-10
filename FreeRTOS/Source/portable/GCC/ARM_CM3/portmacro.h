@@ -33,6 +33,9 @@
 extern "C" {
 #endif
 
+#include "FreeRTOSConfig.h"
+#include "projdefs.h"
+#include "stdint.h"
 /*-----------------------------------------------------------
  * Port specific definitions.
  *

@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "stm32f10x.h"
-#include "Timer.h"
 #include "IoDriver.h"
 #include "GpioMode.h"
 
@@ -31,8 +30,6 @@ class IliDisplayDriver {
 
 		static const std::vector<uint8_t> PARALLEL_PINS;
 		static const std::vector<uint8_t> CONTROL_PINS;
-
-		Timer timer;
 
 		void initPins();
 

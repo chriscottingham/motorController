@@ -8,6 +8,8 @@
  */
 #include "LedDisplayDriver.h"
 
+#include "task.h"
+
 uint8_t LedDisplayDriver::font5x7[] =
 {
     0x00, 0x00, 0x00, 0x00, 0x00, // char ' ' (0x20/32)
@@ -169,7 +171,7 @@ void LedDisplayDriver::init() {
 	runState = DEVICE_STATE_INITIALIZED;
 
 }
-void LedDisplayDriver::buttonPressed() {
+void LedDisplayDriver::printHello() {
 
 	static uint32_t i = 0;
 
@@ -282,9 +284,19 @@ void LedDisplayDriver::stop() {
 	I2C1->CR1 |= I2C_CR1_STOP;
 	I2C1->CR1 &= ~I2C_CR1_PE;
 
-	GPIOB->ODR ^= GPIO_ODR_ODR11;
-	buttonPressed();
-	GPIOB->ODR ^= GPIO_ODR_ODR10;
 }
 
+void LedDisplayDriver::runTask() {
 
+	while (1) {
+ 		vTaskDelay(pdMS_TO_TICKS(200));
+		GPIOB->ODR ^= GPIO_ODR_ODR11;
+		GPIOB->ODR ^= GPIO_ODR_ODR10;
+//		printHello();
+	}
+
+}
+
+void LedDisplayDriverTask(void* driver) {
+	((LedDisplayDriver*) driver)->runTask();
+}

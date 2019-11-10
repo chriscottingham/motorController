@@ -46,7 +46,7 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.command.make.1680669053" name="Build command" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.command.make" useByScannerDiscovery="false" value="make" valueType="string"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.command.rm.174803789" name="Remove command" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.command.rm" useByScannerDiscovery="false" value="rm" valueType="string"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.id.588554046" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.id" useByScannerDiscovery="false" value="1287942917" valueType="string"/>
-							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.other.1596055788" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.other" value="-fpermissive" valueType="string"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.other.1596055788" name="Other warning flags" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.other" value="-fpermissive" valueType="string"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform.1573714530" isAbstract="false" osList="all" superClass="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform"/>
 							<builder arguments="-Wno-error=unused-variable" autoBuildTarget="all" buildPath="${workspace_loc:/2HpMotorController}/Debug" cleanBuildTarget="clean" command="${cross_make}" enableAutoBuild="false" enableCleanBuild="true" enabledIncrementalBuild="true" id="ilg.gnuarmeclipse.managedbuild.cross.builder.2106516433" incrementalBuildTarget="all" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" stopOnErr="true" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder"/>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.1172227701" name="GNU ARM Cross Assembler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler">
@@ -71,6 +71,9 @@
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.1753275361" name="GNU ARM Cross C Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths.1544252575" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" useByScannerDiscovery="true" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;../include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/FreeRTOS/Source/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/FreeRTOS/Source}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/FreeRTOS/Source/portable/GCC/ARM_CM3}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;../system/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;../system/include/cmsis&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;../system/include/stm32f1-stdperiph&quot;"/>
@@ -89,12 +92,12 @@
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.1378205368" name="GNU ARM Cross C++ Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths.1453465978" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths" useByScannerDiscovery="true" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;../include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/FreeRTOS/Source}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/FreeRTOS/Source/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/FreeRTOS/Source/portable/GCC/ARM_CM3}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;../system/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;../system/include/cmsis&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;../system/include/stm32f1-stdperiph&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/2HpMotorController/FreeRTOS/Source}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/2HpMotorController/FreeRTOS/Source/include}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/2HpMotorController/FreeRTOS/Source/portable/GCC/ARM_CM3}&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.noexceptions.96311365" name="Do not use exceptions (-fno-exceptions)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.noexceptions" useByScannerDiscovery="true" value="true" valueType="boolean"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nortti.1581746928" name="Do not use RTTI (-fno-rtti)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nortti" useByScannerDiscovery="true" value="true" valueType="boolean"/>
@@ -110,7 +113,7 @@
 									<listOptionValue builtIn="false" value="HSE_VALUE=8000000"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.otherwarnings.171781853" name="Other warning flags" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.otherwarnings" useByScannerDiscovery="true" value="-Wno-error=unused-variable" valueType="string"/>
-								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.asmlisting.15483199" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.asmlisting" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.asmlisting.15483199" name="Generate assembler listing (-Wa,-adhlns=&quot;$@.lst&quot;)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.asmlisting" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.1287021316" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
 							</tool>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker.886573049" name="GNU ARM Cross C Linker" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker">
@@ -138,6 +141,7 @@
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.nostart.1455679856" name="Do not use standard start files (-nostartfiles)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.nostart" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.usenewlibnano.588701805" name="Use newlib-nano (--specs=nano.specs)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.usenewlibnano" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.printgcsections.2053653790" name="Print removed sections (-Xlinker --print-gc-sections)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.printgcsections" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker.input.971169006" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -158,6 +162,9 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
+						<entry excluding="include|portable/GCC/ARM_CM3|portable/MemMang/" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="FreeRTOS/Source"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="FreeRTOS/Source/include"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="FreeRTOS/Source/portable/GCC/ARM_CM3"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry excluding="src/stm32f1-stdperiph/stm32f10x_wwdg.c|src/stm32f1-stdperiph/stm32f10x_usart.c|src/stm32f1-stdperiph/stm32f10x_tim.c|src/stm32f1-stdperiph/stm32f10x_spi.c|src/stm32f1-stdperiph/stm32f10x_sdio.c|src/stm32f1-stdperiph/stm32f10x_rtc.c|src/stm32f1-stdperiph/stm32f10x_pwr.c|src/stm32f1-stdperiph/stm32f10x_iwdg.c|src/stm32f1-stdperiph/stm32f10x_i2c.c|src/stm32f1-stdperiph/stm32f10x_fsmc.c|src/stm32f1-stdperiph/stm32f10x_flash.c|src/stm32f1-stdperiph/stm32f10x_exti.c|src/stm32f1-stdperiph/stm32f10x_dma.c|src/stm32f1-stdperiph/stm32f10x_dbgmcu.c|src/stm32f1-stdperiph/stm32f10x_dac.c|src/stm32f1-stdperiph/stm32f10x_crc.c|src/stm32f1-stdperiph/stm32f10x_cec.c|src/stm32f1-stdperiph/stm32f10x_can.c|src/stm32f1-stdperiph/stm32f10x_bkp.c|src/stm32f1-stdperiph/stm32f10x_adc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="system"/>
 					</sourceEntries>

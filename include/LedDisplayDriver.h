@@ -11,7 +11,9 @@
 #include "stm32f10x.h"
 #include "IoDriver.h"
 #include "Logger.h"
-#include "Timer.h"
+
+//#include "Timer.h"
+//#include "task.h"
 
 #include "diag/Trace.h"
 
@@ -54,7 +56,7 @@ public:
 	void startI2c();
 	void stop();
 
-	void buttonPressed();
+	void printHello();
 
 	void dma6Handler();
 	void handleI2cInterrupt();
@@ -65,6 +67,9 @@ public:
 	void writeToBuffer(uint32_t hex32);
 	void drawLine();
 
+	void runTask();
 };
+
+extern "C" void LedDisplayDriverTask(void*);
 
 #endif /* LEDDISPLAYDRIVER_H_ */

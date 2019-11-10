@@ -26,27 +26,31 @@
  */
 
 // ----------------------------------------------------------------------------
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wmissing-declarations"
+#pragma GCC diagnostic ignored "-Wreturn-type"
+#pragma GCC diagnostic ignored "-Wunused-variable"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
 
 #include "diag/Trace.h"
 
-#include "Timer.h"
 #include "BlinkLed.h"
 #include "LedDisplayDriver.h"
 #include "ExtiHandler.h"
 
 #define configASSERT_DEFINED 1
-#include "freeRTOSConfig.h"
-
-#include "tasks.c"
+extern "C" {
+	#include "FreeRTOSConfig.h"
+	#include "projdefs.h"
+	#include "portmacro.h"
+	#include "freeRTOS.h"
+}
+	#include "task.h"
 
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#pragma GCC diagnostic ignored "-Wmissing-declarations"
-#pragma GCC diagnostic ignored "-Wreturn-type"
-#pragma GCC diagnostic ignored "-Wunused-variable"
 
 LedDisplayDriver displayDriver;
 
@@ -58,7 +62,7 @@ extern "C" void EXTI0_IRQHandler(void) {
 	EXTI->PR = 1;
 	__ISB();
 
-	displayDriver.buttonPressed();
+	displayDriver.printHello();
 }
 
 extern "C" void I2C1_EV_IRQHandler(void) {
@@ -97,9 +101,6 @@ int main(int argc, char* argv[]) {
 
 //	__enable_irq();
 
-	Timer timer;
-	timer.start();
-
 //	IoDriver::initPin(GPIOA, std::vector<uint8_t>{8}, GpioMode::altPushPullOutput);
 //	RCC->CFGR |= 0x4000000;
 
@@ -117,6 +118,10 @@ int main(int argc, char* argv[]) {
 //	displayDriver.initDma();
 //	displayDriver.initI2c();
 
+	TaskHandle_t taskHandle;
+	xTaskCreate(LedDisplayDriverTask, "LedDisplayDriver", 20, &displayDriver, 1, &taskHandle);
+	vTaskStartScheduler();
+
 	bool printedI2cStart = false;
 
 	while (1) {
@@ -128,8 +133,6 @@ int main(int argc, char* argv[]) {
 //				printedI2cStart = true;
 //			}
 //		}
-		timer.sleep(1000);
-
 //		char cmar[10];
 //		sprintf(cmar, "0x%08X", DMA1_Channel6->CMAR);
 //		trace_puts(cmar);

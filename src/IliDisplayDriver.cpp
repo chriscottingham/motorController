@@ -30,8 +30,6 @@ void IliDisplayDriver::initPins() {
 
 	IoDriver::initPin(GPIOB, PARALLEL_PINS, GpioMode::pushPullOutput);
 	IoDriver::initPin(GPIOB, CONTROL_PINS, GpioMode::pushPullOutput);
-
-	timer.start();
 }
 
 void IliDisplayDriver::setFunctionPin(uint8_t pin, uint8_t value) {
@@ -50,9 +48,7 @@ void IliDisplayDriver::writeParallelPort(uint8_t value, uint8_t registerSelect) 
 
 	setFunctionPin(WRITE_PIN, 0);
 	setPortValue(value);
-	timer.sleep(10u);
 	setFunctionPin(WRITE_PIN, 1);
-	timer.sleep(10u);
 
 	setFunctionPin(CHIP_SELECT_PIN, CHIP_SELECT_DISABLED);
 }
@@ -74,20 +70,14 @@ void IliDisplayDriver::setupDisplay(void) {
 	setFunctionPin(IliDisplayDriver::READ_PIN, 1);
 
 	setFunctionPin(IliDisplayDriver::RESET_PIN, 0);
-	timer.sleep(kWaitTime);
 	setFunctionPin(IliDisplayDriver::RESET_PIN, 1);
-	timer.sleep(kWaitTime);
 
 	setFunctionPin(IliDisplayDriver::RESET_PIN, 0);
-	timer.sleep(kWaitTime);
 	setFunctionPin(IliDisplayDriver::RESET_PIN, 1);
-	timer.sleep(kWaitTime);
 
 	writeParallelPort(0x1, REGISTER_SELECT_COMMAND);
-	timer.sleep(kWaitTime);
 
 	writeParallelPort(0x11, REGISTER_SELECT_COMMAND);
-	timer.sleep(kWaitTime);
 
 	writeParallelPort(0xCF, REGISTER_SELECT_COMMAND);
 	writeParallelPort(0x00, REGISTER_SELECT_DATA);
@@ -193,9 +183,7 @@ void IliDisplayDriver::setupDisplay(void) {
 	writeParallelPort(0x0F, REGISTER_SELECT_DATA);
 
 	writeParallelPort(0x11, REGISTER_SELECT_COMMAND);    //Exit Sleep
-	timer.sleep(120);
 	writeParallelPort(0x29, REGISTER_SELECT_COMMAND);    //Display on
-	timer.sleep(50);
 
 }
 
@@ -302,7 +290,6 @@ void IliDisplayDriver::setupSecond() {
 	writeParallelPort(0x0F, REGISTER_SELECT_DATA);
 
 	writeParallelPort(0x11, REGISTER_SELECT_COMMAND);    //Exit Sleep
-	timer.sleep(120);
 
 	writeParallelPort(0x29, REGISTER_SELECT_COMMAND);    //Display on
 }
