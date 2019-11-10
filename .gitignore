@@ -1,5 +1,6 @@
 Debug/*.elf
 Debug/*.hex
 Debug/*.map
+Debug/FreeRTOS/*
 Debug/system
 Debug/src
