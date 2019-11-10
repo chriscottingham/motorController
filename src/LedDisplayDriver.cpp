@@ -172,6 +172,7 @@ void LedDisplayDriver::init() {
 	DMA1_Channel6->CNDTR = sizeof(initializationSequence);
 	runState = DEVICE_STATE_INITIALIZED;
 }
+
 void LedDisplayDriver::printHello() {
 
 	static uint32_t i = 0;
@@ -312,7 +313,8 @@ void LedDisplayDriver::runTask() {
  		vTaskDelay(pdMS_TO_TICKS(200));
 		GPIOB->ODR ^= GPIO_ODR_ODR11;
 		GPIOB->ODR ^= GPIO_ODR_ODR10;
-//		printHello();
+
+		printHello();
 	}
 
 }

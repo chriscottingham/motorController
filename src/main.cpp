@@ -106,7 +106,7 @@ int main(int argc, char* argv[]) {
 //	displayDriver.initI2c();
 
 	TaskHandle_t taskHandle;
-	xTaskCreate(LedDisplayDriverTask, "LedDisplayDriver", 20, &displayDriver, 1, &taskHandle);
+	xTaskCreate(LedDisplayDriverTask, "LedDisplayDriver", 200, &displayDriver, 1, &taskHandle);
 	vTaskStartScheduler();
 
 	bool printedI2cStart = false;
