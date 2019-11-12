@@ -11,6 +11,7 @@
 
 #include "LedDisplayDriver.h"
 #include "ExtiHandler.h"
+#include "RotaryEncoder.h"
 
 #define configASSERT_DEFINED 1
 extern "C" {
@@ -34,7 +35,7 @@ extern "C"
 		EXTI->PR = 1;
 		__ISB();
 
-		displayDriver.printHello();
+		displayDriver.printEncoder();
 	}
 
 	void I2C1_EV_IRQHandler(void) {
@@ -62,17 +63,15 @@ int main(int argc, char* argv[]) {
 //	IoDriver::initPin(GPIOA, std::vector<uint8_t>{8}, GpioMode::altPushPullOutput);
 //	RCC->CFGR |= 0x4000000;
 
-	IoDriver::initPin(GPIOB, std::vector<uint8_t> {6, 7}, GpioMode::pushPullOutput);
-	GPIOB->ODR &= ~(GPIO_ODR_ODR6 | GPIO_ODR_ODR6);
+//	ExtiHandler buttonHandler(GPIOB, std::vector<uint8_t> {10,11});
+//	buttonHandler.setupTrigger(GPIOA);
 
-	IoDriver::initPin(GPIOB, std::vector<uint8_t> {10,11}, GpioMode::pushPullOutput);
-	GPIOB->ODR |= 0xc00;
+	TaskHandle_t displayHandle;
+	xTaskCreate(LedDisplayDriverTask, "LedDisplayDriver", 200, &displayDriver, 1, &displayHandle);
 
-	ExtiHandler buttonHandler;
-	buttonHandler.setupTrigger(GPIOA);
-
-	TaskHandle_t taskHandle;
-	xTaskCreate(LedDisplayDriverTask, "LedDisplayDriver", 200, &displayDriver, 1, &taskHandle);
+	RotaryEncoder rotaryEncoder(GPIOA, &vector<uint8_t>({0, 1}));
+	TaskHandle_t encoderHandle;
+	xTaskCreate(RotaryEncoderTask, "RotaryEncoder", 200, &rotaryEncoder, 1, &encoderHandle);
 
 	vTaskStartScheduler();
 

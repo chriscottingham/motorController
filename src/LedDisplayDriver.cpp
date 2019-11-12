@@ -173,16 +173,14 @@ void LedDisplayDriver::init() {
 	runState = DEVICE_STATE_INITIALIZED;
 }
 
-void LedDisplayDriver::printHello() {
-
-	static uint32_t i = 0;
+void LedDisplayDriver::printEncoder() {
 
   	if (runState == DEVICE_STATE_RESET) {
   		init();
 	} else {
 		resetBuffer();
 		writeToBuffer("hello world", 11);
-		writeToBuffer(i++);
+		writeToBuffer(TIM2->CNT);
 		drawLine();
 	}
 	startI2c();
@@ -314,7 +312,7 @@ void LedDisplayDriver::runTask() {
 		GPIOB->ODR ^= GPIO_ODR_ODR11;
 		GPIOB->ODR ^= GPIO_ODR_ODR10;
 
-		printHello();
+		printEncoder();
 	}
 
 }
