@@ -67,11 +67,11 @@ int main(int argc, char* argv[]) {
 //	buttonHandler.setupTrigger(GPIOA);
 
 	TaskHandle_t displayHandle;
-	xTaskCreate(LedDisplayDriverTask, "LedDisplayDriver", 200, &displayDriver, 1, &displayHandle);
+	xTaskCreate(LedDisplayDriverTask, "LedDisplayDriver", 200, &displayDriver, 2, &displayHandle);
 
 	RotaryEncoder rotaryEncoder(GPIOA, &vector<uint8_t>({0, 1}));
 	TaskHandle_t encoderHandle;
-	xTaskCreate(RotaryEncoderTask, "RotaryEncoder", 200, &rotaryEncoder, 1, &encoderHandle);
+	xTaskCreate(RotaryEncoderTask, "RotaryEncoder", 200, &rotaryEncoder, 2, &encoderHandle);
 
 	vTaskStartScheduler();
 

@@ -10,8 +10,8 @@
 
 #include "task.h"
 
-RotaryEncoder::RotaryEncoder(GPIO_TypeDef* timerPort, vector<uint8_t>* const encoderPins)
-	: timerPort(timerPort) {
+RotaryEncoder::RotaryEncoder(GPIO_TypeDef* timerPort, vector<uint8_t>* const encoderPins) :
+		timerPort(timerPort) {
 
 	this->encoderPins = *encoderPins;
 
@@ -30,11 +30,13 @@ uint16_t RotaryEncoder::getRpm() {
 Direction RotaryEncoder::getDirection() {
 
 }
-void RotaryEncoder::tick() {
+void RotaryEncoder::run() {
 
-	vTaskDelay(pdMS_TO_TICKS(100));
+	while (1) {
+		vTaskDelay(pdMS_TO_TICKS(100));
+	}
 }
 
 void RotaryEncoderTask(void* param) {
-	((RotaryEncoder*) param)->tick();
+	((RotaryEncoder*) param)->run();
 }
