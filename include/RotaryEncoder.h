@@ -8,7 +8,16 @@
 #ifndef ROTARYENCODER_H_
 #define ROTARYENCODER_H_
 
-#include "micro.h"
+#include <vector>
+
+#include "IoDriver.h"
+#include "StateHolder.h"
+
+using namespace std;
+
+struct EncoderState {
+	uint16_t rpm;
+};
 
 struct DirectionEnum {
 	enum type {
@@ -20,14 +29,22 @@ typedef TypedEnum<DirectionEnum> Direction;
 class RotaryEncoder {
 private:
 	GPIO_TypeDef* timerPort;
-	uint8_t encoderPins[2];
+	vector<uint8_t> encoderPins;
+
+	uint32_t previousSysTick = 0;
+	uint16_t previousEncoderCount = 0;
+
+	EncoderState encoderState;
 
 public:
-	RotaryEncoder(GPIO_TypeDef* timerPort, uint8_t encoderPins[2]);
+	RotaryEncoder(GPIO_TypeDef* timerPort, vector<uint8_t>* const pins);
 
-	uint16_t getRpm();
+	EncoderState* getState();
+	void updateSpeed();
 	Direction getDirection();
-	void tick();
+	void run();
 };
+
+void RotaryEncoderTask(void* param);
 
 #endif /* ROTARYENCODER_H_ */

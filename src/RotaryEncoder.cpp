@@ -9,6 +9,7 @@
 #include "RotaryEncoder.h"
 
 #include "task.h"
+#include "portmacro.h"
 
 RotaryEncoder::RotaryEncoder(GPIO_TypeDef* timerPort, vector<uint8_t>* const encoderPins) :
 		timerPort(timerPort) {
@@ -23,20 +24,41 @@ RotaryEncoder::RotaryEncoder(GPIO_TypeDef* timerPort, vector<uint8_t>* const enc
 	TIM2->CR1 |= TIM_CR1_CEN;
 }
 
-uint16_t RotaryEncoder::getRpm() {
+EncoderState* RotaryEncoder::getState() {
 
+	return &encoderState;
+}
+
+void RotaryEncoder::updateSpeed() {
+
+	int32_t diffTicks = previousSysTick - TIM2->CNT;
+	if (diffTicks < 0) {
+		diffTicks += 16777216;
+	}
+
+	int32_t diffEncoder = previousEncoderCount - TIM2->CNT;
+	if (diffEncoder < 0) {
+		diffEncoder += 65535;
+	}
+
+	encoderState.rpm = diffEncoder / 200 / diffTicks * portTICK_PERIOD_MS;
 }
 
 Direction RotaryEncoder::getDirection() {
 
 }
+
 void RotaryEncoder::run() {
 
 	while (1) {
-		vTaskDelay(pdMS_TO_TICKS(100));
+
+		updateSpeed();
+
+		vTaskDelay(pdMS_TO_TICKS(10));
 	}
 }
 
 void RotaryEncoderTask(void* param) {
 	((RotaryEncoder*) param)->run();
 }
+

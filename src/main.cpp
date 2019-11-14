@@ -1,3 +1,4 @@
+
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 #pragma GCC diagnostic ignored "-Wreturn-type"
@@ -7,24 +8,25 @@
 #include <stdlib.h>
 #include <string>
 
-#include "diag/Trace.h"
-
-#include "LedDisplayDriver.h"
+#include <MotorDisplay.h>
 #include "ExtiHandler.h"
 #include "RotaryEncoder.h"
+#include "RtosQueueStateHolder.h"
 
 #define configASSERT_DEFINED 1
 extern "C" {
 	#include "FreeRTOSConfig.h"
+	#include "freeRTOS.h"
 	#include "projdefs.h"
 	#include "portmacro.h"
-	#include "freeRTOS.h"
-}
+	#include "StateHolder.h"
 	#include "task.h"
+	#include "queue.h"
+}
 
 #pragma GCC diagnostic push
 
-LedDisplayDriver displayDriver;
+MotorDisplay displayDriver;
 
 extern "C"
 {
@@ -35,7 +37,6 @@ extern "C"
 		EXTI->PR = 1;
 		__ISB();
 
-		displayDriver.printEncoder();
 	}
 
 	void I2C1_EV_IRQHandler(void) {
@@ -47,7 +48,7 @@ extern "C"
 	}
 
 	void DMA1_Channel6_IRQHandler(void) {
-		displayDriver.dma6Handler();
+		displayDriver.handleDma();
 	}
 }
 
@@ -66,10 +67,12 @@ int main(int argc, char* argv[]) {
 //	ExtiHandler buttonHandler(GPIOB, std::vector<uint8_t> {10,11});
 //	buttonHandler.setupTrigger(GPIOA);
 
+
 	TaskHandle_t displayHandle;
-	xTaskCreate(LedDisplayDriverTask, "LedDisplayDriver", 200, &displayDriver, 2, &displayHandle);
+	xTaskCreate(MotorDisplayTask, "LedDisplayDriver", 200, &displayDriver, 2, &displayHandle);
 
 	RotaryEncoder rotaryEncoder(GPIOA, &vector<uint8_t>({0, 1}));
+
 	TaskHandle_t encoderHandle;
 	xTaskCreate(RotaryEncoderTask, "RotaryEncoder", 200, &rotaryEncoder, 2, &encoderHandle);
 

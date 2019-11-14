@@ -10,11 +10,17 @@
 
 #include <vector>
 
-#include "micro.h"
+#include "IoDriver.h"
+
+using namespace std;
 
 class ExtiHandler {
+private:
+	GPIO_TypeDef* gpio;
+	vector<uint8_t> pins;
 
 public:
+	ExtiHandler(GPIO_TypeDef* gpio, std::vector<uint8_t>* const pins);
 
 	void setupTrigger(GPIO_TypeDef* gpio);
 };

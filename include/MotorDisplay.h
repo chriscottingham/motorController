@@ -20,26 +20,32 @@
 #define kI2cGpio GPIOB
 #define kPowerGpio GPIOB
 
-class LedDisplayDriver {
+class MotorDisplay {
 
 public:
-	static uint8_t font5x7[];
-
 	enum INSTRUCTION_TYPE {
 		COMMAND = 0x00,
 		DATA = 0x40
 	};
 
-	enum DEVICE_STATE {
-		DEVICE_STATE_RESET,
-		DEVICE_STATE_INITIALIZED
+	struct BitValues {
+		BitValues() : displayDirty(true) {};
+		bool displayDirty:1;
+		bool powerOn:1;
+		bool displayInitialized:1;
 	};
 
 private:
-	DEVICE_STATE runState = DEVICE_STATE_RESET;
+	uint8_t displayBuffer[1025];
+	uint16_t rpm = 0;
+	BitValues bitValues;
 
-	uint8_t lineBuffer[130];
-	uint8_t bufferIndex = 0;
+	void initI2c();
+	void initDma();
+
+	void resetBuffer();
+	void drawBuffer();
+	void sendBuffer();
 
 public:
 	const std::vector<uint8_t> kI2cPins = { 6, 7 };
@@ -47,29 +53,20 @@ public:
 
 	static uint8_t initializationSequence[];
 
-	char displayBuffer[129];
-
 	void init();
-	void initI2c();
-	void initDma();
 
 	void startI2c();
 	void stop();
 
-	void printHello();
-
-	void dma6Handler();
+	void handleDma();
 	void handleI2cInterrupt();
+	void handleI2cError();
 
-	void resetBuffer();
-	void writeChar(uint8_t character);
-	void writeToBuffer(char* characters, uint8_t length);
-	void writeToBuffer(uint32_t hex32);
-	void drawLine();
+	void setSpeed(uint16_t rpm);
 
 	void runTask();
 };
 
-extern "C" void LedDisplayDriverTask(void*);
+extern "C" void MotorDisplayTask(void*);
 
 #endif /* LEDDISPLAYDRIVER_H_ */
