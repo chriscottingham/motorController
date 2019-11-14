@@ -138,12 +138,17 @@ void copyString(uint8_t* target, uint8_t* source, uint8_t length) {
 	}
 }
 
+void MotorDisplay::setEncoderStateHolder(StateHolder<EncoderState>* encoderStateHolder) {
+	this->encoderStateHolder = encoderStateHolder;
+}
+
 void MotorDisplay::drawBuffer() {
 
 	displayBuffer[0] = DATA;
 
 	char charValue[5];
-	snprintf(charValue, 5, "%04d", rpm);
+	snprintf(charValue, 5, "%04d", encoderStateHolder->get().rpm);
+//	snprintf(charValue, 5, "%04d", 123);
 
 	for (uint8_t iChar=0; iChar<4; iChar++) {
 
@@ -185,6 +190,7 @@ void MotorDisplay::runTask() {
 		if (!bitValues.powerOn) {
 			IoDriver::initPin(kPowerGpio, kPowerPin, GpioMode::pushPullOutput);
 			kI2cGpio->ODR |= GPIO_ODR_ODR9;
+			resetBuffer();
 			bitValues.powerOn = true;
 
 		} else if (!bitValues.displayInitialized) {
@@ -205,8 +211,4 @@ void MotorDisplay::runTask() {
 
  		vTaskDelay(pdMS_TO_TICKS(200));
 	}
-}
-
-void MotorDisplayTask(void* driver) {
-	((MotorDisplay*) driver)->runTask();
 }

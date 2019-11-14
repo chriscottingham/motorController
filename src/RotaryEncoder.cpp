@@ -24,24 +24,28 @@ RotaryEncoder::RotaryEncoder(GPIO_TypeDef* timerPort, vector<uint8_t>* const enc
 	TIM2->CR1 |= TIM_CR1_CEN;
 }
 
-EncoderState* RotaryEncoder::getState() {
-
-	return &encoderState;
-}
-
 void RotaryEncoder::updateSpeed() {
 
-	int32_t diffTicks = previousSysTick - TIM2->CNT;
+	int32_t currentTicks = xTaskGetTickCount();
+	int32_t diffTicks = currentTicks - previousSysTick;
 	if (diffTicks < 0) {
 		diffTicks += 16777216;
 	}
+	previousSysTick = currentTicks;
 
-	int32_t diffEncoder = previousEncoderCount - TIM2->CNT;
+	uint16_t currentCount = TIM2->CNT;
+	int32_t diffEncoder = previousEncoderCount - currentCount;
 	if (diffEncoder < 0) {
 		diffEncoder += 65535;
 	}
+	previousEncoderCount = currentCount;
 
-	encoderState.rpm = diffEncoder / 200 / diffTicks * portTICK_PERIOD_MS;
+	EncoderState state(60 * diffEncoder / 200 / diffTicks * portTICK_PERIOD_MS);
+//	encoderStateHolder->set(state);
+}
+
+void RotaryEncoder::setEncoderStateHolder(StateHolder<EncoderState>* encoderStateHolder) {
+	this->encoderStateHolder = encoderStateHolder;
 }
 
 Direction RotaryEncoder::getDirection() {
@@ -57,8 +61,3 @@ void RotaryEncoder::run() {
 		vTaskDelay(pdMS_TO_TICKS(10));
 	}
 }
-
-void RotaryEncoderTask(void* param) {
-	((RotaryEncoder*) param)->run();
-}
-

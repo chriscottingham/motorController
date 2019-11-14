@@ -26,7 +26,8 @@ extern "C" {
 
 #pragma GCC diagnostic push
 
-MotorDisplay displayDriver;
+MotorDisplay* motorDisplay;
+RotaryEncoder* encoder;
 
 extern "C"
 {
@@ -40,16 +41,47 @@ extern "C"
 	}
 
 	void I2C1_EV_IRQHandler(void) {
-		displayDriver.handleI2cInterrupt();
+		motorDisplay->handleI2cInterrupt();
 	}
 
 	void I2C1_ER_IRQHandler(void) {
-		displayDriver.handleI2cError();
+		motorDisplay->handleI2cError();
 	}
 
 	void DMA1_Channel6_IRQHandler(void) {
-		displayDriver.handleDma();
+		motorDisplay->handleDma();
 	}
+}
+
+void MotorDisplayTask(void* param) {
+	MotorDisplay driver;
+	motorDisplay = &driver;
+	motorDisplay->runTask();
+}
+
+void RotaryEncoderTask(void* param) {
+	RotaryEncoder rotaryEncoder(GPIOA, &vector<uint8_t>({0, 1}));
+	encoder = &rotaryEncoder;
+	encoder->run();
+}
+
+void init(void* param) {
+
+	QueueHandle_t handle = xQueueCreate(1, sizeof(EncoderState));
+
+
+	TaskHandle_t encoderHandle;
+	xTaskCreate(RotaryEncoderTask, "RotaryEncoder", 500, 0, 2, &encoderHandle);
+
+	RtosQueueStateHolder<EncoderState> encoderStateHolder(handle);
+	encoder->setEncoderStateHolder(&encoderStateHolder);
+//	encoder->setEncoderStateHolder(0);
+
+	TaskHandle_t displayHandle;
+	xTaskCreate(MotorDisplayTask, "MotorDisplay", 2000, 0, 2, &displayHandle);
+
+	RtosQueueStateHolder<EncoderState> encoderStateHolder2(handle);
+	motorDisplay->setEncoderStateHolder(&encoderStateHolder2);
 }
 
 int main(int argc, char* argv[]) {
@@ -67,18 +99,8 @@ int main(int argc, char* argv[]) {
 //	ExtiHandler buttonHandler(GPIOB, std::vector<uint8_t> {10,11});
 //	buttonHandler.setupTrigger(GPIOA);
 
-
-	TaskHandle_t displayHandle;
-	xTaskCreate(MotorDisplayTask, "LedDisplayDriver", 200, &displayDriver, 2, &displayHandle);
-
-	RotaryEncoder rotaryEncoder(GPIOA, &vector<uint8_t>({0, 1}));
-
-	TaskHandle_t encoderHandle;
-	xTaskCreate(RotaryEncoderTask, "RotaryEncoder", 200, &rotaryEncoder, 2, &encoderHandle);
-
+	xTaskCreate(init, "init", 100, 0, 1, 0);
 	vTaskStartScheduler();
-
-	bool printedI2cStart = false;
 
 	while (1) {
 	}

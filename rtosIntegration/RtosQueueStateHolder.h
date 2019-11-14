@@ -17,6 +17,7 @@ template<typename ValueType> class RtosQueueStateHolder: public StateHolder<Valu
 
 private:
 	QueueHandle_t queueHandle;
+	ValueType value;
 
 public:
 	RtosQueueStateHolder(QueueHandle_t queueHandle) :
@@ -30,7 +31,7 @@ public:
 	}
 
 	ValueType get() {
-
+		xQueueReceive(queueHandle, &value, 0);
 	}
 
 	ValueType get(int millis) {

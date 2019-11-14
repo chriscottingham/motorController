@@ -11,11 +11,7 @@
 #include "stm32f10x.h"
 #include "IoDriver.h"
 #include "Logger.h"
-
-//#include "Timer.h"
-//#include "task.h"
-
-#include "diag/Trace.h"
+#include "RotaryEncoder.h"
 
 #define kI2cGpio GPIOB
 #define kPowerGpio GPIOB
@@ -29,7 +25,7 @@ public:
 	};
 
 	struct BitValues {
-		BitValues() : displayDirty(true) {};
+		BitValues() : displayDirty(true), powerOn(false), displayInitialized(false) {};
 		bool displayDirty:1;
 		bool powerOn:1;
 		bool displayInitialized:1;
@@ -37,7 +33,7 @@ public:
 
 private:
 	uint8_t displayBuffer[1025];
-	uint16_t rpm = 0;
+	StateHolder<EncoderState>* encoderStateHolder;
 	BitValues bitValues;
 
 	void initI2c();
@@ -62,7 +58,7 @@ public:
 	void handleI2cInterrupt();
 	void handleI2cError();
 
-	void setSpeed(uint16_t rpm);
+	void setEncoderStateHolder(StateHolder<EncoderState> * encoderStateHolder);
 
 	void runTask();
 };

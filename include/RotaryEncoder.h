@@ -16,6 +16,7 @@
 using namespace std;
 
 struct EncoderState {
+	EncoderState(uint16_t rpm) : rpm(rpm) {}
 	uint16_t rpm;
 };
 
@@ -34,13 +35,14 @@ private:
 	uint32_t previousSysTick = 0;
 	uint16_t previousEncoderCount = 0;
 
-	EncoderState encoderState;
+	StateHolder<EncoderState>* encoderStateHolder;
+
+	void updateSpeed();
 
 public:
 	RotaryEncoder(GPIO_TypeDef* timerPort, vector<uint8_t>* const pins);
 
-	EncoderState* getState();
-	void updateSpeed();
+	void setEncoderStateHolder(StateHolder<EncoderState>* encoderStateHolder);
 	Direction getDirection();
 	void run();
 };

@@ -29,6 +29,7 @@ CPP_DEPS :=
 SUBDIRS := \
 FreeRTOS/Source \
 FreeRTOS/Source/portable/GCC/ARM_CM3 \
+rtosIntegration \
 src \
 system/src/cmsis \
 system/src/cortexm \
