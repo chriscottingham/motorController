@@ -9,7 +9,7 @@
 #include <string>
 
 #include <MotorDisplay.h>
-#include "SpeedControl.h"
+#include "SpeedInput.h"
 #include "ExtiHandler.h"
 #include "RotaryEncoder.h"
 #include "RtosQueueStateHolder.h"
@@ -29,7 +29,7 @@ extern "C" {
 
 MotorDisplay* motorDisplay;
 RotaryEncoder* encoder;
-SpeedControl* speedControl;
+SpeedInput* speedInput;
 
 extern "C"
 {
@@ -54,54 +54,48 @@ extern "C"
 		motorDisplay->handleDma();
 	}
 
-	void MemManage_Handler(void) {
-
-	}
 }
 
 void MotorDisplayTask(void* param) {
-	MotorDisplay driver;
-	motorDisplay = &driver;
-	motorDisplay->setEncoderStateHolder((StateHolder<EncoderState>*) param);
+
+	motorDisplay = &MotorDisplay();
+	motorDisplay->setInitialization((MotorDisplayInitializer*) param);
 	motorDisplay->runTask();
 }
 
 void RotaryEncoderTask(void* param) {
-	RotaryEncoder rotaryEncoder(GPIOA, &vector<uint8_t>({0, 1}));
-	encoder = &rotaryEncoder;
+
+	encoder = &RotaryEncoder(GPIOA, &vector<uint8_t>({0, 1}));
 	encoder->setEncoderStateHolder((StateHolder<EncoderState>*) param);
 	encoder->run();
 }
 
-void SpeedControlTask(void* param) {
-	SpeedControl control(GPIOA, 2);
-	speedControl = &control;
-	speedControl->run();
+void SpeedInputTask(void* param) {
+	speedInput = &SpeedInput(GPIOA, 2);
+	speedInput->setStateHolder((StateHolder<SpeedInputState>*) param);
+	speedInput->run();
 }
 
 void init(void* param) {
 
-	QueueDefinition* handle = xQueueCreate(1, sizeof(EncoderState));
-	RtosQueueStateHolder<EncoderState> encoderStateHolder(handle, EncoderState(0));
+	RtosQueueStateHolder<EncoderState> encoderStateHolder(1, EncoderState(0));
 
-	TaskHandle_t encoderHandle;
-	xTaskCreate(RotaryEncoderTask, "RotaryEncoder", 500, &encoderStateHolder, 2, &encoderHandle);
+	xTaskCreate(RotaryEncoderTask, "RotaryEncoder", 500, &encoderStateHolder, 2, 0);
 
-	TaskHandle_t displayHandle;
-	xTaskCreate(MotorDisplayTask, "MotorDisplay", 2000, &encoderStateHolder, 3, &displayHandle);
+	RtosQueueStateHolder<SpeedInputState> speedStateHolder(1, SpeedInputState(1432));
 
+	MotorDisplayInitializer displayInitializer;
+	displayInitializer.encoderStateHolder = &encoderStateHolder;
+	displayInitializer.speedInputStateHolder = &speedStateHolder;
+	xTaskCreate(MotorDisplayTask, "MotorDisplay", 2000, &displayInitializer, 3, 0);
+
+	xTaskCreate(SpeedInputTask, "SpeedInput", 200, &speedStateHolder, 4, 0);
 
 	vTaskSuspend(xTaskGetCurrentTaskHandle());
 
 	while (1) {
 	}
 }
-
-int main(int argc, char* argv[]) {
-
-	trace_puts("Hello ARM World!");
-
-	trace_printf("System clock: %u Hz\n", SystemCoreClock);
 
 //	__enable_irq();
 
@@ -111,6 +105,11 @@ int main(int argc, char* argv[]) {
 
 //	ExtiHandler buttonHandler(GPIOB, std::vector<uint8_t> {10,11});
 //	buttonHandler.setupTrigger(GPIOA);
+int main(int argc, char* argv[]) {
+
+	trace_puts("Hello ARM World!");
+
+	trace_printf("System clock: %u Hz\n", SystemCoreClock);
 
 	xTaskCreate(init, "init", 500, 0, 1, 0);
 	vTaskStartScheduler();

@@ -20,8 +20,8 @@ private:
 	ValueType value;
 
 public:
-	RtosQueueStateHolder(QueueDefinition * queueHandle, ValueType value) :
-			queueHandle(queueHandle), value(value) {
+	RtosQueueStateHolder(uint8_t elemenmtCount, ValueType value) : value(value) {
+		queueHandle = xQueueCreate(1, sizeof(ValueType));
 	}
 
 	virtual ~RtosQueueStateHolder() {
@@ -34,10 +34,6 @@ public:
 	ValueType get() {
 		xQueueReceive(queueHandle, &value, 0);
 		return value;
-	}
-
-	ValueType get(int millis) {
-
 	}
 
 };

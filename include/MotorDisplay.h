@@ -12,9 +12,15 @@
 #include "IoDriver.h"
 #include "Logger.h"
 #include "RotaryEncoder.h"
+#include "SpeedInput.h"
 
 #define kI2cGpio GPIOB
 #define kPowerGpio GPIOB
+
+struct MotorDisplayInitializer {
+	StateHolder<EncoderState>* encoderStateHolder;
+	StateHolder<SpeedInputState>* speedInputStateHolder;
+};
 
 class MotorDisplay {
 
@@ -34,6 +40,8 @@ public:
 private:
 	uint8_t displayBuffer[1025];
 	StateHolder<EncoderState>* encoderStateHolder;
+	StateHolder<SpeedInputState>* speedInputStateHolder;
+
 	BitValues bitValues;
 
 	void initI2c();
@@ -50,7 +58,7 @@ public:
 
 	static uint8_t initializationSequence[];
 
-	void init();
+	void setInitialization(MotorDisplayInitializer* initializer);
 
 	void startI2c();
 	void stop();

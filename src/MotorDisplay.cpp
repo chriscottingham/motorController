@@ -79,6 +79,11 @@ void MotorDisplay::handleDma() {
 	DMA1->IFCR |= DMA_ISR_GIF6;
 }
 
+void MotorDisplay::setInitialization(MotorDisplayInitializer* initializer) {
+	this->speedInputStateHolder = initializer->speedInputStateHolder;
+	this->encoderStateHolder = initializer->encoderStateHolder;
+}
+
 void MotorDisplay::initI2c() {
 
 	RCC->APB1ENR |= RCC_APB1ENR_I2C1EN;
@@ -146,7 +151,7 @@ void MotorDisplay::drawBuffer() {
 
 	drawNumber(encoderStateHolder->get().rpm, 1);
 //	drawNumber(targetSpeedHolder->get().rpm, 8*128*4);
-	drawNumber(4368, 128*4);
+	drawNumber(speedInputStateHolder->get().inputSpeed, 128*4);
 }
 
 void MotorDisplay::drawNumber(uint32_t value, uint16_t offset) {
@@ -176,14 +181,17 @@ void MotorDisplay::sendBuffer() {
 	DMA1_Channel6->CNDTR = 1025;
 //	DMA1_Channel6->CCR |= DMA_CCR1_CIRC;
 	DMA1_Channel6->CCR |= DMA_CCR1_EN;
-	startI2c();
+
+	I2C1->CR1 |= I2C_CR1_PE;
+	I2C1->CR2 |= I2C_CR2_DMAEN;
+	I2C1->CR1 |= I2C_CR1_START;
 }
 
 void MotorDisplay::stop() {
 	I2C1->CR2 &= ~I2C_CR2_DMAEN;
 	while (!(I2C1->SR1 & I2C_SR1_BTF));
 	I2C1->CR1 |= I2C_CR1_STOP;
-	I2C1->CR1 &= ~I2C_CR1_PE;
+//	I2C1->CR1 &= ~I2C_CR1_PE;
 }
 
 void MotorDisplay::runTask() {
