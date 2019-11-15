@@ -51,37 +51,43 @@ extern "C"
 	void DMA1_Channel6_IRQHandler(void) {
 		motorDisplay->handleDma();
 	}
+
+	void MemManage_Handler(void) {
+
+	}
 }
 
 void MotorDisplayTask(void* param) {
 	MotorDisplay driver;
 	motorDisplay = &driver;
+	motorDisplay->setEncoderStateHolder((StateHolder<EncoderState>*) param);
 	motorDisplay->runTask();
 }
 
 void RotaryEncoderTask(void* param) {
 	RotaryEncoder rotaryEncoder(GPIOA, &vector<uint8_t>({0, 1}));
 	encoder = &rotaryEncoder;
+	encoder->setEncoderStateHolder((StateHolder<EncoderState>*) param);
 	encoder->run();
 }
 
 void init(void* param) {
 
-	QueueHandle_t handle = xQueueCreate(1, sizeof(EncoderState));
-
+	QueueDefinition* handle = xQueueCreate(1, sizeof(EncoderState));
+	RtosQueueStateHolder<EncoderState> encoderStateHolder(handle, EncoderState(0));
 
 	TaskHandle_t encoderHandle;
-	xTaskCreate(RotaryEncoderTask, "RotaryEncoder", 500, 0, 2, &encoderHandle);
-
-	RtosQueueStateHolder<EncoderState> encoderStateHolder(handle);
-	encoder->setEncoderStateHolder(&encoderStateHolder);
-//	encoder->setEncoderStateHolder(0);
+	xTaskCreate(RotaryEncoderTask, "RotaryEncoder", 500, &encoderStateHolder, 2, &encoderHandle);
 
 	TaskHandle_t displayHandle;
-	xTaskCreate(MotorDisplayTask, "MotorDisplay", 2000, 0, 2, &displayHandle);
+	xTaskCreate(MotorDisplayTask, "MotorDisplay", 2000, &encoderStateHolder, 3, &displayHandle);
 
-	RtosQueueStateHolder<EncoderState> encoderStateHolder2(handle);
-	motorDisplay->setEncoderStateHolder(&encoderStateHolder2);
+	RtosQueueStateHolder<EncoderState> encoderStateHolder2(handle, EncoderState(0));
+	TaskHandle_t x = xTaskGetCurrentTaskHandle();
+	vTaskSuspend(x);
+
+	while (1) {
+	}
 }
 
 int main(int argc, char* argv[]) {
@@ -99,7 +105,7 @@ int main(int argc, char* argv[]) {
 //	ExtiHandler buttonHandler(GPIOB, std::vector<uint8_t> {10,11});
 //	buttonHandler.setupTrigger(GPIOA);
 
-	xTaskCreate(init, "init", 100, 0, 1, 0);
+	xTaskCreate(init, "init", 500, 0, 1, 0);
 	vTaskStartScheduler();
 
 	while (1) {

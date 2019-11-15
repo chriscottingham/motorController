@@ -16,7 +16,7 @@ public:
 	virtual ValueType get() = 0;
 	virtual ValueType get(int millis) = 0;
 
-	virtual StateHolder() {};
+	StateHolder() {};
 	virtual ~StateHolder() {};
 };
 

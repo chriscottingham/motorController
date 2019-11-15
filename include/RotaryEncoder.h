@@ -16,7 +16,8 @@
 using namespace std;
 
 struct EncoderState {
-	EncoderState(uint16_t rpm) : rpm(rpm) {}
+//	EncoderState(){};
+	EncoderState(uint16_t rpm = 0) : rpm(rpm) {}
 	uint16_t rpm;
 };
 

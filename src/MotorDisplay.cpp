@@ -148,7 +148,7 @@ void MotorDisplay::drawBuffer() {
 
 	char charValue[5];
 	snprintf(charValue, 5, "%04d", encoderStateHolder->get().rpm);
-//	snprintf(charValue, 5, "%04d", 123);
+//	snprintf(charValue, 5, "%04d", (uint8_t)(0xff & __get_IPSR()));
 
 	for (uint8_t iChar=0; iChar<4; iChar++) {
 

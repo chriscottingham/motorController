@@ -16,22 +16,24 @@
 template<typename ValueType> class RtosQueueStateHolder: public StateHolder<ValueType> {
 
 private:
-	QueueHandle_t queueHandle;
+	QueueDefinition * queueHandle;
 	ValueType value;
 
 public:
-	RtosQueueStateHolder(QueueHandle_t queueHandle) :
-			queueHandle(queueHandle) {
+	RtosQueueStateHolder(QueueDefinition * queueHandle, ValueType value) :
+			queueHandle(queueHandle), value(value) {
 	}
 
-	~RtosQueueStateHolder() {}
+	virtual ~RtosQueueStateHolder() {
+	}
 
 	void set(ValueType message) {
-
+		xQueueOverwrite(queueHandle, &message);
 	}
 
 	ValueType get() {
 		xQueueReceive(queueHandle, &value, 0);
+		return value;
 	}
 
 	ValueType get(int millis) {
