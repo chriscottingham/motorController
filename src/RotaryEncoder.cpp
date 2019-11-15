@@ -31,14 +31,17 @@ void RotaryEncoder::updateSpeed() {
 	if (diffTicks < 0) {
 		diffTicks += 16777216;
 	}
-	previousSysTick = currentTicks;
 
 	uint16_t currentCount = TIM2->CNT;
 	int32_t diffEncoder = previousEncoderCount - currentCount;
 	if (diffEncoder < 0) {
 		diffEncoder += 65535;
 	}
-	previousEncoderCount = currentCount;
+
+	if (diffEncoder > 1000) {
+		previousSysTick = currentTicks;
+		previousEncoderCount = currentCount;
+	}
 
 	EncoderState state(60 * diffEncoder * 1000 / diffTicks * portTICK_PERIOD_MS / 200);
 	encoderStateHolder->set(state);
