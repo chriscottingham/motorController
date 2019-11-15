@@ -82,9 +82,7 @@ void init(void* param) {
 	TaskHandle_t displayHandle;
 	xTaskCreate(MotorDisplayTask, "MotorDisplay", 2000, &encoderStateHolder, 3, &displayHandle);
 
-	RtosQueueStateHolder<EncoderState> encoderStateHolder2(handle, EncoderState(0));
-	TaskHandle_t x = xTaskGetCurrentTaskHandle();
-	vTaskSuspend(x);
+	vTaskSuspend(xTaskGetCurrentTaskHandle());
 
 	while (1) {
 	}
@@ -111,9 +109,6 @@ int main(int argc, char* argv[]) {
 	while (1) {
 	}
 }
-
-
-
 
 #pragma GCC diagnostic pop
 

@@ -17,8 +17,8 @@ using namespace std;
 
 struct EncoderState {
 //	EncoderState(){};
-	EncoderState(uint16_t rpm = 0) : rpm(rpm) {}
-	uint16_t rpm;
+	EncoderState(uint32_t rpm = 0) : rpm(rpm) {}
+	uint32_t rpm;
 };
 
 struct DirectionEnum {

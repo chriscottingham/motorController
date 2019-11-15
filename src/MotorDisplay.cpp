@@ -127,9 +127,7 @@ void MotorDisplay::startI2c() {
 void MotorDisplay::resetBuffer() {
 
 	displayBuffer[0] = DATA;
-	for (uint16_t i=1; i<1025; i+=4) {
-		displayBuffer[i] = (uint32_t) 0;
-	}
+	memset(&displayBuffer[1], 0, 1024);
 }
 
 void copyString(uint8_t* target, uint8_t* source, uint8_t length) {
@@ -148,7 +146,6 @@ void MotorDisplay::drawBuffer() {
 
 	char charValue[5];
 	snprintf(charValue, 5, "%04d", encoderStateHolder->get().rpm);
-//	snprintf(charValue, 5, "%04d", (uint8_t)(0xff & __get_IPSR()));
 
 	for (uint8_t iChar=0; iChar<4; iChar++) {
 
@@ -159,9 +156,8 @@ void MotorDisplay::drawBuffer() {
 			int charWidth = font_char_width[charIndex];
 			for (int iCharColumn=0; iCharColumn < charWidth; iCharColumn++) {
 
-				displayBuffer[1 + iRow*128 + iChar*charWidth + iCharColumn] =
+				displayBuffer[1 + iRow*128 + iChar*(charWidth+1) + iCharColumn] =
 						font_char_addr[charIndex][iRow*charWidth + iCharColumn];
-
 			}
 		}
 	}
@@ -202,6 +198,7 @@ void MotorDisplay::runTask() {
 			bitValues.displayInitialized = true;
 
 		} else if (bitValues.displayDirty) {
+			resetBuffer();
 			drawBuffer();
 			sendBuffer();
 		}

@@ -40,7 +40,7 @@ void RotaryEncoder::updateSpeed() {
 	}
 	previousEncoderCount = currentCount;
 
-	EncoderState state(60 * diffEncoder / 200 / diffTicks * portTICK_PERIOD_MS);
+	EncoderState state(60 * diffEncoder * 1000 / diffTicks * portTICK_PERIOD_MS / 200);
 	encoderStateHolder->set(state);
 }
 
@@ -58,6 +58,6 @@ void RotaryEncoder::run() {
 
 		updateSpeed();
 
-		vTaskDelay(pdMS_TO_TICKS(10));
+		vTaskDelay(pdMS_TO_TICKS(25));
 	}
 }
