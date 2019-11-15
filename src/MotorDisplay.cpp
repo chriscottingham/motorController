@@ -10,7 +10,7 @@
 
 #include "task.h"
 
-#include "LiberationMono_40.h"
+#include "LiberationMono_32.h"
 
 uint8_t MotorDisplay::initializationSequence[] = {
 				COMMAND, 0xa8, 0x3f,
@@ -144,19 +144,26 @@ void MotorDisplay::drawBuffer() {
 
 	displayBuffer[0] = DATA;
 
+	drawNumber(encoderStateHolder->get().rpm, 1);
+//	drawNumber(targetSpeedHolder->get().rpm, 8*128*4);
+	drawNumber(4368, 128*4);
+}
+
+void MotorDisplay::drawNumber(uint32_t value, uint16_t offset) {
+
 	char charValue[5];
-	snprintf(charValue, 5, "%04d", encoderStateHolder->get().rpm);
+	snprintf(charValue, 5, "%04d", value);
 
 	for (uint8_t iChar=0; iChar<4; iChar++) {
 
 		uint8_t charIndex=charValue[iChar] - 0x30;
 
-		for (int iRow=0; iRow<5; iRow++) {
+		for (int iRow=0; iRow<4; iRow++) {
 
 			int charWidth = font_char_width[charIndex];
 			for (int iCharColumn=0; iCharColumn < charWidth; iCharColumn++) {
 
-				displayBuffer[1 + iRow*128 + iChar*(charWidth+1) + iCharColumn] =
+				displayBuffer[offset + iRow*128 + iChar*(charWidth+1) + iCharColumn] =
 						font_char_addr[charIndex][iRow*charWidth + iCharColumn];
 			}
 		}

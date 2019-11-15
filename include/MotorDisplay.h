@@ -40,6 +40,7 @@ private:
 	void initDma();
 
 	void resetBuffer();
+	void drawNumber(uint32_t value, uint16_t offset);
 	void drawBuffer();
 	void sendBuffer();
 

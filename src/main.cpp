@@ -9,6 +9,7 @@
 #include <string>
 
 #include <MotorDisplay.h>
+#include "SpeedControl.h"
 #include "ExtiHandler.h"
 #include "RotaryEncoder.h"
 #include "RtosQueueStateHolder.h"
@@ -28,6 +29,7 @@ extern "C" {
 
 MotorDisplay* motorDisplay;
 RotaryEncoder* encoder;
+SpeedControl* speedControl;
 
 extern "C"
 {
@@ -71,6 +73,12 @@ void RotaryEncoderTask(void* param) {
 	encoder->run();
 }
 
+void SpeedControlTask(void* param) {
+	SpeedControl control(GPIOA, 2);
+	speedControl = &control;
+	speedControl->run();
+}
+
 void init(void* param) {
 
 	QueueDefinition* handle = xQueueCreate(1, sizeof(EncoderState));
@@ -81,6 +89,7 @@ void init(void* param) {
 
 	TaskHandle_t displayHandle;
 	xTaskCreate(MotorDisplayTask, "MotorDisplay", 2000, &encoderStateHolder, 3, &displayHandle);
+
 
 	vTaskSuspend(xTaskGetCurrentTaskHandle());
 
