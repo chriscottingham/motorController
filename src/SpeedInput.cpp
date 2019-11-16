@@ -23,21 +23,21 @@ SpeedInput::SpeedInput(GPIO_TypeDef* gpio, uint8_t inputPin) :
 	ADC1->CR2 |= ADC_CR2_ADON;
 }
 
-void SpeedInput::setStateHolder(StateHolder<SpeedInputState>* stateHolder) {
+void SpeedInput::setStateHolder(StateHolder<RotationState>* stateHolder) {
 	this->stateHolder = stateHolder;
 }
 
-void SpeedInput::setMaxSpeed(uint16_t maxSpeed) {
-	this->maxSpeed = maxSpeed;
+void SpeedInput::setMaxRpm(uint16_t maxRpm) {
+	this->maxRpm = maxRpm;
 }
 
 void SpeedInput::run() {
 	while (1) {
 		volatile long masked = (0xff00 & ADC1->DR) >> 8;
-		speedState.inputSpeed = masked * maxSpeed / 256;
+		speedState.rpm = masked * maxRpm / 256;
 		stateHolder->set(speedState);
 
-		vTaskDelay(pdMS_TO_TICKS(50));
+		vTaskDelay(pdMS_TO_TICKS(250));
 
 	}
 }

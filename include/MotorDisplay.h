@@ -13,13 +13,14 @@
 #include "Logger.h"
 #include "RotaryEncoder.h"
 #include "SpeedInput.h"
+#include "RotationState.h"
 
 #define kI2cGpio GPIOB
 #define kPowerGpio GPIOB
 
 struct MotorDisplayInitializer {
-	StateHolder<EncoderState>* encoderStateHolder;
-	StateHolder<SpeedInputState>* speedInputStateHolder;
+	StateHolder<RotationState>* encoderStateHolder;
+	StateHolder<RotationState>* speedInputStateHolder;
 };
 
 class MotorDisplay {
@@ -39,8 +40,8 @@ public:
 
 private:
 	uint8_t displayBuffer[1025];
-	StateHolder<EncoderState>* encoderStateHolder;
-	StateHolder<SpeedInputState>* speedInputStateHolder;
+	StateHolder<RotationState>* encoderStateHolder;
+	StateHolder<RotationState>* speedInputStateHolder;
 
 	BitValues bitValues;
 
@@ -67,7 +68,7 @@ public:
 	void handleI2cInterrupt();
 	void handleI2cError();
 
-	void setEncoderStateHolder(StateHolder<EncoderState> * encoderStateHolder);
+	void setEncoderStateHolder(StateHolder<RotationState> * encoderStateHolder);
 
 	void runTask();
 };

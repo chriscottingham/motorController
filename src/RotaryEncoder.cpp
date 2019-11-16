@@ -43,11 +43,11 @@ void RotaryEncoder::updateSpeed() {
 		previousEncoderCount = currentCount;
 	}
 
-	EncoderState state(60 * diffEncoder * 1000 / diffTicks * portTICK_PERIOD_MS / 200);
+	RotationState state(60 * diffEncoder * 1000 / diffTicks * portTICK_PERIOD_MS / 200);
 	encoderStateHolder->set(state);
 }
 
-void RotaryEncoder::setEncoderStateHolder(StateHolder<EncoderState>* encoderStateHolder) {
+void RotaryEncoder::setEncoderStateHolder(StateHolder<RotationState>* encoderStateHolder) {
 	this->encoderStateHolder = encoderStateHolder;
 }
 

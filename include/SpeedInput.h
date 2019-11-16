@@ -10,29 +10,24 @@
 
 #include "IoDriver.h"
 #include "StateHolder.h"
-
+#include "RotationState.h"
 using namespace::std;
-
-struct SpeedInputState {
-	SpeedInputState(uint16_t inputSpeed) : inputSpeed(inputSpeed) {}
-	uint16_t inputSpeed;
-};
 
 class SpeedInput {
 private:
 	GPIO_TypeDef* gpio;
 	uint8_t inputPin;
 
-	SpeedInputState speedState;
-	StateHolder<SpeedInputState>* stateHolder;
+	RotationState speedState;
+	StateHolder<RotationState>* stateHolder;
 
-	uint16_t maxSpeed = 3600;
+	long maxRpm;
 
 public:
 	SpeedInput(GPIO_TypeDef* gpio, uint8_t inputPin);
 
-	void setStateHolder(StateHolder<SpeedInputState>* stateHolder);
-	void setMaxSpeed(uint16_t maxSpeed);
+	void setStateHolder(StateHolder<RotationState>* stateHolder);
+	void setMaxRpm(uint16_t maxRpm);
 
 	void run();
 

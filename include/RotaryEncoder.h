@@ -12,14 +12,9 @@
 
 #include "IoDriver.h"
 #include "StateHolder.h"
+#include "RotationState.h"
 
 using namespace std;
-
-struct EncoderState {
-//	EncoderState(){};
-	EncoderState(uint32_t rpm = 0) : rpm(rpm) {}
-	uint32_t rpm;
-};
 
 struct DirectionEnum {
 	enum type {
@@ -36,14 +31,14 @@ private:
 	uint32_t previousSysTick = 0;
 	uint16_t previousEncoderCount = 0;
 
-	StateHolder<EncoderState>* encoderStateHolder;
+	StateHolder<RotationState>* encoderStateHolder;
 
 	void updateSpeed();
 
 public:
 	RotaryEncoder(GPIO_TypeDef* timerPort, vector<uint8_t>* const pins);
 
-	void setEncoderStateHolder(StateHolder<EncoderState>* encoderStateHolder);
+	void setEncoderStateHolder(StateHolder<RotationState>* encoderStateHolder);
 	Direction getDirection();
 	void run();
 };

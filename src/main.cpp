@@ -1,8 +1,8 @@
-
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 #pragma GCC diagnostic ignored "-Wreturn-type"
 #pragma GCC diagnostic ignored "-Wunused-variable"
+#pragma GCC diagnostic push
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,8 +13,13 @@
 #include "ExtiHandler.h"
 #include "RotaryEncoder.h"
 #include "RtosQueueStateHolder.h"
+#include "PwmControl.h"
 
 #define configASSERT_DEFINED 1
+
+//incommenting this makes display flash
+//long MAX_MOTOR_RPM = 3600;
+
 extern "C" {
 	#include "FreeRTOSConfig.h"
 	#include "freeRTOS.h"
@@ -25,7 +30,6 @@ extern "C" {
 	#include "queue.h"
 }
 
-#pragma GCC diagnostic push
 
 MotorDisplay* motorDisplay;
 RotaryEncoder* encoder;
@@ -53,17 +57,6 @@ extern "C"
 	void DMA1_Channel6_IRQHandler(void) {
 		motorDisplay->handleDma();
 	}
-
-}
-
-void SpeedInputTask(void* param) {
-
-	//moving this outside of function makes screen flicker. Why?
-	SpeedInput* speedInput;
-	speedInput = &SpeedInput(GPIOA, 2);
-
-	speedInput->setStateHolder((StateHolder<SpeedInputState>*) param);
-	speedInput->run();
 }
 
 void MotorDisplayTask(void* param) {
@@ -76,18 +69,39 @@ void MotorDisplayTask(void* param) {
 void RotaryEncoderTask(void* param) {
 
 	encoder = &RotaryEncoder(GPIOA, &vector<uint8_t>({0, 1}));
-	encoder->setEncoderStateHolder((StateHolder<EncoderState>*) param);
+	encoder->setEncoderStateHolder((StateHolder<RotationState>*) param);
 	encoder->run();
+}
+
+void SpeedInputTask(void* param) {
+
+	//moving this outside of function makes screen flicker. Why?
+	SpeedInput* speedInput;
+	speedInput = &SpeedInput(GPIOA, 2);
+	speedInput->setMaxRpm(3600);
+
+	speedInput->setStateHolder((StateHolder<RotationState>*) param);
+	speedInput->run();
+}
+
+void PwmControlTask(void* param) {
+
+	PwmControlInitializer* initializer = (PwmControlInitializer*) param;
+	PwmControl pwm(GPIOA, 6);
+	pwm.setMaxMotorRpm(3600);
+	pwm.setCurrentSpeedHolder(initializer->currentSpeed);
+	pwm.setDesiredSpeedHolder(initializer->desiredSpeed);
+	pwm.run();
 }
 
 
 void init(void* param) {
 
-	RtosQueueStateHolder<EncoderState> encoderStateHolder(1, EncoderState(0));
+	RtosQueueStateHolder<RotationState> encoderStateHolder(1, RotationState(0));
 
 	xTaskCreate(RotaryEncoderTask, "RotaryEncoder", 500, &encoderStateHolder, 2, 0);
 
-	RtosQueueStateHolder<SpeedInputState> speedStateHolder(1, SpeedInputState(1432));
+	RtosQueueStateHolder<RotationState> speedStateHolder(1, RotationState(1432));
 
 	MotorDisplayInitializer displayInitializer;
 	displayInitializer.encoderStateHolder = &encoderStateHolder;
@@ -95,6 +109,11 @@ void init(void* param) {
 	xTaskCreate(MotorDisplayTask, "MotorDisplay", 2000, &displayInitializer, 3, 0);
 
 	xTaskCreate(SpeedInputTask, "SpeedInput", 200, &speedStateHolder, 4, 0);
+
+	PwmControlInitializer pwmInitializer;
+	pwmInitializer.currentSpeed = &encoderStateHolder;
+	pwmInitializer.desiredSpeed = &speedStateHolder;
+	xTaskCreate(PwmControlTask, "PwmControl", 200, &pwmInitializer, 4, 0);
 
 	vTaskSuspend(xTaskGetCurrentTaskHandle());
 

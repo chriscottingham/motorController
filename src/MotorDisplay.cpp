@@ -141,7 +141,7 @@ void copyString(uint8_t* target, uint8_t* source, uint8_t length) {
 	}
 }
 
-void MotorDisplay::setEncoderStateHolder(StateHolder<EncoderState>* encoderStateHolder) {
+void MotorDisplay::setEncoderStateHolder(StateHolder<RotationState>* encoderStateHolder) {
 	this->encoderStateHolder = encoderStateHolder;
 }
 
@@ -151,7 +151,7 @@ void MotorDisplay::drawBuffer() {
 
 	drawNumber(encoderStateHolder->get().rpm, 1);
 //	drawNumber(targetSpeedHolder->get().rpm, 8*128*4);
-	drawNumber(speedInputStateHolder->get().inputSpeed, 128*4);
+	drawNumber(speedInputStateHolder->get().rpm, 128*4);
 }
 
 void MotorDisplay::drawNumber(uint32_t value, uint16_t offset) {
