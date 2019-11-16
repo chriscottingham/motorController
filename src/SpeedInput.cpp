@@ -12,6 +12,7 @@
 SpeedInput::SpeedInput(GPIO_TypeDef* gpio, uint8_t inputPin) :
 		gpio(gpio), speedState(1234) {
 	this->inputPin = inputPin;
+//	IoDriver::initPin(GPIOA, vector<uint8_t>{2}, GpioMode::analogInput);
 
 	RCC->APB2ENR |= RCC_APB2ENR_ADC1EN;
 	ADC1->SMPR2 |= 0x1c;
@@ -31,7 +32,7 @@ void SpeedInput::setMaxSpeed(uint16_t maxSpeed) {
 
 void SpeedInput::run() {
 	while (1) {
-		speedState.inputSpeed = ADC1->DR * maxSpeed / 256;
+		speedState.inputSpeed = (0xff & ADC1->DR) * maxSpeed / 256;
 		stateHolder->set(speedState);
 
 		vTaskDelay(pdMS_TO_TICKS(50));

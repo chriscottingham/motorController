@@ -8,8 +8,6 @@
 #ifndef SPEEDControl_H_
 #define SPEEDControl_H_
 
-#include <vector>
-
 #include "IoDriver.h"
 #include "StateHolder.h"
 

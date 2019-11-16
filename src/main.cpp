@@ -29,10 +29,10 @@ extern "C" {
 
 MotorDisplay* motorDisplay;
 RotaryEncoder* encoder;
-SpeedInput* speedInput;
 
 extern "C"
 {
+
 	void EXTI0_IRQHandler(void) {
 
 		//	NVIC_ClearPendingIRQ(EXTI0_IRQn);
@@ -56,6 +56,16 @@ extern "C"
 
 }
 
+void SpeedInputTask(void* param) {
+
+	//moving this outside of function makes screen flicker. Why?
+	SpeedInput* speedInput;
+	speedInput = &SpeedInput(GPIOA, 2);
+
+	speedInput->setStateHolder((StateHolder<SpeedInputState>*) param);
+	speedInput->run();
+}
+
 void MotorDisplayTask(void* param) {
 
 	motorDisplay = &MotorDisplay();
@@ -70,11 +80,6 @@ void RotaryEncoderTask(void* param) {
 	encoder->run();
 }
 
-void SpeedInputTask(void* param) {
-	speedInput = &SpeedInput(GPIOA, 2);
-	speedInput->setStateHolder((StateHolder<SpeedInputState>*) param);
-	speedInput->run();
-}
 
 void init(void* param) {
 
