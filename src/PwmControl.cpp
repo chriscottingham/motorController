@@ -13,7 +13,7 @@ PwmControl::PwmControl(GPIO_TypeDef* gpio, uint8_t outputPin) : gpio(gpio), outp
 
 	RCC->APB1ENR |= RCC_APB1ENR_TIM3EN;
 
-	TIM3->CCMR1 |= TIM_CCMR1_OC1M | TIM_CCMR1_OC1FE;
+	TIM3->CCMR1 |= 0x60 | TIM_CCMR1_OC1FE;
 	TIM3->CCR2 |= 0x70;
 	TIM3->ARR = 256;
 	TIM3->CCER |= 0x01;
@@ -36,9 +36,13 @@ void PwmControl::setMaxMotorRpm(long maxRpm) {
 void PwmControl::run() {
 
 	while (1) {
-		short desiredSpeedValue = desiredSpeed->get().rpm;
-		short currentSpeedValue = currentSpeed->get().rpm;
-		TIM3->CCR1 = 0xff * (desiredSpeedValue - currentSpeedValue) / desiredSpeedValue;
+		uint16_t desiredSpeedValue = desiredSpeed->get().rpm;
+		uint16_t currentSpeedValue = currentSpeed->get().rpm;
+		uint16_t diff = desiredSpeedValue - currentSpeedValue;
+		if (diff  > maxMotorRpm) {
+			diff = 0;
+		}
+		TIM3->CCR1 = 0xff * diff / desiredSpeedValue;
 		vTaskDelay(pdMS_TO_TICKS(100));
 	}
 }

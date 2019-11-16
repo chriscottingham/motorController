@@ -10,7 +10,7 @@
 
 struct RotationState {
 	RotationState(long rpm) : rpm(rpm) { }
-	long rpm;
+	uint16_t rpm;
 };
 
 #endif /* ROTATIONSTATE_H_ */
