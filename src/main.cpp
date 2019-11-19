@@ -97,23 +97,25 @@ void PwmControlTask(void* param) {
 
 void init(void* param) {
 
+//	for (long i=0; i<1000000; i++);
+
 	RtosQueueStateHolder<RotationState> encoderStateHolder(1, RotationState(0));
 
-	xTaskCreate(RotaryEncoderTask, "RotaryEncoder", 500, &encoderStateHolder, 2, 0);
+	xTaskCreate(RotaryEncoderTask, "RotaryEncoder", 500, &encoderStateHolder, 8, 0);
 
 	RtosQueueStateHolder<RotationState> speedStateHolder(1, RotationState(1432));
 
 	MotorDisplayInitializer displayInitializer;
 	displayInitializer.encoderStateHolder = &encoderStateHolder;
 	displayInitializer.speedInputStateHolder = &speedStateHolder;
-	xTaskCreate(MotorDisplayTask, "MotorDisplay", 2000, &displayInitializer, 3, 0);
+	xTaskCreate(MotorDisplayTask, "MotorDisplay", 2000, &displayInitializer, 1, 0);
 
-	xTaskCreate(SpeedInputTask, "SpeedInput", 200, &speedStateHolder, 4, 0);
+	xTaskCreate(SpeedInputTask, "SpeedInput", 200, &speedStateHolder, 8, 0);
 
 	PwmControlInitializer pwmInitializer;
 	pwmInitializer.currentSpeed = &encoderStateHolder;
 	pwmInitializer.desiredSpeed = &speedStateHolder;
-	xTaskCreate(PwmControlTask, "PwmControl", 200, &pwmInitializer, 4, 0);
+	xTaskCreate(PwmControlTask, "PwmControl", 200, &pwmInitializer, 8, 0);
 
 	vTaskSuspend(xTaskGetCurrentTaskHandle());
 

@@ -20,7 +20,7 @@ RotaryEncoder::RotaryEncoder(GPIO_TypeDef* timerPort, vector<uint8_t>* const enc
 
 	RCC->APB1ENR |= 1;
 
-	TIM2->SMCR |= 1; //SMS[2:0]
+	TIM2->SMCR |= 0x0300 | 1; //SMS[2:0]
 	TIM2->CR1 |= TIM_CR1_CEN;
 }
 
