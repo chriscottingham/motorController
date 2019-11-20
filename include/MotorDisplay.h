@@ -14,6 +14,7 @@
 #include "RotaryEncoder.h"
 #include "SpeedInput.h"
 #include "RotationState.h"
+#include "Point.h"
 
 #define kI2cGpio GPIOB
 #define kPowerGpio GPIOB
@@ -42,6 +43,7 @@ private:
 	uint8_t displayBuffer[1025];
 	StateHolder<RotationState>* encoderStateHolder;
 	StateHolder<RotationState>* speedInputStateHolder;
+	uint8_t* font32_chars[93];
 
 	BitValues bitValues;
 
@@ -49,7 +51,8 @@ private:
 	void initDma();
 
 	void resetBuffer();
-	void drawNumber(uint32_t value, uint16_t offset);
+	Point<int> drawChars(char* source, uint8_t charCount, Point<int> topLeft);
+	Point<int> drawNumber(int value, int charCount, Point<int> topLeft);
 	void drawBuffer();
 	void sendBuffer();
 
@@ -58,6 +61,8 @@ public:
 	const std::vector<uint8_t> kPowerPin = { 9 };
 
 	static uint8_t initializationSequence[];
+
+	MotorDisplay();
 
 	void setInitialization(MotorDisplayInitializer* initializer);
 

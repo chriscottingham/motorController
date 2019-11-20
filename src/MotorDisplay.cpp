@@ -12,6 +12,8 @@
 
 #include "LiberationMono_32.h"
 
+#define FONT_HEIGHT 32
+
 uint8_t MotorDisplay::initializationSequence[] = {
 				COMMAND, 0xa8, 0x3f,
 				COMMAND, 0xd3, 0,
@@ -29,6 +31,22 @@ uint8_t MotorDisplay::initializationSequence[] = {
 				COMMAND, 0x21, 0, 127, //column begin, end
 				COMMAND, 0x22, 0, 7, //page begin, end
 };
+
+MotorDisplay::MotorDisplay() {
+	font32_chars[48] = font32_48;
+	font32_chars[49] = font32_49;
+	font32_chars[50] = font32_50;
+	font32_chars[51] = font32_51;
+	font32_chars[52] = font32_52;
+	font32_chars[53] = font32_53;
+	font32_chars[54] = font32_54;
+	font32_chars[55] = font32_55;
+	font32_chars[56] = font32_56;
+	font32_chars[57] = font32_57;
+	font32_chars[58] = font32_58;
+	font32_chars[67] = font32_67;
+	font32_chars[84] = font32_84;
+}
 
 void MotorDisplay::handleI2cInterrupt() {
 
@@ -133,6 +151,8 @@ void MotorDisplay::resetBuffer() {
 
 	displayBuffer[0] = DATA;
 	memset(&displayBuffer[1], 0, 1024);
+
+
 }
 
 void copyString(uint8_t* target, uint8_t* source, uint8_t length) {
@@ -149,30 +169,44 @@ void MotorDisplay::drawBuffer() {
 
 	displayBuffer[0] = DATA;
 
-	drawNumber(encoderStateHolder->get().rpm, 1);
-//	drawNumber(targetSpeedHolder->get().rpm, 8*128*4);
-	drawNumber(speedInputStateHolder->get().rpm, 128*4);
+	Point<int> firstLineEndPoint = drawChars("C:", 2, Point<int>(0,0));
+	firstLineEndPoint = drawNumber(encoderStateHolder->get().rpm, 4, Point<int>(firstLineEndPoint.getX(), 0));
+
+	Point<int> secondLineEndPoint = drawChars("T:", 2, Point<int>(0, firstLineEndPoint.getY()));
+	drawNumber(speedInputStateHolder->get().rpm, 4, Point<int>(secondLineEndPoint.getX(), firstLineEndPoint.getY()));
 }
 
-void MotorDisplay::drawNumber(uint32_t value, uint16_t offset) {
+Point<int> MotorDisplay::drawNumber(int value, int charCount, Point<int> topLeft) {
 
-	char charValue[5];
-	snprintf(charValue, 5, "%04d", value);
+	char charValue[charCount + 1];
 
-	for (uint8_t iChar=0; iChar<4; iChar++) {
+	snprintf(charValue, charCount+1, "%04d", value);
+	return drawChars(charValue, charCount, topLeft);
+}
 
-		uint8_t charIndex=charValue[iChar] - 0x30;
+Point<int> MotorDisplay::drawChars(char* source, uint8_t charCount, Point<int> topLeft) {
+
+	int endX = 0;
+
+	int bufferOffset = 1 + 128 * topLeft.getY() / (FONT_HEIGHT / 4) + topLeft.getX();
+
+	for (uint8_t iChar=0; iChar<charCount; iChar++) {
+
+		volatile uint8_t charIndex=source[iChar];
+		int charWidth = font32_width[charIndex - 33];
 
 		for (int iRow=0; iRow<4; iRow++) {
 
-			int charWidth = font_char_width[charIndex];
 			for (int iCharColumn=0; iCharColumn < charWidth; iCharColumn++) {
 
-				displayBuffer[offset + iRow*128 + iChar*(charWidth+1) + iCharColumn] =
-						font_char_addr[charIndex][iRow*charWidth + iCharColumn];
+				displayBuffer[bufferOffset + iRow*128 + endX + iCharColumn] =
+						font32_chars[charIndex][iRow*charWidth + iCharColumn];
 			}
 		}
+		endX += charWidth;
 	}
+
+	return Point<int>(topLeft.getX() + endX, topLeft.getY() + FONT_HEIGHT);
 }
 
 void MotorDisplay::sendBuffer() {
@@ -182,15 +216,15 @@ void MotorDisplay::sendBuffer() {
 //	DMA1_Channel6->CCR |= DMA_CCR1_CIRC;
 	DMA1_Channel6->CCR |= DMA_CCR1_EN;
 
-	I2C1->CR1 |= I2C_CR1_PE;
+//	I2C1->CR1 |= I2C_CR1_PE;
 	I2C1->CR2 |= I2C_CR2_DMAEN;
 	I2C1->CR1 |= I2C_CR1_START;
 }
 
 void MotorDisplay::stop() {
-	I2C1->CR2 &= ~I2C_CR2_DMAEN;
 	while (!(I2C1->SR1 & I2C_SR1_BTF));
 	I2C1->CR1 |= I2C_CR1_STOP;
+	I2C1->CR2 &= ~I2C_CR2_DMAEN;
 //	I2C1->CR1 &= ~I2C_CR1_PE;
 }
 
