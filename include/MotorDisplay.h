@@ -53,6 +53,7 @@ private:
 	void resetBuffer();
 	Point<int> drawChars(char* source, uint8_t charCount, Point<int> topLeft);
 	Point<int> drawNumber(int value, int charCount, Point<int> topLeft);
+	void drawPowerBar();
 	void drawBuffer();
 	void sendBuffer();
 

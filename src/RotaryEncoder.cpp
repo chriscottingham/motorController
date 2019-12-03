@@ -61,6 +61,6 @@ void RotaryEncoder::run() {
 
 		updateSpeed();
 
-		vTaskDelay(pdMS_TO_TICKS(25));
+		vTaskDelay(pdMS_TO_TICKS(5));
 	}
 }

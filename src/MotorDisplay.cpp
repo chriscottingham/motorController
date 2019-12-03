@@ -174,6 +174,29 @@ void MotorDisplay::drawBuffer() {
 
 	Point<int> secondLineEndPoint = drawChars("T:", 2, Point<int>(0, firstLineEndPoint.getY()));
 	drawNumber(speedInputStateHolder->get().rpm, 4, Point<int>(secondLineEndPoint.getX(), firstLineEndPoint.getY()));
+
+	drawPowerBar();
+}
+
+void MotorDisplay::drawPowerBar() {
+
+	uint8_t powerByte = TIM3->CCR1;
+
+	int iRow;
+	int columnWidth = 20;
+	for (iRow=7; iRow>=7 - powerByte / 32; iRow--) {
+		for (int iColumn = 0; iColumn < columnWidth; iColumn++) {
+			displayBuffer[1 + (iRow * 128) + (128 - columnWidth) + iColumn] = 0xff;
+		}
+	}
+
+	iRow = 7 - powerByte / 32;
+	uint8_t barPortion = powerByte % 8;
+	uint16_t barMask = 0Xff << (8 - barPortion);
+	for (int iColumn = 0; iColumn < columnWidth; iColumn++) {
+		displayBuffer[1 + iRow * 128 + (128 - columnWidth) + iColumn] = barMask;
+	}
+
 }
 
 Point<int> MotorDisplay::drawNumber(int value, int charCount, Point<int> topLeft) {

@@ -32,12 +32,20 @@ void SpeedInput::setMaxRpm(uint16_t maxRpm) {
 }
 
 void SpeedInput::run() {
+
+	static int previousValue = 0;
 	while (1) {
 		volatile long masked = (0xff00 & ADC1->DR) >> 8;
-		speedState.rpm = masked * maxRpm / 256;
+		int newValue = masked * maxRpm / 256;
+
+		float integral = 0.3;
+		newValue = integral * newValue + (1-integral) * previousValue;
+		previousValue = newValue;
+
+		speedState.rpm = newValue;
 		stateHolder->set(speedState);
 
-		vTaskDelay(pdMS_TO_TICKS(250));
+		vTaskDelay(pdMS_TO_TICKS(100));
 
 	}
 }
