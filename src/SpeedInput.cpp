@@ -9,22 +9,19 @@
 
 #include "task.h"
 
-SpeedInput::SpeedInput(GPIO_TypeDef* gpio, uint8_t inputPin) :
-		gpio(gpio), speedState(1234) {
-	this->inputPin = inputPin;
-//	IoDriver::initPin(GPIOA, vector<uint8_t>{2}, GpioMode::analogInput);
-	GPIOA->CRL &= ~(0xf<<8);
-
-	RCC->APB2ENR |= RCC_APB2ENR_ADC1EN;
-	ADC1->SMPR2 |= 0x1c;
-	ADC1->SQR3 |= inputPin;
-	ADC1->CR2 |= ADC_CR2_CONT | ADC_CR2_ADON | ADC_CR2_ALIGN;
-
-	ADC1->CR2 |= ADC_CR2_ADON;
+SpeedInput::SpeedInput() : speedState(RotationState(2341)){
 }
 
 void SpeedInput::setStateHolder(StateHolder<RotationState>* stateHolder) {
 	this->stateHolder = stateHolder;
+}
+
+void SpeedInput::setAdcChannel(int adcChannel) {
+	this->adcChannel = adcChannel;
+}
+
+void SpeedInput::setAdcStateHolder(StateHolder<AdcState>* adcStateHolder) {
+	this->adcStateHolder = adcStateHolder;
 }
 
 void SpeedInput::setMaxRpm(uint16_t maxRpm) {

@@ -11,23 +11,27 @@
 #include "IoDriver.h"
 #include "StateHolder.h"
 #include "RotationState.h"
+#include "AdcController.h"
+
 using namespace::std;
 
 class SpeedInput {
 private:
-	GPIO_TypeDef* gpio;
-	uint8_t inputPin;
+	int adcChannel;
 
 	RotationState speedState;
 	StateHolder<RotationState>* stateHolder;
+	StateHolder<AdcState>* adcStateHolder;
 
 	long maxRpm;
 
 public:
-	SpeedInput(GPIO_TypeDef* gpio, uint8_t inputPin);
+	SpeedInput();
 
+	void setAdcStateHolder(StateHolder<AdcState>* adcStateHolder);
 	void setStateHolder(StateHolder<RotationState>* stateHolder);
 	void setMaxRpm(uint16_t maxRpm);
+	void setAdcChannel(int adcChannel);
 
 	void run();
 

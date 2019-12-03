@@ -14,6 +14,7 @@
 #include "RotaryEncoder.h"
 #include "RtosQueueStateHolder.h"
 #include "PwmControl.h"
+#include "AdcController.h"
 
 #define configASSERT_DEFINED 1
 
@@ -34,6 +35,7 @@ extern "C" {
 //present for interrupts
 MotorDisplay* motorDisplay;
 RotaryEncoder* encoder;
+AdcController* adcController;
 
 extern "C"
 {
@@ -91,7 +93,11 @@ void init(void* param) {
 
 	xTaskCreate(RotaryEncoderTask, "RotaryEncoder", 500, encoder, 8, 0);
 
-//	RtosQueueStateHolder<AdcState> adcStateHolder(1, AdcState());
+	RtosQueueStateHolder<AdcState> adcStateHolder(1, AdcState());
+
+	adcController = &AdcController();
+	adcController->addChannel(GPIOA, 2);
+	adcController->addChannel(GPIOA, 3);
 
 	RtosQueueStateHolder<RotationState> speedStateHolder(1, RotationState(1432));
 
@@ -101,10 +107,11 @@ void init(void* param) {
 
 	xTaskCreate(MotorDisplayTask, "MotorDisplay", 2000, motorDisplay, 1, 0);
 
-	SpeedInput speedInput(GPIOA, 2);
+	SpeedInput speedInput;
 	speedInput.setMaxRpm(3600);
 	speedInput.setStateHolder(&speedStateHolder);
-//	speedInput.setAdcStateHolder(adcStateHolder);
+	speedInput.setAdcStateHolder(&adcStateHolder);
+	speedInput.setAdcChannel(1);
 	xTaskCreate(SpeedInputTask, "SpeedInput", 200, &speedInput, 8, 0);
 
 	PwmControl pwm(GPIOA, 6);
@@ -112,7 +119,6 @@ void init(void* param) {
 	pwm.setCurrentSpeedHolder(&encoderStateHolder);
 	pwm.setDesiredSpeedHolder(&speedStateHolder);
 	xTaskCreate(PwmControlTask, "PwmControl", 200, &pwm, 8, 0);
-
 
 	vTaskSuspend(xTaskGetCurrentTaskHandle());
 
