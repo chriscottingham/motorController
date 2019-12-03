@@ -19,11 +19,6 @@
 #define kI2cGpio GPIOB
 #define kPowerGpio GPIOB
 
-struct MotorDisplayInitializer {
-	StateHolder<RotationState>* encoderStateHolder;
-	StateHolder<RotationState>* speedInputStateHolder;
-};
-
 class MotorDisplay {
 
 public:
@@ -65,8 +60,6 @@ public:
 
 	MotorDisplay();
 
-	void setInitialization(MotorDisplayInitializer* initializer);
-
 	void startI2c();
 	void stop();
 
@@ -75,6 +68,7 @@ public:
 	void handleI2cError();
 
 	void setEncoderStateHolder(StateHolder<RotationState> * encoderStateHolder);
+	void setSpeedInputStateHolder(StateHolder<RotationState>* speedHolder);
 
 	void runTask();
 };

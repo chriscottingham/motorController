@@ -20,7 +20,7 @@ private:
 	ValueType value;
 
 public:
-	RtosQueueStateHolder(uint8_t elemenmtCount, ValueType value) : value(value) {
+	RtosQueueStateHolder(uint8_t elementCount, ValueType value) : value(value) {
 		queueHandle = xQueueCreate(1, sizeof(ValueType));
 	}
 

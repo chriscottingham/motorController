@@ -18,11 +18,6 @@ using namespace::std;
 
 extern long MAX_MOTOR_SPEED;
 
-struct PwmControlInitializer {
-	StateHolder<RotationState>* currentSpeed;
-	StateHolder<RotationState>* desiredSpeed;
-};
-
 class PwmControl {
 private:
 	GPIO_TypeDef* gpio;

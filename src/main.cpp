@@ -31,6 +31,7 @@ extern "C" {
 }
 
 
+//present for interrupts
 MotorDisplay* motorDisplay;
 RotaryEncoder* encoder;
 
@@ -61,37 +62,22 @@ extern "C"
 
 void MotorDisplayTask(void* param) {
 
-	motorDisplay = &MotorDisplay();
-	motorDisplay->setInitialization((MotorDisplayInitializer*) param);
-	motorDisplay->runTask();
+	((MotorDisplay*) param)->runTask();
 }
 
 void RotaryEncoderTask(void* param) {
 
-	encoder = &RotaryEncoder(GPIOA, &vector<uint8_t>({0, 1}));
-	encoder->setEncoderStateHolder((StateHolder<RotationState>*) param);
-	encoder->run();
+	((RotaryEncoder*) param)->run();
 }
 
 void SpeedInputTask(void* param) {
 
-	//moving this outside of function makes screen flicker. Why?
-	SpeedInput* speedInput;
-	speedInput = &SpeedInput(GPIOA, 2);
-	speedInput->setMaxRpm(3600);
-
-	speedInput->setStateHolder((StateHolder<RotationState>*) param);
-	speedInput->run();
+	((SpeedInput*) param)->run();
 }
 
 void PwmControlTask(void* param) {
 
-	PwmControlInitializer* initializer = (PwmControlInitializer*) param;
-	PwmControl pwm(GPIOA, 6);
-	pwm.setMaxMotorRpm(3600);
-	pwm.setCurrentSpeedHolder(initializer->currentSpeed);
-	pwm.setDesiredSpeedHolder(initializer->desiredSpeed);
-	pwm.run();
+	((PwmControl*) param)->run();
 }
 
 
@@ -100,22 +86,33 @@ void init(void* param) {
 //	for (long i=0; i<1000000; i++);
 
 	RtosQueueStateHolder<RotationState> encoderStateHolder(1, RotationState(0));
+	encoder = &RotaryEncoder(GPIOA, &vector<uint8_t>({0, 1}));
+	encoder->setEncoderStateHolder(&encoderStateHolder);
 
-	xTaskCreate(RotaryEncoderTask, "RotaryEncoder", 500, &encoderStateHolder, 8, 0);
+	xTaskCreate(RotaryEncoderTask, "RotaryEncoder", 500, encoder, 8, 0);
+
+//	RtosQueueStateHolder<AdcState> adcStateHolder(1, AdcState());
 
 	RtosQueueStateHolder<RotationState> speedStateHolder(1, RotationState(1432));
 
-	MotorDisplayInitializer displayInitializer;
-	displayInitializer.encoderStateHolder = &encoderStateHolder;
-	displayInitializer.speedInputStateHolder = &speedStateHolder;
-	xTaskCreate(MotorDisplayTask, "MotorDisplay", 2000, &displayInitializer, 1, 0);
+	motorDisplay = &MotorDisplay();
+	motorDisplay->setEncoderStateHolder(&encoderStateHolder);
+	motorDisplay->setSpeedInputStateHolder(&speedStateHolder);
 
-	xTaskCreate(SpeedInputTask, "SpeedInput", 200, &speedStateHolder, 8, 0);
+	xTaskCreate(MotorDisplayTask, "MotorDisplay", 2000, motorDisplay, 1, 0);
 
-	PwmControlInitializer pwmInitializer;
-	pwmInitializer.currentSpeed = &encoderStateHolder;
-	pwmInitializer.desiredSpeed = &speedStateHolder;
-	xTaskCreate(PwmControlTask, "PwmControl", 200, &pwmInitializer, 8, 0);
+	SpeedInput speedInput(GPIOA, 2);
+	speedInput.setMaxRpm(3600);
+	speedInput.setStateHolder(&speedStateHolder);
+//	speedInput.setAdcStateHolder(adcStateHolder);
+	xTaskCreate(SpeedInputTask, "SpeedInput", 200, &speedInput, 8, 0);
+
+	PwmControl pwm(GPIOA, 6);
+	pwm.setMaxMotorRpm(3600);
+	pwm.setCurrentSpeedHolder(&encoderStateHolder);
+	pwm.setDesiredSpeedHolder(&speedStateHolder);
+	xTaskCreate(PwmControlTask, "PwmControl", 200, &pwm, 8, 0);
+
 
 	vTaskSuspend(xTaskGetCurrentTaskHandle());
 

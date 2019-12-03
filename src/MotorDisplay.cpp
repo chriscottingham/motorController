@@ -97,9 +97,8 @@ void MotorDisplay::handleDma() {
 	DMA1->IFCR |= DMA_ISR_GIF6;
 }
 
-void MotorDisplay::setInitialization(MotorDisplayInitializer* initializer) {
-	this->speedInputStateHolder = initializer->speedInputStateHolder;
-	this->encoderStateHolder = initializer->encoderStateHolder;
+void MotorDisplay::setSpeedInputStateHolder(StateHolder<RotationState>* speedHolder) {
+	this->speedInputStateHolder = speedHolder;
 }
 
 void MotorDisplay::initI2c() {
