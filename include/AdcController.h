@@ -12,7 +12,7 @@
 #include "StateHolder.h"
 
 struct AdcState {
-	int16_t values[9];
+	uint16_t values[9];
 };
 
 class AdcController {

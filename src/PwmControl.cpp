@@ -6,6 +6,7 @@
  */
 
 #include "PwmControl.h"
+#include <cmath>
 
 #define MAX_ARR 0xffff
 
@@ -49,15 +50,19 @@ void PwmControl::run() {
 		if (diff  > maxMotorRpm) {
 			diff = 0;
 		}
-		uint32_t onPercentage = 10 * MAX_ARR * diff / desiredSpeedValue;
+		uint32_t onPercentage = 5 * MAX_ARR * diff / desiredSpeedValue;
 		if (onPercentage > MAX_ARR) {
 			onPercentage = MAX_ARR;
 		}
 		float i = 0.02;
 		onPercentage = i * onPercentage + (1 - i) * previousValue;
 
-//		adcState->get().values[adcChannel - 1];
-//		onPercentage *= currentLimitFactor;
+		uint16_t currentAdc = adcState->get().values[adcChannel - 2];
+		float currentLimitFactor = 1 - std::pow(3.3f * currentAdc / MAX_ARR, 2);
+		if (currentLimitFactor < 0) {
+			currentLimitFactor = 1;
+		}
+		onPercentage *= currentLimitFactor;
 
 		TIM3->CCR1 = onPercentage;
 		previousValue = onPercentage;

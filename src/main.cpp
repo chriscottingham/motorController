@@ -64,7 +64,7 @@ extern "C"
 
 void MotorDisplayTask(void* param) {
 
-	((MotorDisplay*) param)->runTask();
+	((MotorDisplay*) param)->run();
 }
 
 void RotaryEncoderTask(void* param) {
@@ -124,7 +124,8 @@ void init(void* param) {
 	pwm.setMaxMotorRpm(3600);
 	pwm.setCurrentSpeedHolder(&encoderStateHolder);
 	pwm.setDesiredSpeedHolder(&speedStateHolder);
-//	pwm.setAdcChannel(3);
+	pwm.setAdcStateHolder(&adcStateHolder);
+	pwm.setAdcChannel(3);
 //	adcController->addChannel(GPIOA, 3);
 	xTaskCreate(PwmControlTask, "PwmControl", 200, &pwm, 8, 0);
 

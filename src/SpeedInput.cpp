@@ -32,7 +32,7 @@ void SpeedInput::run() {
 
 	static int previousValue = 0;
 	while (1) {
-		int adcValue = adcStateHolder->get().values[adcChannel-1];
+		int adcValue = adcStateHolder->get().values[adcChannel-2];
 		volatile long masked = (0xff00 & adcValue) >> 8;
 		int newValue = masked * maxRpm / 256;
 
@@ -41,7 +41,7 @@ void SpeedInput::run() {
 		previousValue = newValue;
 
 		speedState.rpm = newValue;
-		stateHolder->set(speedState);
+		stateHolder->set(&speedState);
 
 		vTaskDelay(pdMS_TO_TICKS(100));
 

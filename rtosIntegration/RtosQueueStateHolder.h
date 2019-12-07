@@ -27,8 +27,8 @@ public:
 	virtual ~RtosQueueStateHolder() {
 	}
 
-	void set(ValueType message) {
-		xQueueOverwrite(queueHandle, &message);
+	void set(ValueType* message) {
+		xQueueOverwrite(queueHandle, message);
 	}
 
 	ValueType get() {

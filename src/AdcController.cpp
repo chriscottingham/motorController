@@ -36,8 +36,6 @@ void AdcController::addChannel(GPIO_TypeDef* gpio, int channel) {
 		DMA1_Channel1->CPAR = 0x4001244c;
 		DMA1_Channel1->CMAR = (uint32_t) adcState.values;
 
-//		Logger::write(DMA1_Channel1->CMAR);
-
 		ADC1->CR2 |= ADC_CR2_CONT | ADC_CR2_ADON | ADC_CR2_ALIGN | ADC_CR2_DMA;
 }
 
@@ -54,8 +52,7 @@ void AdcController::run() {
 	}
 	startAdc();
 	while (true) {
-		stateHolder->set(adcState);
-		adcState.values[4] = ADC1->DR;
+		stateHolder->set(&adcState);
 		vTaskDelay(pdMS_TO_TICKS(5));
 	}
 }

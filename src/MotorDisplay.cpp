@@ -250,7 +250,7 @@ void MotorDisplay::stop() {
 //	I2C1->CR1 &= ~I2C_CR1_PE;
 }
 
-void MotorDisplay::runTask() {
+void MotorDisplay::run() {
 
 	while (1) {
 

@@ -12,7 +12,7 @@ template<typename ValueType> class StateHolder {
 
 public:
 
-	virtual void set(ValueType message) = 0;
+	virtual void set(ValueType* message) = 0;
 	virtual ValueType get() = 0;
 
 	StateHolder() {};

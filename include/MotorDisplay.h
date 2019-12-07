@@ -70,7 +70,7 @@ public:
 	void setEncoderStateHolder(StateHolder<RotationState> * encoderStateHolder);
 	void setSpeedInputStateHolder(StateHolder<RotationState>* speedHolder);
 
-	void runTask();
+	void run();
 };
 
 extern "C" void MotorDisplayTask(void*);
