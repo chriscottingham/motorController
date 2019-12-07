@@ -35,6 +35,10 @@ void PwmControl::setMaxMotorRpm(long maxRpm) {
 	this->maxMotorRpm = maxRpm;
 }
 
+void PwmControl::setAdcChannel(int channel) {
+	this->adcChannel = channel;
+}
+
 void PwmControl::run() {
 
 	static int previousValue = 0;
@@ -52,11 +56,18 @@ void PwmControl::run() {
 		float i = 0.02;
 		onPercentage = i * onPercentage + (1 - i) * previousValue;
 
+//		adcState->get().values[adcChannel - 1];
+//		onPercentage *= currentLimitFactor;
+
 		TIM3->CCR1 = onPercentage;
 		previousValue = onPercentage;
 
 		vTaskDelay(pdMS_TO_TICKS(5));
 	}
+}
+
+void PwmControl::setAdcStateHolder(StateHolder<AdcState>* adcState) {
+	this->adcState = adcState;
 }
 PwmControl::~PwmControl() {
 	// TODO Auto-generated destructor stub

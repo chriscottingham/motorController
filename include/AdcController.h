@@ -12,22 +12,23 @@
 #include "StateHolder.h"
 
 struct AdcState {
-	int values[9];
+	int16_t values[9];
 };
 
 class AdcController {
 private:
-	int nextChannelIndex = 0;
+	int nextChannelIndex;
 	AdcState adcState;
 	StateHolder<AdcState>* stateHolder;
 
 public:
+	AdcController();
 	virtual ~AdcController(){};
 
 	void setStateHolder(StateHolder<AdcState>* stateHolder);
 	void addChannel(GPIO_TypeDef* gpio, int channel);
 	void startAdc();
-	void runTask();
+	void run();
 };
 
 #endif /* ADCCONTROLLER_H_ */

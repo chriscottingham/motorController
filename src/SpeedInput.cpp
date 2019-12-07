@@ -32,7 +32,8 @@ void SpeedInput::run() {
 
 	static int previousValue = 0;
 	while (1) {
-		volatile long masked = (0xff00 & ADC1->DR) >> 8;
+		int adcValue = adcStateHolder->get().values[adcChannel-1];
+		volatile long masked = (0xff00 & adcValue) >> 8;
 		int newValue = masked * maxRpm / 256;
 
 		float integral = 0.3;

@@ -82,6 +82,10 @@ void PwmControlTask(void* param) {
 	((PwmControl*) param)->run();
 }
 
+void AdcControllerTask(void* param) {
+	((AdcController*) param)->run();
+}
+
 
 void init(void* param) {
 
@@ -96,8 +100,7 @@ void init(void* param) {
 	RtosQueueStateHolder<AdcState> adcStateHolder(1, AdcState());
 
 	adcController = &AdcController();
-	adcController->addChannel(GPIOA, 2);
-	adcController->addChannel(GPIOA, 3);
+	adcController->setStateHolder(&adcStateHolder);
 
 	RtosQueueStateHolder<RotationState> speedStateHolder(1, RotationState(1432));
 
@@ -111,13 +114,18 @@ void init(void* param) {
 	speedInput.setMaxRpm(3600);
 	speedInput.setStateHolder(&speedStateHolder);
 	speedInput.setAdcStateHolder(&adcStateHolder);
-	speedInput.setAdcChannel(1);
+	adcController->addChannel(GPIOA, 2);
+	speedInput.setAdcChannel(2);
 	xTaskCreate(SpeedInputTask, "SpeedInput", 200, &speedInput, 8, 0);
+
+	xTaskCreate(AdcControllerTask, "AdcController", 200, adcController, 8, 0);
 
 	PwmControl pwm(GPIOA, 6);
 	pwm.setMaxMotorRpm(3600);
 	pwm.setCurrentSpeedHolder(&encoderStateHolder);
 	pwm.setDesiredSpeedHolder(&speedStateHolder);
+//	pwm.setAdcChannel(3);
+//	adcController->addChannel(GPIOA, 3);
 	xTaskCreate(PwmControlTask, "PwmControl", 200, &pwm, 8, 0);
 
 	vTaskSuspend(xTaskGetCurrentTaskHandle());
