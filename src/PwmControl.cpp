@@ -66,7 +66,7 @@ void PwmControl::run() {
 		}
 		onPercentage *= currentLimitFactor;
 
-		if (currentSpeedValue <= 20) {
+		if (desiredSpeedValue > 20 && currentSpeedValue <= 20) {
 			lastMotorStoppedDuration += MS_CYCLE_DELAY;
 			if (lastMotorStoppedDuration >= 1000) {
 				faultMotorStop = true;
