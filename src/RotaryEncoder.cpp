@@ -38,7 +38,7 @@ void RotaryEncoder::updateSpeed() {
 		diffEncoder += 65535;
 	}
 
-	if (diffEncoder > 100) {
+	if (diffTicks > 1E2) {
 		previousSysTick = currentTicks;
 		previousEncoderCount = currentCount;
 	}

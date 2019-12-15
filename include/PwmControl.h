@@ -20,6 +20,8 @@ extern long MAX_MOTOR_SPEED;
 
 class PwmControl {
 private:
+	bool faultMotorStop = false;
+	int lastMotorStoppedDuration;
 	GPIO_TypeDef* gpio;
 	uint8_t outputPin;
 	int adcChannel;

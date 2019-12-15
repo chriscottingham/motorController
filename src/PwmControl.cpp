@@ -10,6 +10,8 @@
 
 #define MAX_ARR 0xffff
 
+#define MS_CYCLE_DELAY 5
+
 PwmControl::PwmControl(GPIO_TypeDef* gpio, uint8_t outputPin) : gpio(gpio), outputPin(outputPin) {
 
 	IoDriver::initPin(gpio, vector<uint8_t>({outputPin}), GpioMode::altPushPullOutput);
@@ -64,10 +66,23 @@ void PwmControl::run() {
 		}
 		onPercentage *= currentLimitFactor;
 
+		if (currentSpeedValue <= 20) {
+			lastMotorStoppedDuration += MS_CYCLE_DELAY;
+			if (lastMotorStoppedDuration >= 1000) {
+				faultMotorStop = true;
+			}
+		} else {
+			lastMotorStoppedDuration = 0;
+		}
+
+		if (faultMotorStop) {
+			onPercentage = 0;
+		}
+
 		TIM3->CCR1 = onPercentage;
 		previousValue = onPercentage;
 
-		vTaskDelay(pdMS_TO_TICKS(5));
+		vTaskDelay(pdMS_TO_TICKS(MS_CYCLE_DELAY));
 	}
 }
 
