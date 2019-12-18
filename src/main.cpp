@@ -118,7 +118,6 @@ void init(void* param) {
 	speedInput.setAdcChannel(2);
 	xTaskCreate(SpeedInputTask, "SpeedInput", 200, &speedInput, 8, 0);
 
-	xTaskCreate(AdcControllerTask, "AdcController", 200, adcController, 8, 0);
 
 	PwmControl pwm(GPIOA, 6);
 	pwm.setMaxMotorRpm(3600);
@@ -126,8 +125,10 @@ void init(void* param) {
 	pwm.setDesiredSpeedHolder(&speedStateHolder);
 	pwm.setAdcStateHolder(&adcStateHolder);
 	pwm.setAdcChannel(3);
-//	adcController->addChannel(GPIOA, 3);
+	adcController->addChannel(GPIOA, 3);
 	xTaskCreate(PwmControlTask, "PwmControl", 200, &pwm, 8, 0);
+
+	xTaskCreate(AdcControllerTask, "AdcController", 200, adcController, 8, 0);
 
 	vTaskSuspend(xTaskGetCurrentTaskHandle());
 

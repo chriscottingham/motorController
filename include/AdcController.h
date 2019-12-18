@@ -17,7 +17,7 @@ struct AdcState {
 
 class AdcController {
 private:
-	int nextChannelIndex;
+	int nextChannelIndex = 0;
 	AdcState adcState;
 	StateHolder<AdcState>* stateHolder;
 

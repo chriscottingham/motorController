@@ -26,25 +26,26 @@ RotaryEncoder::RotaryEncoder(GPIO_TypeDef* timerPort, vector<uint8_t>* const enc
 
 void RotaryEncoder::updateSpeed() {
 
-	int32_t currentTicks = xTaskGetTickCount();
-	int32_t diffTicks = currentTicks - previousSysTick;
-	if (diffTicks < 0) {
-		diffTicks += 16777216;
-	}
-
 	uint16_t currentCount = TIM2->CNT;
 	int32_t diffEncoder = previousEncoderCount - currentCount;
 	if (diffEncoder < 0) {
 		diffEncoder += 65535;
 	}
 
-	if (diffTicks > 1E2) {
+	int32_t currentTicks = xTaskGetTickCount();
+	int32_t diffTicks = currentTicks - previousSysTick;
+	if (diffTicks < 0) {
+		diffTicks += 16777216;
+	}
+
+	if (diffEncoder > 25 || diffTicks > 5) {
+
+		RotationState state(60 * diffEncoder * 1000 / diffTicks * portTICK_PERIOD_MS / 200);
+		encoderStateHolder->set(&state);
+
 		previousSysTick = currentTicks;
 		previousEncoderCount = currentCount;
 	}
-
-	RotationState state(60 * diffEncoder * 1000 / diffTicks * portTICK_PERIOD_MS / 200);
-	encoderStateHolder->set(&state);
 }
 
 void RotaryEncoder::setEncoderStateHolder(StateHolder<RotationState>* encoderStateHolder) {
