@@ -12,12 +12,13 @@
 #include "StateHolder.h"
 
 struct AdcState {
-	uint16_t values[9];
+	uint32_t values[9];
 };
 
 class AdcController {
 private:
-	int nextChannelIndex = 0;
+	int channelCount = 0;
+	int maxChannelNumber = 0;
 	AdcState adcState;
 	StateHolder<AdcState>* stateHolder;
 

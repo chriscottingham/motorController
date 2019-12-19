@@ -32,9 +32,9 @@ void SpeedInput::run() {
 
 	static int previousValue = 0;
 	while (1) {
-		int adcValue = adcStateHolder->get().values[adcChannel-2];
-		volatile long masked = (0xff00 & adcValue) >> 8;
-		int newValue = masked * maxRpm / 256;
+		uint32_t adcValue = adcStateHolder->get().values[adcChannel];
+		uint16_t masked = 0xffff & adcValue;
+		int newValue = masked * maxRpm / 0xffff;
 
 		float integral = 0.3;
 		newValue = integral * newValue + (1-integral) * previousValue;

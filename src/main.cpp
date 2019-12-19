@@ -89,7 +89,6 @@ void AdcControllerTask(void* param) {
 
 void init(void* param) {
 
-//	for (long i=0; i<1000000; i++);
 
 	RtosQueueStateHolder<RotationState> encoderStateHolder(1, RotationState(0));
 	encoder = &RotaryEncoder(GPIOA, &vector<uint8_t>({0, 1}));
@@ -115,20 +114,26 @@ void init(void* param) {
 	speedInput.setStateHolder(&speedStateHolder);
 	speedInput.setAdcStateHolder(&adcStateHolder);
 	adcController->addChannel(GPIOA, 2);
-	speedInput.setAdcChannel(2);
+	speedInput.setAdcChannel(0);
 	xTaskCreate(SpeedInputTask, "SpeedInput", 200, &speedInput, 8, 0);
-
 
 	PwmControl pwm(GPIOA, 6);
 	pwm.setMaxMotorRpm(3600);
 	pwm.setCurrentSpeedHolder(&encoderStateHolder);
 	pwm.setDesiredSpeedHolder(&speedStateHolder);
 	pwm.setAdcStateHolder(&adcStateHolder);
-	pwm.setAdcChannel(3);
+	pwm.setCurrentAdcChannel(1);
 	adcController->addChannel(GPIOA, 3);
+	pwm.setVoltageAdcChannel(2);
+	adcController->addChannel(GPIOA, 4);
 	xTaskCreate(PwmControlTask, "PwmControl", 200, &pwm, 8, 0);
 
 	xTaskCreate(AdcControllerTask, "AdcController", 200, adcController, 8, 0);
+
+//		IoDriver::initPin(GPIOA, {12}, GpioMode::pushPullInput);
+
+//	GPIOA->CRH &= ~(0xf << 0x10);
+//	GPIOA->CRH |= 0x8 << 0x10;
 
 	vTaskSuspend(xTaskGetCurrentTaskHandle());
 

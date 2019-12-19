@@ -24,7 +24,8 @@ private:
 	int lastMotorStoppedDuration;
 	GPIO_TypeDef* gpio;
 	uint8_t outputPin;
-	int adcChannel;
+	int currentAdcChannel;
+	int voltageAdcChannel;
 
 	long maxMotorRpm;
 	StateHolder<RotationState>* currentSpeed;
@@ -36,7 +37,8 @@ public:
 	virtual ~PwmControl();
 
 	void setMaxMotorRpm(long maxRpm);
-	void setAdcChannel(int channel);
+	void setCurrentAdcChannel(int channel);
+	void setVoltageAdcChannel(int channel);
 
 	void setCurrentSpeedHolder(StateHolder<RotationState>* currentSpeed);
 	void setDesiredSpeedHolder(StateHolder<RotationState>* desiredSpeed);

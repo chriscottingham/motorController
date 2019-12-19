@@ -12,9 +12,10 @@
 
 #define MS_CYCLE_DELAY 5
 
-PwmControl::PwmControl(GPIO_TypeDef* gpio, uint8_t outputPin) : gpio(gpio), outputPin(outputPin) {
+PwmControl::PwmControl(GPIO_TypeDef* gpio, uint8_t outputPin) :
+		gpio(gpio), outputPin(outputPin) {
 
-	IoDriver::initPin(gpio, vector<uint8_t>({outputPin}), GpioMode::altPushPullOutput);
+	IoDriver::initPin(gpio, vector<uint8_t>( { outputPin }), GpioMode::altPushPullOutput);
 
 	RCC->APB1ENR |= RCC_APB1ENR_TIM3EN;
 
@@ -38,46 +39,64 @@ void PwmControl::setMaxMotorRpm(long maxRpm) {
 	this->maxMotorRpm = maxRpm;
 }
 
-void PwmControl::setAdcChannel(int channel) {
-	this->adcChannel = channel;
+void PwmControl::setVoltageAdcChannel(int channel) {
+	this->voltageAdcChannel = channel;
+}
+
+void PwmControl::setCurrentAdcChannel(int channel) {
+	this->currentAdcChannel = channel;
 }
 
 void PwmControl::run() {
 
 	static int previousValue = 0;
 	while (1) {
+
 		uint16_t desiredSpeedValue = desiredSpeed->get().rpm;
 		uint16_t currentSpeedValue = currentSpeed->get().rpm;
 		uint16_t diff = desiredSpeedValue - currentSpeedValue;
-		if (diff  > maxMotorRpm) {
+		if (diff > maxMotorRpm) {
 			diff = 0;
 		}
-		uint32_t onPercentage = 5 * MAX_ARR * diff / desiredSpeedValue;
+		uint32_t onPercentage = MAX_ARR * diff / desiredSpeedValue;
 		if (onPercentage > MAX_ARR) {
 			onPercentage = MAX_ARR;
 		}
 		float i = 0.02;
 		onPercentage = i * onPercentage + (1 - i) * previousValue;
 
-		uint16_t currentAdc = adcState->get().values[adcChannel - 2];
-		float currentLimitFactor = 1 - std::pow(3.3f * currentAdc / MAX_ARR, 2);
+		//voltage adjustment
+		uint16_t voltageAdc = adcState->get().values[voltageAdcChannel];
+		int voltage = 100 * 3.3 * voltageAdc / (float) 0xff;
+		onPercentage *= 0.5f * (170 - voltage);
+
+		//current limiting
+		uint16_t currentAdc = adcState->get().values[currentAdcChannel];
+		float senseVoltage = 3.3f * currentAdc / (float) MAX_ARR;
+		float currentLimitFactor = 1 - senseVoltage; //std::pow(senseVoltage, 2);
 		if (currentLimitFactor < 0) {
 			currentLimitFactor = 1;
 		}
 		onPercentage *= currentLimitFactor;
 
-		if (desiredSpeedValue > 20 && currentSpeedValue <= 20) {
-			lastMotorStoppedDuration += MS_CYCLE_DELAY;
-			if (lastMotorStoppedDuration >= 1000) {
-				faultMotorStop = true;
+		int isRunState = (GPIO_IDR_IDR12 & GPIOA->IDR) >> 12;
+		//stall
+		if (isRunState && !faultMotorStop) {
+			if (desiredSpeedValue > 20 && currentSpeedValue <= 20) {
+				lastMotorStoppedDuration += MS_CYCLE_DELAY;
+				if (lastMotorStoppedDuration >= 1000) {
+					faultMotorStop = true;
+				}
+			} else {
+				lastMotorStoppedDuration = 0;
 			}
-		} else {
-			lastMotorStoppedDuration = 0;
 		}
 
 		if (faultMotorStop) {
 			onPercentage = 0;
 		}
+
+		onPercentage *= isRunState;
 
 		TIM3->CCR1 = onPercentage;
 		previousValue = onPercentage;
