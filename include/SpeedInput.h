@@ -8,32 +8,18 @@
 #ifndef SPEEDControl_H_
 #define SPEEDControl_H_
 
-#include "IoDriver.h"
-#include "StateHolder.h"
-#include "RotationState.h"
 #include "AdcController.h"
-
-using namespace::std;
 
 class SpeedInput {
 private:
-	int adcChannel;
-
-	RotationState speedState;
-	StateHolder<RotationState>* stateHolder;
-	StateHolder<AdcState>* adcStateHolder;
-
+	int* adcValuePointer;
 	long maxRpm;
 
 public:
-	SpeedInput();
-
-	void setAdcStateHolder(StateHolder<AdcState>* adcStateHolder);
-	void setStateHolder(StateHolder<RotationState>* stateHolder);
 	void setMaxRpm(uint16_t maxRpm);
-	void setAdcChannel(int adcChannel);
+	void setAdcValuePointer(int* adcValuePointer);
 
-	void run();
+	int getInputSpeed();
 
 };
 

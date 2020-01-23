@@ -12,33 +12,24 @@
 #include "SpeedInput.h"
 #include "ExtiHandler.h"
 #include "RotaryEncoder.h"
-#include "RtosQueueStateHolder.h"
 #include "PwmControl.h"
 #include "AdcController.h"
+#include "System.hpp"
 
 #define configASSERT_DEFINED 1
+#define MAX_MOTOR_RPM 3600
 
-//incommenting this makes display flash
-//long MAX_MOTOR_RPM = 3600;
+int adcValues[3];
 
-extern "C" {
-	#include "FreeRTOSConfig.h"
-	#include "freeRTOS.h"
-	#include "projdefs.h"
-	#include "portmacro.h"
-	#include "StateHolder.h"
-	#include "task.h"
-	#include "queue.h"
-}
-
-
-//present for interrupts
-MotorDisplay* motorDisplay;
-RotaryEncoder* encoder;
-AdcController* adcController;
+MotorDisplay motorDisplay = MotorDisplay();
+RotaryEncoder encoder = RotaryEncoder(GPIOA, &vector<uint8_t>({0, 1}));
+AdcController adcController = AdcController();
 
 extern "C"
 {
+	void SysTick_Handler(void)  {                               /* SysTick interrupt Handler. */
+		System::incrementSysTick();
+	}
 
 	void EXTI0_IRQHandler(void) {
 
@@ -50,97 +41,17 @@ extern "C"
 	}
 
 	void I2C1_EV_IRQHandler(void) {
-		motorDisplay->handleI2cInterrupt();
+		motorDisplay.handleI2cInterrupt();
 	}
 
 	void I2C1_ER_IRQHandler(void) {
-		motorDisplay->handleI2cError();
+		motorDisplay.handleI2cError();
 	}
 
 	void DMA1_Channel6_IRQHandler(void) {
-		motorDisplay->handleDma();
+		motorDisplay.handleDma();
 	}
 }
-
-void MotorDisplayTask(void* param) {
-
-	((MotorDisplay*) param)->run();
-}
-
-void RotaryEncoderTask(void* param) {
-
-	((RotaryEncoder*) param)->run();
-}
-
-void SpeedInputTask(void* param) {
-
-	((SpeedInput*) param)->run();
-}
-
-void PwmControlTask(void* param) {
-
-	((PwmControl*) param)->run();
-}
-
-void AdcControllerTask(void* param) {
-	((AdcController*) param)->run();
-}
-
-
-void init(void* param) {
-
-
-	RtosQueueStateHolder<RotationState> encoderStateHolder(1, RotationState(0));
-	encoder = &RotaryEncoder(GPIOA, &vector<uint8_t>({0, 1}));
-	encoder->setEncoderStateHolder(&encoderStateHolder);
-
-	xTaskCreate(RotaryEncoderTask, "RotaryEncoder", 500, encoder, 8, 0);
-
-	RtosQueueStateHolder<AdcState> adcStateHolder(1, AdcState());
-
-	adcController = &AdcController();
-	adcController->setStateHolder(&adcStateHolder);
-
-	RtosQueueStateHolder<RotationState> speedStateHolder(1, RotationState(1432));
-
-	motorDisplay = &MotorDisplay();
-	motorDisplay->setEncoderStateHolder(&encoderStateHolder);
-	motorDisplay->setSpeedInputStateHolder(&speedStateHolder);
-
-	xTaskCreate(MotorDisplayTask, "MotorDisplay", 2000, motorDisplay, 1, 0);
-
-	SpeedInput speedInput;
-	speedInput.setMaxRpm(3600);
-	speedInput.setStateHolder(&speedStateHolder);
-	speedInput.setAdcStateHolder(&adcStateHolder);
-	adcController->addChannel(GPIOA, 2);
-	speedInput.setAdcChannel(0);
-	xTaskCreate(SpeedInputTask, "SpeedInput", 200, &speedInput, 8, 0);
-
-	PwmControl pwm(GPIOA, 6);
-	pwm.setMaxMotorRpm(3600);
-	pwm.setCurrentSpeedHolder(&encoderStateHolder);
-	pwm.setDesiredSpeedHolder(&speedStateHolder);
-	pwm.setAdcStateHolder(&adcStateHolder);
-	pwm.setCurrentAdcChannel(1);
-	adcController->addChannel(GPIOA, 3);
-	pwm.setVoltageAdcChannel(2);
-	adcController->addChannel(GPIOA, 4);
-	xTaskCreate(PwmControlTask, "PwmControl", 200, &pwm, 8, 0);
-
-	xTaskCreate(AdcControllerTask, "AdcController", 200, adcController, 8, 0);
-
-//		IoDriver::initPin(GPIOA, {12}, GpioMode::pushPullInput);
-
-//	GPIOA->CRH &= ~(0xf << 0x10);
-//	GPIOA->CRH |= 0x8 << 0x10;
-
-	vTaskSuspend(xTaskGetCurrentTaskHandle());
-
-	while (1) {
-	}
-}
-
 //	__enable_irq();
 
 	//Clock output
@@ -155,10 +66,31 @@ int main(int argc, char* argv[]) {
 
 	trace_printf("System clock: %u Hz\n", SystemCoreClock);
 
-	xTaskCreate(init, "init", 500, 0, 1, 0);
-	vTaskStartScheduler();
+	SysTick_Config(SystemCoreClock = 800);
+
+	SpeedInput speedInput;
+	speedInput.setMaxRpm(3600);
+	speedInput.setAdcValuePointer(&adcValues[0]);
+
+//	PwmControl pwm(GPIOA, 6);
+//	pwm.setMaxMotorRpm(3600);
+//	pwm.setAdcController(&adcController);
+
+	int channels[] = {2,3,4};
+	adcController.init(adcValues, channels, 3);
+
+//	pwm.setCurrentAdcChannel(1);
+//	pwm.setVoltageAdcChannel(2);
+
+	adcController.startAdc();
+
 
 	while (1) {
+	motorDisplay.tick();
+//		AdcController localAdcController;
+//		adcController = &localAdcController;
+
+
 	}
 }
 

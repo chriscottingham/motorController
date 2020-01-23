@@ -5,12 +5,12 @@
  *      Author: chris
  */
 
-#include "PwmControl.h"
 #include <cmath>
+#include "PwmControl.h"
+#include "SpeedInput.h"
+#include "system.hpp"
 
 #define MAX_ARR 0xffff
-
-#define MS_CYCLE_DELAY 5
 
 PwmControl::PwmControl(GPIO_TypeDef* gpio, uint8_t outputPin) :
 		gpio(gpio), outputPin(outputPin) {
@@ -28,13 +28,6 @@ PwmControl::PwmControl(GPIO_TypeDef* gpio, uint8_t outputPin) :
 
 }
 
-void PwmControl::setCurrentSpeedHolder(StateHolder<RotationState>* currentSpeed) {
-	this->currentSpeed = currentSpeed;
-}
-void PwmControl::setDesiredSpeedHolder(StateHolder<RotationState>* desiredSpeed) {
-	this->desiredSpeed = desiredSpeed;
-}
-
 void PwmControl::setMaxMotorRpm(long maxRpm) {
 	this->maxMotorRpm = maxRpm;
 }
@@ -47,13 +40,23 @@ void PwmControl::setCurrentAdcChannel(int channel) {
 	this->currentAdcChannel = channel;
 }
 
-void PwmControl::run() {
+void PwmControl::setSpeedInput(SpeedInput* speedInput) {
+	this->speedInput = speedInput;
+}
+
+void PwmControl::setRotaryEncoder(RotaryEncoder* rotaryEncoder) {
+	this->rotaryEncoder = rotaryEncoder;
+}
+void PwmControl::setAdcController(AdcController* adcController) {
+	this->adcController = adcController;
+}
+void PwmControl::tick() {
 
 	static int previousValue = 0;
 	while (1) {
 
-		uint16_t desiredSpeedValue = desiredSpeed->get().rpm;
-		uint16_t currentSpeedValue = currentSpeed->get().rpm;
+		uint16_t desiredSpeedValue = speedInput->getInputSpeed();
+		uint16_t currentSpeedValue = rotaryEncoder->getSpeed();
 		uint16_t diff = desiredSpeedValue - currentSpeedValue;
 		if (diff > maxMotorRpm) {
 			diff = 0;
@@ -62,33 +65,46 @@ void PwmControl::run() {
 		if (onPercentage > MAX_ARR) {
 			onPercentage = MAX_ARR;
 		}
-		float i = 0.02;
-		onPercentage = i * onPercentage + (1 - i) * previousValue;
 
 		//voltage adjustment
-		uint16_t voltageAdc = adcState->get().values[voltageAdcChannel];
+		uint16_t voltageAdc = adcController->getChannelValue(voltageAdcChannel);
 		int voltage = 100 * 3.3 * voltageAdc / (float) 0xff;
 		onPercentage *= 0.5f * (170 - voltage);
 
 		//current limiting
-		uint16_t currentAdc = adcState->get().values[currentAdcChannel];
+		uint16_t currentAdc = adcController->getChannelValue(currentAdcChannel);
 		float senseVoltage = 3.3f * currentAdc / (float) MAX_ARR;
 		float currentLimitFactor = 1 - senseVoltage; //std::pow(senseVoltage, 2);
 		if (currentLimitFactor < 0) {
-			currentLimitFactor = 1;
+			currentLimitFactor = 0;
 		}
 		onPercentage *= currentLimitFactor;
 
-		int isRunState = (GPIO_IDR_IDR12 & GPIOA->IDR) >> 12;
+		int isRunSwitch = (GPIO_IDR_IDR12 & GPIOA->IDR) >> 12;
+
 		//stall
-		if (isRunState && !faultMotorStop) {
-			if (desiredSpeedValue > 20 && currentSpeedValue <= 20) {
-				lastMotorStoppedDuration += MS_CYCLE_DELAY;
-				if (lastMotorStoppedDuration >= 1000) {
-					faultMotorStop = true;
+		if (isRunSwitch && !faultMotorStop) {
+
+			if (currentSpeedValue <= 10) {
+
+				if (desiredSpeedValue > 20) {
+
+					if (motorStoppedTime == -1) {
+						motorStoppedTime = System::getSysTick();
+					} else {
+						int stoppedElapsedTime = System::getSysTick() - motorStoppedTime;
+						if (stoppedElapsedTime < 0) {
+							stoppedElapsedTime += 2147483647;
+						}
+						if (stoppedElapsedTime > 1000) {
+							faultMotorStop = true;
+						}
+					}
+				} else {
+					motorStoppedTime = -1;
 				}
 			} else {
-				lastMotorStoppedDuration = 0;
+				motorStoppedTime = -1;
 			}
 		}
 
@@ -96,18 +112,16 @@ void PwmControl::run() {
 			onPercentage = 0;
 		}
 
-		onPercentage *= isRunState;
+		onPercentage *= isRunSwitch;
+
+		float i = 0.02;
+		onPercentage = i * onPercentage + (1 - i) * previousValue;
 
 		TIM3->CCR1 = onPercentage;
 		previousValue = onPercentage;
-
-		vTaskDelay(pdMS_TO_TICKS(MS_CYCLE_DELAY));
 	}
 }
 
-void PwmControl::setAdcStateHolder(StateHolder<AdcState>* adcState) {
-	this->adcState = adcState;
-}
 PwmControl::~PwmControl() {
 	// TODO Auto-generated destructor stub
 }

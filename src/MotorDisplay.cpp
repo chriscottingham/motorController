@@ -8,8 +8,6 @@
 #include <string>
 #include <stdio.h>
 
-#include "task.h"
-
 #include "LiberationMono_32.h"
 
 #define FONT_HEIGHT 32
@@ -33,6 +31,7 @@ uint8_t MotorDisplay::initializationSequence[] = {
 };
 
 MotorDisplay::MotorDisplay() {
+//	font32_chars[45] = font32_45;
 	font32_chars[48] = font32_48;
 	font32_chars[49] = font32_49;
 	font32_chars[50] = font32_50;
@@ -97,9 +96,6 @@ void MotorDisplay::handleDma() {
 	DMA1->IFCR |= DMA_ISR_GIF6;
 }
 
-void MotorDisplay::setSpeedInputStateHolder(StateHolder<RotationState>* speedHolder) {
-	this->speedInputStateHolder = speedHolder;
-}
 
 void MotorDisplay::initI2c() {
 
@@ -150,8 +146,6 @@ void MotorDisplay::resetBuffer() {
 
 	displayBuffer[0] = DATA;
 	memset(&displayBuffer[1], 0, 1024);
-
-
 }
 
 void copyString(uint8_t* target, uint8_t* source, uint8_t length) {
@@ -160,19 +154,17 @@ void copyString(uint8_t* target, uint8_t* source, uint8_t length) {
 	}
 }
 
-void MotorDisplay::setEncoderStateHolder(StateHolder<RotationState>* encoderStateHolder) {
-	this->encoderStateHolder = encoderStateHolder;
-}
-
 void MotorDisplay::drawBuffer() {
 
 	displayBuffer[0] = DATA;
 
 	Point<int> firstLineEndPoint = drawChars("C:", 2, Point<int>(0,0));
-	firstLineEndPoint = drawNumber(encoderStateHolder->get().rpm, 4, Point<int>(firstLineEndPoint.getX(), 0));
+//	firstLineEndPoint = drawNumber(encoderStateHolder->get().rpm, 4, Point<int>(firstLineEndPoint.getX(), 0));
+	firstLineEndPoint = drawNumber(2143, 4, Point<int>(firstLineEndPoint.getX(), 0));
 
 	Point<int> secondLineEndPoint = drawChars("T:", 2, Point<int>(0, firstLineEndPoint.getY()));
-	drawNumber(speedInputStateHolder->get().rpm, 4, Point<int>(secondLineEndPoint.getX(), firstLineEndPoint.getY()));
+//	drawNumber(speedInputStateHolder->get().rpm, 4, Point<int>(secondLineEndPoint.getX(), firstLineEndPoint.getY()));
+	drawNumber(1324, 4, Point<int>(secondLineEndPoint.getX(), firstLineEndPoint.getY()));
 
 	drawPowerBar();
 }
@@ -250,7 +242,7 @@ void MotorDisplay::stop() {
 //	I2C1->CR1 &= ~I2C_CR1_PE;
 }
 
-void MotorDisplay::run() {
+void MotorDisplay::tick() {
 
 	while (1) {
 
@@ -276,7 +268,5 @@ void MotorDisplay::run() {
 
  		GPIOB->ODR ^= GPIO_ODR_ODR11;
 		GPIOB->ODR ^= GPIO_ODR_ODR10;
-
- 		vTaskDelay(pdMS_TO_TICKS(200));
 	}
 }

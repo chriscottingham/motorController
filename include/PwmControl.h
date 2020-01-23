@@ -8,11 +8,9 @@
 #ifndef PWMCONTROL_H_
 #define PWMCONTROL_H_
 
-#include <task.h>
-
 #include "IoDriver.h"
 #include "SpeedInput.h"
-#include "RotationState.h"
+#include "RotaryEncoder.h"
 
 using namespace::std;
 
@@ -20,17 +18,18 @@ extern long MAX_MOTOR_SPEED;
 
 class PwmControl {
 private:
+	SpeedInput* speedInput;
+	RotaryEncoder* rotaryEncoder;
+	AdcController* adcController;
+
 	bool faultMotorStop = false;
-	int lastMotorStoppedDuration;
+	int motorStoppedTime;
 	GPIO_TypeDef* gpio;
 	uint8_t outputPin;
 	int currentAdcChannel;
 	int voltageAdcChannel;
 
 	long maxMotorRpm;
-	StateHolder<RotationState>* currentSpeed;
-	StateHolder<RotationState>* desiredSpeed;
-	StateHolder<AdcState>* adcState;
 
 public:
 	PwmControl(GPIO_TypeDef* gpio, uint8_t outputPin);
@@ -39,12 +38,11 @@ public:
 	void setMaxMotorRpm(long maxRpm);
 	void setCurrentAdcChannel(int channel);
 	void setVoltageAdcChannel(int channel);
+	void setAdcController(AdcController* adcController);
+	void setSpeedInput(SpeedInput* speedInput);
+	void setRotaryEncoder(RotaryEncoder* rotaryEncoder);
 
-	void setCurrentSpeedHolder(StateHolder<RotationState>* currentSpeed);
-	void setDesiredSpeedHolder(StateHolder<RotationState>* desiredSpeed);
-	void setAdcStateHolder(StateHolder<AdcState>* adcState);
-
-	void run();
+	void tick();
 };
 
 #endif /* PWMCONTROL_H_ */
