@@ -41,6 +41,7 @@ private:
 	uint8_t* font32_chars[85];
 
 	BitValues bitValues;
+	SpeedInput* speedInput;
 
 	Timer timer;
 
@@ -61,6 +62,8 @@ public:
 	static uint8_t initializationSequence[];
 
 	MotorDisplay();
+
+	void setSpeedInput(SpeedInput* speedInput);
 
 	void startI2c();
 	void stop();

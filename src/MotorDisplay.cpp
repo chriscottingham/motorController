@@ -172,7 +172,7 @@ void MotorDisplay::drawBuffer() {
 
 	Point<int> secondLineEndPoint = drawChars("T:", 2, Point<int>(0, firstLineEndPoint.getY()));
 //	drawNumber(speedInputStateHolder->get().rpm, 4, Point<int>(secondLineEndPoint.getX(), firstLineEndPoint.getY()));
-	drawNumber(1324, 4, Point<int>(secondLineEndPoint.getX(), firstLineEndPoint.getY()));
+	drawNumber(speedInput->getInputSpeed(), 4, Point<int>(secondLineEndPoint.getX(), firstLineEndPoint.getY()));
 
 	drawPowerBar();
 }
@@ -250,6 +250,10 @@ void MotorDisplay::stop() {
 //	I2C1->CR1 &= ~I2C_CR1_PE;
 }
 
+void MotorDisplay::setSpeedInput(SpeedInput* speedInput) {
+	this->speedInput = speedInput;
+}
+
 void MotorDisplay::offerRun() {
 
 	if (timer.isReady()) {
@@ -270,7 +274,7 @@ void MotorDisplay::offerRun() {
 			startI2c();
 			bitValues.displayInitialized = true;
 
-		} else if (bitValues.displayDirty) {
+		} else {
 			resetBuffer();
 			drawBuffer();
 			sendBuffer();

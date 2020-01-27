@@ -19,13 +19,12 @@
 #define configASSERT_DEFINED 1
 #define MAX_MOTOR_RPM 3600
 
-int adcValues[3];
-
 MotorDisplay motorDisplay;
+//AdcController adcController(GPIOA, {2,3,4});
+AdcController adcController(GPIOA, {2});
 
 //RotaryEncoder encoder = RotaryEncoder(GPIOA, {0,1});
 
-//AdcController adcController;
 
 extern "C"
 {
@@ -68,11 +67,13 @@ int main(int argc, char* argv[]) {
 
 	trace_printf("System clock: %u Hz\n", SystemCoreClock);
 
-	SysTick_Config(SystemCoreClock = 7200);
+	SysTick_Config(SystemCoreClock / 1000);
 
-//	SpeedInput speedInput;
-//	speedInput.setMaxRpm(3600);
-//	speedInput.setAdcValuePointer(&adcValues[0]);
+	SpeedInput speedInput(0);
+	speedInput.setMaxRpm(3600);
+	speedInput.setAdcController(&adcController);
+
+	motorDisplay.setSpeedInput(&speedInput);
 
 //	PwmControl pwm(GPIOA, 6);
 //	pwm.setMaxMotorRpm(3600);
@@ -84,8 +85,7 @@ int main(int argc, char* argv[]) {
 //	pwm.setCurrentAdcChannel(1);
 //	pwm.setVoltageAdcChannel(2);
 
-//	adcController.startAdc();
-
+	adcController.startAdc();
 
 	while (1) {
 		motorDisplay.offerRun();

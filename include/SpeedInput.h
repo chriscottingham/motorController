@@ -12,10 +12,14 @@
 
 class SpeedInput {
 private:
-	int* adcValuePointer;
 	long maxRpm;
+	AdcController* adcController;
+	uint8_t adcValueIndex;
 
 public:
+	SpeedInput(uint8_t adcValueinde);
+
+	void setAdcController(AdcController* adcController);
 	void setMaxRpm(uint16_t maxRpm);
 	void setAdcValuePointer(int* adcValuePointer);
 

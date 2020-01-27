@@ -8,16 +8,16 @@
 #ifndef ADCCONTROLLER_H_
 #define ADCCONTROLLER_H_
 
+#include <vector>
 #include "IoDriver.h"
 
 class AdcController {
 private:
-	int* resultBuffer;
-	int* channels;
-	int channelCount;
+	uint16_t* resultBuffer;
+	vector<uint8_t> channels;
 
 public:
-	void init(int* resultBuffer, int* channels, int channelCount);
+	AdcController(GPIO_TypeDef* gpio, const vector<uint8_t>& channels);
 	void startAdc();
 
 	int getChannelValue(int channel);
