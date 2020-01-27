@@ -90,9 +90,9 @@ void PwmControl::tick() {
 				if (desiredSpeedValue > 20) {
 
 					if (motorStoppedTime == -1) {
-						motorStoppedTime = System::getSysTick();
+						motorStoppedTime = System::getInstance().getSysTick();
 					} else {
-						int stoppedElapsedTime = System::getSysTick() - motorStoppedTime;
+						int stoppedElapsedTime = System::getInstance().getSysTick() - motorStoppedTime;
 						if (stoppedElapsedTime < 0) {
 							stoppedElapsedTime += 2147483647;
 						}

@@ -8,7 +8,7 @@
 #ifndef ROTARYENCODER_H_
 #define ROTARYENCODER_H_
 
-#include <vector>
+#include <array>
 
 #include "IoDriver.h"
 
@@ -31,7 +31,7 @@ private:
 
 
 public:
-	RotaryEncoder(GPIO_TypeDef* timerPort, vector<uint8_t>* const pins);
+	RotaryEncoder(GPIO_TypeDef* timerPort, const vector<uint8_t>& encoderPins);
 
 	Direction getDirection();
 	int getSpeed();

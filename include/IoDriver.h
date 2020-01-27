@@ -13,10 +13,11 @@
 #include "stm32f10x.h"
 #include "GpioMode.h"
 
+using namespace std;
 
 class IoDriver {
 public:
-	static void initPin(GPIO_TypeDef * const port, std::vector<uint8_t> const &pins, GpioMode&& mode);
+	static void initPin(GPIO_TypeDef * const port, const vector<uint8_t>& pins, GpioMode&& mode);
 
 };
 

@@ -8,13 +8,31 @@
 #ifndef SYSTEM_HPP_
 #define SYSTEM_HPP_
 
+#include <stdint.h>
+#include <vector>
+
+#include "Timer.hpp"
+
+using namespace std;
+
 class System {
 private:
-	static int sysTick;
+	System();
+	System(System const&);
+	void operator=(System const&);
+
+	uint32_t sysTick;
+	vector<Timer> timers = vector<Timer>();
 
 public:
-	static void incrementSysTick();
-	static int getSysTick();
+
+	static System& getInstance() {
+		static System system;
+		return system;
+	}
+	void tick();
+	uint32_t getSysTick();
+	uint32_t getDiffTicks(uint32_t lastTick);
 };
 
 #endif /* SYSTEM_HPP_ */

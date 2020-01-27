@@ -18,6 +18,8 @@
 #define kI2cGpio GPIOB
 #define kPowerGpio GPIOB
 
+using namespace std;
+
 class MotorDisplay {
 
 public:
@@ -64,7 +66,7 @@ public:
 	void handleI2cInterrupt();
 	void handleI2cError();
 
-	void tick();
+	void runOnce();
 };
 
 extern "C" void MotorDisplayTask(void*);

@@ -10,10 +10,11 @@
 #include "RotaryEncoder.h"
 #include "System.hpp"
 
-RotaryEncoder::RotaryEncoder(GPIO_TypeDef* timerPort, vector<uint8_t>* const encoderPins) :
+
+RotaryEncoder::RotaryEncoder(GPIO_TypeDef* timerPort, const vector<uint8_t>& encoderPins) :
 		timerPort(timerPort) {
 
-	this->encoderPins = *encoderPins;
+	this->encoderPins = encoderPins;
 
 	IoDriver::initPin(timerPort, this->encoderPins, GpioMode::floatingInput);
 
@@ -32,12 +33,9 @@ int RotaryEncoder::getSpeed() {
 	if (!(TIM2->CR1 & TIM_CR1_DIR) && diffEncoder < 0) {
 		diffEncoder += 65535;
 	}
-
-	int currentTicks = System::getSysTick();
-	int diffTicks = currentTicks - previousSysTick;
-	if (diffTicks < 0) {
-		diffTicks += 2147483647;
-	}
+	System& system = System::getInstance();
+	uint32_t diffTicks = system.getDiffTicks(previousSysTick);
+	uint32_t currentTicks = system.getSysTick();
 
 	if (diffEncoder > 50 || diffTicks > 20) {
 		int multiplier = 60 * 1000 / 200; //60 (seconds per minute) * 1000 (ms in second) / 200 (ticks per rotation)

@@ -21,14 +21,16 @@
 
 int adcValues[3];
 
-MotorDisplay motorDisplay = MotorDisplay();
-RotaryEncoder encoder = RotaryEncoder(GPIOA, &vector<uint8_t>({0, 1}));
-AdcController adcController = AdcController();
+MotorDisplay motorDisplay;
+
+RotaryEncoder encoder = RotaryEncoder(GPIOA, {0,1});
+
+AdcController adcController;
 
 extern "C"
 {
 	void SysTick_Handler(void)  {                               /* SysTick interrupt Handler. */
-		System::incrementSysTick();
+		System::getInstance().tick();
 	}
 
 	void EXTI0_IRQHandler(void) {
@@ -68,25 +70,25 @@ int main(int argc, char* argv[]) {
 
 	SysTick_Config(SystemCoreClock = 800);
 
-	SpeedInput speedInput;
-	speedInput.setMaxRpm(3600);
-	speedInput.setAdcValuePointer(&adcValues[0]);
+//	SpeedInput speedInput;
+//	speedInput.setMaxRpm(3600);
+//	speedInput.setAdcValuePointer(&adcValues[0]);
 
 //	PwmControl pwm(GPIOA, 6);
 //	pwm.setMaxMotorRpm(3600);
 //	pwm.setAdcController(&adcController);
 
-	int channels[] = {2,3,4};
-	adcController.init(adcValues, channels, 3);
+//	int channels[] = {2,3,4};
+//	adcController.init(adcValues, channels, 3);
 
 //	pwm.setCurrentAdcChannel(1);
 //	pwm.setVoltageAdcChannel(2);
 
-	adcController.startAdc();
+//	adcController.startAdc();
 
 
 	while (1) {
-	motorDisplay.tick();
+		motorDisplay.runOnce();
 //		AdcController localAdcController;
 //		adcController = &localAdcController;
 

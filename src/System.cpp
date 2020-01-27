@@ -7,13 +7,26 @@
 
 #include "System.hpp"
 
-int System::sysTick = 0;
+System::System() {}
 
-void System::incrementSysTick() {
+void System::tick() {
 	System::sysTick++;
 }
 
-int System::getSysTick() {
+uint32_t System::getSysTick() {
 	return System::sysTick;
+}
+
+uint32_t System::getDiffTicks(uint32_t lastTick) {
+
+	static uint32_t max = 0 - 1;
+
+	int diff;
+	if (sysTick > lastTick) {
+		diff = sysTick - lastTick;
+	} else {
+		diff = max - lastTick + sysTick;
+	}
+	return diff;
 }
 

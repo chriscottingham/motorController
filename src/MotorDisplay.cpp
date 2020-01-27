@@ -7,8 +7,11 @@
 #include <MotorDisplay.h>
 #include <string>
 #include <stdio.h>
+#include <functional>
 
 #include "LiberationMono_32.h"
+#include "Timer.hpp"
+#include "MemberMethodInvoker.hpp"
 
 #define FONT_HEIGHT 32
 
@@ -31,6 +34,9 @@ uint8_t MotorDisplay::initializationSequence[] = {
 };
 
 MotorDisplay::MotorDisplay() {
+
+	static Timer timer = Timer(10, bind(&MotorDisplay::runOnce, this));
+
 //	font32_chars[45] = font32_45;
 	font32_chars[48] = font32_48;
 	font32_chars[49] = font32_49;
@@ -242,31 +248,28 @@ void MotorDisplay::stop() {
 //	I2C1->CR1 &= ~I2C_CR1_PE;
 }
 
-void MotorDisplay::tick() {
+void MotorDisplay::runOnce() {
 
-	while (1) {
+	if (!bitValues.powerOn) {
+		IoDriver::initPin(kPowerGpio, kPowerPin, GpioMode::pushPullOutput);
+		kI2cGpio->ODR |= GPIO_ODR_ODR9;
+		resetBuffer();
+		bitValues.powerOn = true;
 
-		if (!bitValues.powerOn) {
-			IoDriver::initPin(kPowerGpio, kPowerPin, GpioMode::pushPullOutput);
-			kI2cGpio->ODR |= GPIO_ODR_ODR9;
-			resetBuffer();
-			bitValues.powerOn = true;
+	} else if (!bitValues.displayInitialized) {
+		initDma();
+		initI2c();
+		DMA1_Channel6->CMAR = (uint32_t) &initializationSequence;
+		DMA1_Channel6->CNDTR = sizeof(initializationSequence);
+		startI2c();
+		bitValues.displayInitialized = true;
 
-		} else if (!bitValues.displayInitialized) {
-			initDma();
-			initI2c();
-			DMA1_Channel6->CMAR = (uint32_t) &initializationSequence;
-			DMA1_Channel6->CNDTR = sizeof(initializationSequence);
-			startI2c();
-			bitValues.displayInitialized = true;
-
-		} else if (bitValues.displayDirty) {
-			resetBuffer();
-			drawBuffer();
-			sendBuffer();
-		}
-
- 		GPIOB->ODR ^= GPIO_ODR_ODR11;
-		GPIOB->ODR ^= GPIO_ODR_ODR10;
+	} else if (bitValues.displayDirty) {
+		resetBuffer();
+		drawBuffer();
+		sendBuffer();
 	}
+
+	GPIOB->ODR ^= GPIO_ODR_ODR11;
+	GPIOB->ODR ^= GPIO_ODR_ODR10;
 }
