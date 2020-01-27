@@ -11,6 +11,9 @@ System::System() {}
 
 void System::tick() {
 	System::sysTick++;
+	for (Timer* timer : timers) {
+		timer->tick();
+	}
 }
 
 uint32_t System::getSysTick() {
@@ -30,3 +33,6 @@ uint32_t System::getDiffTicks(uint32_t lastTick) {
 	return diff;
 }
 
+void System::registerTickListener(Timer* timer) {
+	timers.push_back(timer);
+}

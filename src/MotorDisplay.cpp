@@ -12,6 +12,7 @@
 #include "LiberationMono_32.h"
 #include "Timer.hpp"
 #include "MemberMethodInvoker.hpp"
+#include "System.hpp"
 
 #define FONT_HEIGHT 32
 
@@ -33,9 +34,10 @@ uint8_t MotorDisplay::initializationSequence[] = {
 				COMMAND, 0x22, 0, 7, //page begin, end
 };
 
-MotorDisplay::MotorDisplay() {
+MotorDisplay::MotorDisplay() : timer(Timer(100, bind(&MotorDisplay::offerRun, this))){
 
-	static Timer timer = Timer(10, bind(&MotorDisplay::runOnce, this));
+	IoDriver::initPin(GPIOB, {10,11}, GpioMode::pushPullOutput);
+	System::getInstance().registerTickListener(&timer);
 
 //	font32_chars[45] = font32_45;
 	font32_chars[48] = font32_48;
@@ -248,28 +250,34 @@ void MotorDisplay::stop() {
 //	I2C1->CR1 &= ~I2C_CR1_PE;
 }
 
-void MotorDisplay::runOnce() {
+void MotorDisplay::offerRun() {
 
-	if (!bitValues.powerOn) {
-		IoDriver::initPin(kPowerGpio, kPowerPin, GpioMode::pushPullOutput);
-		kI2cGpio->ODR |= GPIO_ODR_ODR9;
-		resetBuffer();
-		bitValues.powerOn = true;
+	if (timer.isReady()) {
 
-	} else if (!bitValues.displayInitialized) {
-		initDma();
-		initI2c();
-		DMA1_Channel6->CMAR = (uint32_t) &initializationSequence;
-		DMA1_Channel6->CNDTR = sizeof(initializationSequence);
-		startI2c();
-		bitValues.displayInitialized = true;
+		GPIOB->ODR ^= GPIO_ODR_ODR11;
 
-	} else if (bitValues.displayDirty) {
-		resetBuffer();
-		drawBuffer();
-		sendBuffer();
+		if (!bitValues.powerOn) {
+			IoDriver::initPin(kPowerGpio, kPowerPin, GpioMode::pushPullOutput);
+			kI2cGpio->ODR |= GPIO_ODR_ODR9;
+			resetBuffer();
+			bitValues.powerOn = true;
+
+		} else if (!bitValues.displayInitialized) {
+			initDma();
+			initI2c();
+			DMA1_Channel6->CMAR = (uint32_t) &initializationSequence;
+			DMA1_Channel6->CNDTR = sizeof(initializationSequence);
+			startI2c();
+			bitValues.displayInitialized = true;
+
+		} else if (bitValues.displayDirty) {
+			resetBuffer();
+			drawBuffer();
+			sendBuffer();
+		}
+
+		GPIOB->ODR ^= GPIO_ODR_ODR11;
+
+		timer.reset();
 	}
-
-	GPIOB->ODR ^= GPIO_ODR_ODR11;
-	GPIOB->ODR ^= GPIO_ODR_ODR10;
 }

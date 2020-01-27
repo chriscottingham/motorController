@@ -15,6 +15,7 @@ using namespace std;
 
 class Timer {
 private:
+	bool ready = false;
 	uint32_t tickCount = 0;
 	uint32_t period;
 
@@ -26,6 +27,8 @@ public:
 	virtual ~Timer();
 
 	void tick();
+	void reset();
+	bool isReady();
 };
 
 #endif /* TIMER_H_ */

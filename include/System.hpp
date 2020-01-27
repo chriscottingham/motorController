@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 #include <vector>
+#include <functional>
 
 #include "Timer.hpp"
 
@@ -22,7 +23,7 @@ private:
 	void operator=(System const&);
 
 	uint32_t sysTick;
-	vector<Timer> timers = vector<Timer>();
+	vector<Timer*> timers;
 
 public:
 
@@ -33,6 +34,7 @@ public:
 	void tick();
 	uint32_t getSysTick();
 	uint32_t getDiffTicks(uint32_t lastTick);
+	void registerTickListener(Timer* timer);
 };
 
 #endif /* SYSTEM_HPP_ */

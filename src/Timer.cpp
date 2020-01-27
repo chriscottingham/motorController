@@ -17,7 +17,17 @@ Timer::~Timer() {
 void Timer::tick() {
 	tickCount += 1;
 	if (tickCount >= period) {
-		callback();
-		tickCount = 0;
+//		callback();
+		ready = true;
+//		tickCount = 0;
 	}
+}
+
+bool Timer::isReady() {
+	return ready;
+}
+
+void Timer::reset() {
+	ready = false;
+	tickCount = 0;
 }

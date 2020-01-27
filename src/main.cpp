@@ -23,9 +23,9 @@ int adcValues[3];
 
 MotorDisplay motorDisplay;
 
-RotaryEncoder encoder = RotaryEncoder(GPIOA, {0,1});
+//RotaryEncoder encoder = RotaryEncoder(GPIOA, {0,1});
 
-AdcController adcController;
+//AdcController adcController;
 
 extern "C"
 {
@@ -68,7 +68,7 @@ int main(int argc, char* argv[]) {
 
 	trace_printf("System clock: %u Hz\n", SystemCoreClock);
 
-	SysTick_Config(SystemCoreClock = 800);
+	SysTick_Config(SystemCoreClock = 7200);
 
 //	SpeedInput speedInput;
 //	speedInput.setMaxRpm(3600);
@@ -88,7 +88,7 @@ int main(int argc, char* argv[]) {
 
 
 	while (1) {
-		motorDisplay.runOnce();
+		motorDisplay.offerRun();
 //		AdcController localAdcController;
 //		adcController = &localAdcController;
 

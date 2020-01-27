@@ -14,6 +14,7 @@
 #include "RotaryEncoder.h"
 #include "SpeedInput.h"
 #include "Point.h"
+#include "Timer.hpp"
 
 #define kI2cGpio GPIOB
 #define kPowerGpio GPIOB
@@ -41,6 +42,8 @@ private:
 
 	BitValues bitValues;
 
+	Timer timer;
+
 	void initI2c();
 	void initDma();
 
@@ -66,7 +69,7 @@ public:
 	void handleI2cInterrupt();
 	void handleI2cError();
 
-	void runOnce();
+	void offerRun();
 };
 
 extern "C" void MotorDisplayTask(void*);
