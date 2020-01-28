@@ -15,7 +15,7 @@ AdcController::AdcController(GPIO_TypeDef* gpio, const vector<uint8_t>& channels
 	this->resultBuffer = new uint16_t[channels.size()];
 	this->channels = channels;
 
-		gpio->CRL &= ~(0xff<<8); //cheating for channels 2 and 3 (0xf << 4*3 + 0xf << 4*2);
+//		gpio->CRL &= ~(0xff<<8); //cheating for channels 2 and 3 (0xf << 4*3 + 0xf << 4*2);
 
 	RCC->AHBENR |= RCC_AHBPeriph_DMA1;
 	RCC->APB2ENR |= RCC_APB2ENR_ADC1EN;
@@ -23,18 +23,19 @@ AdcController::AdcController(GPIO_TypeDef* gpio, const vector<uint8_t>& channels
 	DMA1_Channel1->CNDTR = channels.size();
 
 	ADC1->SQR1 &= ~(0xf << 20);
-	ADC1->SQR1 |= channels.size() << 20;
+	ADC1->SQR1 |= (channels.size() -1) << 20;
 
 	for (uint8_t i=0; i<channels.size(); i++) {
 //		IoDriver::initPin(gpio, std::vector<uint8_t>{channels[i]}, GpioMode::analogInput);
+		gpio->CRL &= ~(0xf<<(4*channels[i]));
 		ADC1->SQR3 |= channels[i] << (5 * i); //channel numbers
 	}
 
-	DMA1_Channel1->CCR |= 1 << 12 | 1 << 10 | 2 << 8 | DMA_CCR1_MINC | DMA_CCR1_CIRC;
+	DMA1_Channel1->CCR |= 1 << 12 | 1 << 10 | 1 << 8 | DMA_CCR1_MINC | DMA_CCR1_CIRC;
 	DMA1_Channel1->CPAR = 0x4001244c;
 	DMA1_Channel1->CMAR = (uint32_t) resultBuffer;
 
-//	ADC1->CR1 |= ADC_CR1_SCAN;
+	ADC1->CR1 |= ADC_CR1_SCAN;
 }
 
 int AdcController::getChannelValue(int channel) {

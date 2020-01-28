@@ -25,8 +25,8 @@ int SpeedInput::getInputSpeed() {
 	uint16_t masked = 0xffff & adcValue;
 	int newValue = masked * maxRpm / 0xffff;
 
-	float integral = 0.7;
-	newValue = integral * newValue + (1-integral) * previousValue;
+//	float integral = 0.7;
+//	newValue = integral * newValue + (1-integral) * previousValue;
 	previousValue = newValue;
 
 	return newValue;
