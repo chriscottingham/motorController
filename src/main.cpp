@@ -20,11 +20,8 @@
 #define MAX_MOTOR_RPM 3600
 
 MotorDisplay motorDisplay;
-AdcController adcController(GPIOA, {2,3});
-//AdcController adcController(GPIOA, {2,3,4});
-
-//RotaryEncoder encoder = RotaryEncoder(GPIOA, {0,1});
-
+AdcController adcController(GPIOA, {2,3,4});
+RotaryEncoder encoder(GPIOA, {0,1});
 
 extern "C"
 {
@@ -69,11 +66,12 @@ int main(int argc, char* argv[]) {
 
 	SysTick_Config(SystemCoreClock / 1000);
 
-	SpeedInput speedInput(1);
+	SpeedInput speedInput(0);
 	speedInput.setMaxRpm(3600);
 	speedInput.setAdcController(&adcController);
 
 	motorDisplay.setSpeedInput(&speedInput);
+	motorDisplay.setRotaryEncoder(&encoder);
 
 //	PwmControl pwm(GPIOA, 6);
 //	pwm.setMaxMotorRpm(3600);

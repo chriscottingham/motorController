@@ -26,6 +26,8 @@ RotaryEncoder::RotaryEncoder(GPIO_TypeDef* timerPort, const vector<uint8_t>& enc
 
 int RotaryEncoder::getSpeed() {
 
+	constexpr int multiplier = 60 * 1000 / 200; //60 (seconds per minute) * 1000 (ms in second) / 200 (ticks per rotation)
+
 	int rpm = 3600;
 
 	uint16_t currentCount = TIM2->CNT;
@@ -38,8 +40,7 @@ int RotaryEncoder::getSpeed() {
 	uint32_t currentTicks = system.getSysTick();
 
 	if (diffEncoder > 50 || diffTicks > 20) {
-		int multiplier = 60 * 1000 / 200; //60 (seconds per minute) * 1000 (ms in second) / 200 (ticks per rotation)
-		rpm = diffEncoder / diffTicks * multiplier;
+		rpm = ((float) diffEncoder) / diffTicks * multiplier;
 
 		previousSysTick = currentTicks;
 		previousEncoderCount = currentCount;

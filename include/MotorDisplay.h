@@ -41,7 +41,9 @@ private:
 	uint8_t* font32_chars[85];
 
 	BitValues bitValues;
+
 	SpeedInput* speedInput;
+	RotaryEncoder* rotaryEncoder;
 
 	Timer timer;
 
@@ -64,6 +66,7 @@ public:
 	MotorDisplay();
 
 	void setSpeedInput(SpeedInput* speedInput);
+	void setRotaryEncoder(RotaryEncoder* rotaryEncoder);
 
 	void startI2c();
 	void stop();

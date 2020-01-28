@@ -162,13 +162,17 @@ void copyString(uint8_t* target, uint8_t* source, uint8_t length) {
 	}
 }
 
+void MotorDisplay::setRotaryEncoder(RotaryEncoder* rotaryEncoder) {
+	this->rotaryEncoder = rotaryEncoder;
+}
+
 void MotorDisplay::drawBuffer() {
 
 	displayBuffer[0] = DATA;
 
 	Point<int> firstLineEndPoint = drawChars("C:", 2, Point<int>(0,0));
 //	firstLineEndPoint = drawNumber(encoderStateHolder->get().rpm, 4, Point<int>(firstLineEndPoint.getX(), 0));
-	firstLineEndPoint = drawNumber(2143, 4, Point<int>(firstLineEndPoint.getX(), 0));
+	firstLineEndPoint = drawNumber(rotaryEncoder->getSpeed(), 4, Point<int>(firstLineEndPoint.getX(), 0));
 
 	Point<int> secondLineEndPoint = drawChars("T:", 2, Point<int>(0, firstLineEndPoint.getY()));
 //	drawNumber(speedInputStateHolder->get().rpm, 4, Point<int>(secondLineEndPoint.getX(), firstLineEndPoint.getY()));
