@@ -68,57 +68,58 @@ void PwmControl::runOnce() {
 	}
 
 	//voltage adjustment
-	uint16_t voltageAdc = adcController->getChannelValue(adcVoltageIndex);
-	int voltage = 100 * 3.3 * voltageAdc / (float) 0xff;
-	onPercentage *= 0.5f * (170 - voltage);
+//	uint16_t voltageAdc = adcController->getChannelValue(adcVoltageIndex);
+//	int voltage = 100 * 3.3 * voltageAdc / (float) 0xff;
+//	onPercentage *= 0.5f * (170 - voltage);
 
 	//current limiting
-	uint16_t currentAdc = adcController->getChannelValue(adcCurrentIndex);
-	float senseVoltage = 3.3f * currentAdc / (float) MAX_ARR;
-	float currentLimitFactor = 1 - senseVoltage; //std::pow(senseVoltage, 2);
-	if (currentLimitFactor < 0) {
-		currentLimitFactor = 0;
-	}
-	onPercentage *= currentLimitFactor;
+//	uint16_t currentAdc = adcController->getChannelValue(adcCurrentIndex);
+//	float senseVoltage = 3.3f * currentAdc / (float) MAX_ARR;
+//	float currentLimitFactor = 1 - senseVoltage; //std::pow(senseVoltage, 2);
+//	if (currentLimitFactor < 0) {
+//		currentLimitFactor = 0;
+//	}
+//	onPercentage *= currentLimitFactor;
 
-	int isRunSwitch = (GPIO_IDR_IDR12 & GPIOA->IDR) >> 12;
+//	int isRunSwitch = (GPIO_IDR_IDR12 & GPIOA->IDR) >> 12;
 
 	//stall
-	if (isRunSwitch && !faultMotorStop) {
-
-		if (currentSpeedValue <= 10) {
-
-			if (desiredSpeedValue > 20) {
-
-				if (motorStoppedTime == -1) {
-					motorStoppedTime = System::getInstance().getSysTick();
-				} else {
-					int stoppedElapsedTime = System::getInstance().getSysTick() - motorStoppedTime;
-					if (stoppedElapsedTime < 0) {
-						stoppedElapsedTime += 2147483647;
-					}
-					if (stoppedElapsedTime > 1000) {
-						faultMotorStop = true;
-					}
-				}
-			} else {
-				motorStoppedTime = -1;
-			}
-		} else {
-			motorStoppedTime = -1;
-		}
-	}
+//	if (isRunSwitch && !faultMotorStop) {
+//
+//		if (currentSpeedValue <= 10) {
+//
+//			if (desiredSpeedValue > 20) {
+//
+//				if (motorStoppedTime == -1) {
+//					motorStoppedTime = System::getInstance().getSysTick();
+//				} else {
+//					int stoppedElapsedTime = System::getInstance().getSysTick() - motorStoppedTime;
+//					if (stoppedElapsedTime < 0) {
+//						stoppedElapsedTime += 2147483647;
+//					}
+//					if (stoppedElapsedTime > 1000) {
+//						faultMotorStop = true;
+//					}
+//				}
+//			} else {
+//				motorStoppedTime = -1;
+//			}
+//		} else {
+//			motorStoppedTime = -1;
+//		}
+//	}
 
 	if (faultMotorStop) {
 		onPercentage = 0;
 	}
 
-	onPercentage *= isRunSwitch;
+//	onPercentage *= isRunSwitch;
 
-	float i = 0.02;
-	onPercentage = i * onPercentage + (1 - i) * previousValue;
+	float i = 0.1;
+	onPercentage = 0.1f * onPercentage + 0.9f * previousValue;
 
 	TIM3->CCR1 = onPercentage;
+
 	previousValue = onPercentage;
 }
 

@@ -183,21 +183,26 @@ void MotorDisplay::drawBuffer() {
 
 void MotorDisplay::drawPowerBar() {
 
-	uint8_t powerByte = TIM3->CCR1;
+	constexpr int maxCCR = 65535;
+	constexpr int numRows = 8;
+	constexpr int screenHeight = numRows * 8;
+
+	uint32_t powerLevel = TIM3->CCR1;
+	uint32_t powerRows = powerLevel * numRows / maxCCR;
 
 	int iRow;
 	int columnWidth = 20;
-	for (iRow=7; iRow>=7 - powerByte / 32; iRow--) {
+	for (iRow=8-powerRows; iRow<8; iRow++) {
 		for (int iColumn = 0; iColumn < columnWidth; iColumn++) {
 			displayBuffer[1 + (iRow * 128) + (128 - columnWidth) + iColumn] = 0xff;
 		}
 	}
 
-	iRow = 7 - powerByte / 32;
-	uint8_t barPortion = powerByte % 8;
-	uint16_t barMask = 0Xff << (8 - barPortion);
+	iRow = 8-powerRows - 1;
+	uint8_t barPortion = (powerLevel * screenHeight / maxCCR) % 8;
+	uint16_t remainderBits = 0Xff << (8 - barPortion);
 	for (int iColumn = 0; iColumn < columnWidth; iColumn++) {
-		displayBuffer[1 + iRow * 128 + (128 - columnWidth) + iColumn] = barMask;
+		displayBuffer[1 + iRow * 128 + (128 - columnWidth) + iColumn] = remainderBits;
 	}
 
 }
