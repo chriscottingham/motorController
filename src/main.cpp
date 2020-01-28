@@ -19,12 +19,49 @@
 #define configASSERT_DEFINED 1
 #define MAX_MOTOR_RPM 3600
 
+//	__enable_irq();
+
+	//Clock output
+//	IoDriver::initPin(GPIOA, std::vector<uint8_t>{8}, GpioMode::altPushPullOutput);
+//	RCC->CFGR |= 0x4000000;
+
+//	ExtiHandler buttonHandler(GPIOB, std::vector<uint8_t> {10,11});
+//	buttonHandler.setupTrigger(GPIOA);
+
 MotorDisplay motorDisplay;
 AdcController adcController(GPIOA, {2,3,4});
 RotaryEncoder encoder(GPIOA, {0,1});
 
-extern "C"
-{
+int main(int argc, char* argv[]) {
+
+	trace_puts("Hello ARM World!");
+
+	trace_printf("System clock: %u Hz\n", SystemCoreClock);
+
+	SysTick_Config(SystemCoreClock / 1000);
+
+	SpeedInput speedInput(0);
+	speedInput.setMaxRpm(3600);
+	speedInput.setAdcController(&adcController);
+
+	motorDisplay.setSpeedInput(&speedInput);
+	motorDisplay.setRotaryEncoder(&encoder);
+
+	PwmControl pwm(GPIOA, 6);
+	pwm.setSpeedInput(&speedInput);
+	pwm.setAdcController(&adcController);
+	pwm.setMaxMotorRpm(3600);
+	pwm.setAdcCurrentIndex(1);
+	pwm.setAdcVoltageIndex(2);
+
+	adcController.startAdc();
+
+	while (1) {
+		System::getInstance().offerRun();
+	}
+}
+
+extern "C" {
 	void SysTick_Handler(void)  {                               /* SysTick interrupt Handler. */
 		System::getInstance().tick();
 	}
@@ -48,49 +85,6 @@ extern "C"
 
 	void DMA1_Channel6_IRQHandler(void) {
 		motorDisplay.handleDma();
-	}
-}
-//	__enable_irq();
-
-	//Clock output
-//	IoDriver::initPin(GPIOA, std::vector<uint8_t>{8}, GpioMode::altPushPullOutput);
-//	RCC->CFGR |= 0x4000000;
-
-//	ExtiHandler buttonHandler(GPIOB, std::vector<uint8_t> {10,11});
-//	buttonHandler.setupTrigger(GPIOA);
-int main(int argc, char* argv[]) {
-
-	trace_puts("Hello ARM World!");
-
-	trace_printf("System clock: %u Hz\n", SystemCoreClock);
-
-	SysTick_Config(SystemCoreClock / 1000);
-
-	SpeedInput speedInput(0);
-	speedInput.setMaxRpm(3600);
-	speedInput.setAdcController(&adcController);
-
-	motorDisplay.setSpeedInput(&speedInput);
-	motorDisplay.setRotaryEncoder(&encoder);
-
-//	PwmControl pwm(GPIOA, 6);
-//	pwm.setMaxMotorRpm(3600);
-//	pwm.setAdcController(&adcController);
-
-//	int channels[] = {2,3,4};
-//	adcController.init(adcValues, channels, 3);
-
-//	pwm.setCurrentAdcChannel(1);
-//	pwm.setVoltageAdcChannel(2);
-
-	adcController.startAdc();
-
-	while (1) {
-		motorDisplay.offerRun();
-//		AdcController localAdcController;
-//		adcController = &localAdcController;
-
-
 	}
 }
 

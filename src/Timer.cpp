@@ -23,6 +23,13 @@ void Timer::tick() {
 	}
 }
 
+void Timer::offerRun() {
+	if (ready) {
+		callback();
+		reset();
+	}
+}
+
 bool Timer::isReady() {
 	return ready;
 }

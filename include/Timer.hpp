@@ -29,6 +29,7 @@ public:
 	void tick();
 	void reset();
 	bool isReady();
+	void offerRun();
 };
 
 #endif /* TIMER_H_ */

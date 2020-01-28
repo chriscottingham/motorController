@@ -32,6 +32,7 @@ public:
 		return system;
 	}
 	void tick();
+	void offerRun();
 	uint32_t getSysTick();
 	uint32_t getDiffTicks(uint32_t lastTick);
 	void registerTickListener(Timer* timer);

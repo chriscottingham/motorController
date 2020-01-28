@@ -16,6 +16,12 @@ void System::tick() {
 	}
 }
 
+void System::offerRun() {
+	for (Timer* timer : timers) {
+		timer->offerRun();
+	}
+}
+
 uint32_t System::getSysTick() {
 	return System::sysTick;
 }
