@@ -28,7 +28,9 @@ int RotaryEncoder::getSpeed() {
 
 	constexpr int multiplier = 60 * 1000 / 200; //60 (seconds per minute) * 1000 (ms in second) / 200 (ticks per rotation)
 
-	int rpm = 3600;
+	static int previousSpeed = 0;
+
+	int rpm = previousSpeed;
 
 	uint16_t currentCount = TIM2->CNT;
 	int diffEncoder = currentCount - previousEncoderCount;
@@ -41,6 +43,7 @@ int RotaryEncoder::getSpeed() {
 
 	if (diffEncoder > 50 || diffTicks > 20) {
 		rpm = ((float) diffEncoder) / diffTicks * multiplier;
+		previousSpeed = rpm;
 
 		previousSysTick = currentTicks;
 		previousEncoderCount = currentCount;
