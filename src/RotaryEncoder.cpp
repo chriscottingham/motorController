@@ -12,8 +12,9 @@
 
 
 RotaryEncoder::RotaryEncoder(GPIO_TypeDef* timerPort, const vector<uint8_t>& encoderPins) :
-		timerPort(timerPort) {
+	timer(Timer(20, bind(&RotaryEncoder::calculateSpeed, this))), timerPort(timerPort) {
 
+	System::getInstance().registerTickListener(&timer);
 	this->encoderPins = encoderPins;
 
 	IoDriver::initPin(timerPort, this->encoderPins, GpioMode::floatingInput);
@@ -25,12 +26,14 @@ RotaryEncoder::RotaryEncoder(GPIO_TypeDef* timerPort, const vector<uint8_t>& enc
 }
 
 int RotaryEncoder::getSpeed() {
+	return rpm;
+}
+
+void RotaryEncoder::calculateSpeed() {
 
 	constexpr int multiplier = 60 * 1000 / 200; //60 (seconds per minute) * 1000 (ms in second) / 200 (ticks per rotation)
 
 	static int previousSpeed = 0;
-
-	int rpm = previousSpeed;
 
 	uint16_t currentCount = TIM2->CNT;
 	int diffEncoder = currentCount - previousEncoderCount;
@@ -48,8 +51,6 @@ int RotaryEncoder::getSpeed() {
 		previousSysTick = currentTicks;
 		previousEncoderCount = currentCount;
 	}
-
-	return rpm;
 }
 
 Direction RotaryEncoder::getDirection() {
