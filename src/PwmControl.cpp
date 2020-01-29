@@ -54,7 +54,7 @@ void PwmControl::setAdcController(AdcController* adcController) {
 }
 void PwmControl::runOnce() {
 
-	static int previousValue = 0;
+	static float previousValue = 0.0f;
 
 	uint16_t desiredSpeedValue = speedInput->getInputSpeed();
 	uint16_t currentSpeedValue = rotaryEncoder->getSpeed();
@@ -62,9 +62,14 @@ void PwmControl::runOnce() {
 	if (diff > maxMotorRpm) {
 		diff = 0;
 	}
-	uint32_t onPercentage = MAX_ARR * diff / desiredSpeedValue;
-	if (onPercentage > MAX_ARR) {
-		onPercentage = MAX_ARR;
+
+	float onPercentage = 0;
+	float percentDiff = (float) diff / desiredSpeedValue;
+	if (diff > 0) {
+		onPercentage = 1.1f * pow(percentDiff, 3.0f) + percentDiff;
+	}
+	if (onPercentage > 1) {
+		onPercentage = 1;
 	}
 
 	//voltage adjustment
@@ -116,11 +121,13 @@ void PwmControl::runOnce() {
 //	onPercentage *= isRunSwitch;
 
 	float i = 0.1;
-	onPercentage = 0.1f * onPercentage + 0.9f * previousValue;
-
-	TIM3->CCR1 = onPercentage;
-
+	float newPart = i * onPercentage ;
+	float oldPart = 0.9f * previousValue;
+	onPercentage = newPart + oldPart;
 	previousValue = onPercentage;
+
+	TIM3->CCR1 = MAX_ARR * onPercentage;
+
 }
 
 PwmControl::~PwmControl() {
