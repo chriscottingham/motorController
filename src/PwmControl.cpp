@@ -121,9 +121,7 @@ void PwmControl::runOnce() {
 //	onPercentage *= isRunSwitch;
 
 	float i = 0.1;
-	float newPart = i * onPercentage ;
-	float oldPart = 0.9f * previousValue;
-	onPercentage = newPart + oldPart;
+	onPercentage = i * onPercentage + (1-i) * previousValue;
 	previousValue = onPercentage;
 
 	TIM3->CCR1 = MAX_ARR * onPercentage;
