@@ -15,6 +15,7 @@
 #include "SpeedInput.h"
 #include "Point.h"
 #include "Timer.hpp"
+#include "AdcController.h"
 
 #define kI2cGpio GPIOB
 #define kPowerGpio GPIOB
@@ -44,6 +45,7 @@ private:
 
 	SpeedInput* speedInput;
 	RotaryEncoder* rotaryEncoder;
+	AdcController* adcController;
 
 	Timer timer;
 
@@ -67,6 +69,7 @@ public:
 
 	void setSpeedInput(SpeedInput* speedInput);
 	void setRotaryEncoder(RotaryEncoder* rotaryEncoder);
+	void setAdcController(AdcController* adcController);
 
 	void startI2c();
 	void stop();

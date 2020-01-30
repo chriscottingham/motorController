@@ -34,6 +34,10 @@ uint8_t MotorDisplay::initializationSequence[] = {
 				COMMAND, 0x22, 0, 7, //page begin, end
 };
 
+void MotorDisplay::setAdcController(AdcController* adcController) {
+	this->adcController = adcController;
+}
+
 MotorDisplay::MotorDisplay() : timer(Timer(100, bind(&MotorDisplay::offerRun, this))){
 
 	IoDriver::initPin(GPIOB, {10,11}, GpioMode::pushPullOutput);
