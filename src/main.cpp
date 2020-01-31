@@ -29,8 +29,9 @@
 //	buttonHandler.setupTrigger(GPIOA);
 
 MotorDisplay motorDisplay;
-AdcController adcController(GPIOA, {2,3,4});
 RotaryEncoder encoder(GPIOA, {0,1});
+AdcController adcController(GPIOA, {2,3,4});
+PwmControl pwm(GPIOA, 6);
 
 int main(int argc, char* argv[]) {
 
@@ -46,8 +47,8 @@ int main(int argc, char* argv[]) {
 
 	motorDisplay.setSpeedInput(&speedInput);
 	motorDisplay.setRotaryEncoder(&encoder);
+	motorDisplay.setAdcController(&adcController);
 
-	PwmControl pwm(GPIOA, 6);
 	pwm.setSpeedInput(&speedInput);
 	pwm.setAdcController(&adcController);
 	pwm.setMaxMotorRpm(3600);

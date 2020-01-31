@@ -48,4 +48,5 @@ void AdcController::startAdc() {
 
 	ADC1->CR2 |= ADC_CR2_CONT | ADC_CR2_ADON | ADC_CR2_ALIGN | ADC_CR2_DMA;
 	ADC1->CR2 |= ADC_CR2_ADON;
+//	ADC1->CR2 |= ADC_CR2_RSTCAL;
 }

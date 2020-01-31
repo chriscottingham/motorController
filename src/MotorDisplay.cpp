@@ -175,11 +175,15 @@ void MotorDisplay::drawBuffer() {
 	displayBuffer[0] = DATA;
 
 	Point<int> firstLineEndPoint = drawChars("C:", 2, Point<int>(0,0));
-//	firstLineEndPoint = drawNumber(encoderStateHolder->get().rpm, 4, Point<int>(firstLineEndPoint.getX(), 0));
-	firstLineEndPoint = drawNumber(rotaryEncoder->getSpeed(), 4, Point<int>(firstLineEndPoint.getX(), 0));
+//	firstLineEndPoint = drawNumber(rotaryEncoder->getSpeed(), 4, Point<int>(firstLineEndPoint.getX(), 0));
+
+	//42v, 0.34
+	//78v , 0.781
+	float localVoltage = 3.15 * (0xffff & adcController->getChannelValue(1)) / (float) 0xffff;
+	float lineVoltage = 81.6 * localVoltage + 14.3;
+	firstLineEndPoint = drawNumber(lineVoltage, 4, Point<int>(firstLineEndPoint.getX(), 0));
 
 	Point<int> secondLineEndPoint = drawChars("T:", 2, Point<int>(0, firstLineEndPoint.getY()));
-//	drawNumber(speedInputStateHolder->get().rpm, 4, Point<int>(secondLineEndPoint.getX(), firstLineEndPoint.getY()));
 	drawNumber(speedInput->getInputSpeed(), 4, Point<int>(secondLineEndPoint.getX(), firstLineEndPoint.getY()));
 
 	drawPowerBar();
